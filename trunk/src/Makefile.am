@@ -5,7 +5,7 @@
 ## 	Please disable it in the Anjuta project configuration
 
 INCLUDES =\
-	 -I/usr/include -I/media/hda5/mick/projects/antbattle/include
+	 -I/usr/include -I../include
 
 AM_CXXFLAGS =\
 	 -Wall\
