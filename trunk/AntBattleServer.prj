@@ -117,7 +117,7 @@ module.po.files=
 compiler.options.supports=
 compiler.options.include.paths=\
 	/usr/include\
-	/media/hda5/mick/projects/antbattle/include
+	../include
 compiler.options.library.paths=
 compiler.options.libraries=\
 	boost_thread
