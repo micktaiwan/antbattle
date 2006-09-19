@@ -101,7 +101,7 @@ void MColony::DeleteAnt(unsigned long id) {
    }
 
 //---------------------------------------------------------------------------
-MAntClient::MAntClient() : Logged(false), ErrorCount(0), Playing(0) {}
+MAntClient::MAntClient() : ErrorCount(0), Logged(false), Playing(0) {}
 
 //---------------------------------------------------------------------------
 MAntClient::~MAntClient(){}
@@ -130,4 +130,3 @@ void MAntClientList::Clear() {
    list.clear();
 
    }
-

@@ -34,6 +34,7 @@ public:
 
    base();
    base(const std::string& msg);
+   virtual ~base() {}
    void clear();
    std::string& operator[](const std::string& p);
    const std::string str();  // fomatted string ready to be sent based on dict
