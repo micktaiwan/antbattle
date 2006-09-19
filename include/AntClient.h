@@ -29,7 +29,7 @@
 class MAnt : public MMapObject {
 public:
    MAnt() : Life(10),Type(0), ActionPoints(8), Speed(6) {}
-   ~MAnt() {}
+   virtual ~MAnt() {}
    int Life, Type, ClientID, ActionPoints,Speed;
    virtual void DataString(mnetmsg::base&);
    };

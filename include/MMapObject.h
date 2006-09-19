@@ -40,7 +40,7 @@ public:
    Vector         Pos;
 
    MMapObject();
-   ~MMapObject();
+   virtual ~MMapObject();
 
    virtual void DataString(mnetmsg::base&)=0;
    
