@@ -8,7 +8,7 @@
 using namespace std;
 
 bool SigInt = false;
-string ProgramName = "AntBattle Server 0.5.4 (2006/09/14)";
+string ProgramName = "AntBattle Server 0.5.4 (2006/09/14)";# server banner
 int gLoglevel = 3;
 boost::mutex LogMutex;
 
