@@ -98,8 +98,8 @@ LN_S = ln -s
 LTLIB = @LTLIB@
 LTLIBICONV = @LTLIBICONV@
 LTLIBINTL = @LTLIBINTL@
-MAINT = 
-MAKEINFO = /home/mick/Projects/AntBattleServer/missing makeinfo
+MAINT = #
+MAKEINFO = /media/hda5/mick/projects/antbattle/missing makeinfo
 MKINSTALLDIRS = @MKINSTALLDIRS@
 NO_PREFIX_PACKAGE_DATA_DIR = share
 NO_PREFIX_PACKAGE_DOC_DIR = doc/AntBattleServer
@@ -142,7 +142,7 @@ TAR = tar
 GZIP_ENV = --best
 all: all-redirect
 .SUFFIXES:
-$(srcdir)/Makefile.in:  Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
+$(srcdir)/Makefile.in: # Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
 	cd $(top_srcdir) && $(AUTOMAKE) --gnu include/Makefile
 
 Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status $(BUILT_SOURCES)

@@ -98,8 +98,8 @@ LN_S = ln -s
 LTLIB = @LTLIB@
 LTLIBICONV = @LTLIBICONV@
 LTLIBINTL = @LTLIBINTL@
-MAINT = 
-MAKEINFO = /home/mick/Projects/AntBattleServer/missing makeinfo
+MAINT = #
+MAKEINFO = /media/hda5/mick/projects/antbattle/missing makeinfo
 MKINSTALLDIRS = @MKINSTALLDIRS@
 NO_PREFIX_PACKAGE_DATA_DIR = share
 NO_PREFIX_PACKAGE_DOC_DIR = doc/AntBattleServer
@@ -122,7 +122,7 @@ USE_INCLUDED_LIBINTL = @USE_INCLUDED_LIBINTL@
 USE_NLS = @USE_NLS@
 VERSION = 0.5.3
 
-INCLUDES =  	 -I/usr/include -I/media/hda5/mick/projects/antbattle/include
+INCLUDES =  	 -I/usr/include -I../include
 
 
 AM_CXXFLAGS =  	 -Wall 	 -O2
@@ -174,7 +174,7 @@ OBJECTS = $(antbattleserver_OBJECTS)
 all: all-redirect
 .SUFFIXES:
 .SUFFIXES: .S .c .cpp .lo .o .obj .s
-$(srcdir)/Makefile.in:  Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
+$(srcdir)/Makefile.in: # Makefile.am $(top_srcdir)/configure.in $(ACLOCAL_M4) 
 	cd $(top_srcdir) && $(AUTOMAKE) --gnu src/Makefile
 
 Makefile: $(srcdir)/Makefile.in  $(top_builddir)/config.status $(BUILT_SOURCES)

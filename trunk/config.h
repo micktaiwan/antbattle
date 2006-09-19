@@ -12,7 +12,7 @@
 #define PACKAGE_PIXMAPS_DIR "/usr/local/share/pixmaps"
 #define PACKAGE_HELP_DIR "/usr/local/share/help"
 #define PACKAGE_MENU_DIR "/usr/local/share"
-#define PACKAGE_SOURCE_DIR "/home/mick/Projects/AntBattleServer"
+#define PACKAGE_SOURCE_DIR "/media/hda5/mick/projects/antbattle"
 /* #undef GETTEXT_PACKAGE */
 
 /* Define to 1 if you have the <dlfcn.h> header file. */
