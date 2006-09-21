@@ -1689,7 +1689,7 @@ fi
 
 PACKAGE=AntBattleServer
 
-VERSION=0.5.3
+VERSION=0.5.4
 
 if test "`cd $srcdir && pwd`" != "`pwd`" && test -f $srcdir/config.status; then
   { { echo "$as_me:$LINENO: error: source directory already configured; run \"make distclean\" there first" >&5
@@ -20650,4 +20650,3 @@ if test "$no_create" != yes; then
 fi
 
 
-ALL_LINGUAS=""
