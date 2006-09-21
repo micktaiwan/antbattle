@@ -1,0 +1,151 @@
+<?xml version='1.0' encoding='utf-8' ?>
+<!-- C++Builder XML Project -->
+<PROJECT>
+  <MACROS>
+    <VERSION value="BCB.06.00"/>
+    <PROJECT value="AntBattleServer.exe"/>
+    <OBJFILES value="..\src\main.obj ..\src\AntClient.obj ..\src\AntServer.obj 
+      ..\src\HTTPServer.obj ..\src\MMap.obj ..\src\MMapObject.obj 
+      ..\src\MPNLBase.obj ..\src\MThread.obj ..\src\MUtils.obj 
+      ..\src\NetMsgUtils.obj ..\include\MStats.obj"/>
+    <RESFILES value="AntBattleServer.res"/>
+    <IDLFILES value=""/>
+    <IDLGENFILES value=""/>
+    <DEFFILE value=""/>
+    <RESDEPEN value="$(RESFILES)"/>
+    <LIBFILES value="boost_thread.lib"/>
+    <LIBRARIES value=""/>
+    <SPARELIBS value=""/>
+    <PACKAGES value="vcl.bpi rtl.bpi vclx.bpi dbrtl.bpi ThemeManagerC6D.bpi vcldb.bpi 
+      ThemeManagerC6.bpi VirtualTreesC6D.bpi VirtualTreesC6.bpi MS.bpi 
+      Indy60.bpi GifImagePack.bpi bcbie.bpi bcbsmp.bpi vclie.bpi xmlrtl.bpi 
+      inet.bpi inetdbbde.bpi inetdbxpress.bpi adortl.bpi bdertl.bpi dsnap.bpi 
+      ibxpress.bpi visualclx.bpi visualdbclx.bpi dsnapcrba.bpi dsnapcon.bpi 
+      dbexpress.bpi webdsnap.bpi websnap.bpi soaprtl.bpi vcldbx.bpi bdecds.bpi 
+      cds.bpi qrpt.bpi teeui.bpi teedb.bpi tee.bpi dss.bpi teeqr.bpi nmfast.bpi 
+      dbxcds.bpi inetdb.bpi"/>
+    <PATHCPP value=".;..\src;..\include"/>
+    <PATHPAS value=".;"/>
+    <PATHRC value=".;"/>
+    <PATHASM value=".;"/>
+    <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
+    <RELEASELIBPATH value="$(BCB)\lib\release"/>
+    <LINKER value="ilink32"/>
+    <USERDEFINES value="WIN32"/>
+    <SYSDEFINES value="NO_STRICT;_NO_VCL;_RTLDLL;USEPACKAGES"/>
+    <MAINSOURCE value="AntBattleServer.bpf"/>
+    <INCLUDEPATH value="..\src;src;$(BCB)\include;$(BCB)\include\vcl;../include;D:\MATech\Prog\3rd\boost-1.30.2"/>
+    <LIBPATH value="..\include;$(BCB)\source\indy9\9.13\c6;$(BCB)\Projects\Lib;D:\tmp\antbattleserver\src;$(BCB)\lib\obj;$(BCB)\lib"/>
+    <WARNINGS value="-w-par"/>
+    <OTHERFILES value=""/>
+  </MACROS>
+  <OPTIONS>
+    <IDLCFLAGS value="-I..\src -Isrc -I$(BCB)\include -I$(BCB)\include\vcl -I../include 
+      -ID:\MATech\Prog\3rd\boost-1.30.2 -src_suffix cpp -DWIN32 -boa"/>
+    <CFLAG1 value="-O2 -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -X- -a8 -b- -k- -vi -tWC -tWM -c"/>
+    <PFLAGS value="-$Y- -$L- -$D- -$A8 -v -JPHNE -M"/>
+    <RFLAGS value=""/>
+    <AFLAGS value="/mx /w2 /zn"/>
+    <LFLAGS value="-D&quot;&quot; -ap -Tpe -x -Gn"/>
+    <OTHERFILES value=""/>
+  </OPTIONS>
+  <LINKER>
+    <ALLOBJ value="c0x32.obj $(PACKAGES) $(OBJFILES)"/>
+    <ALLRES value="$(RESFILES)"/>
+    <ALLLIB value="$(LIBFILES) $(LIBRARIES) import32.lib cw32mti.lib"/>
+    <OTHERFILES value=""/>
+  </LINKER>
+  <FILELIST>
+      <FILE FILENAME="AntBattleServer.res" FORMNAME="" UNITNAME="AntBattleServer.res" CONTAINERID="ResTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="AntBattleServer.bpf" FORMNAME="" UNITNAME="AntBattleServer" CONTAINERID="BPF" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="..\src\main.cpp" FORMNAME="" UNITNAME="main" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="..\src\AntClient.cpp" FORMNAME="" UNITNAME="AntClient.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="..\src\AntServer.cpp" FORMNAME="" UNITNAME="AntServer.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="..\src\HTTPServer.cpp" FORMNAME="" UNITNAME="HTTPServer.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="..\src\MMap.cpp" FORMNAME="" UNITNAME="MMap.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="..\src\MMapObject.cpp" FORMNAME="" UNITNAME="MMapObject.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="..\src\MPNLBase.cpp" FORMNAME="" UNITNAME="MPNLBase.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="..\src\MThread.cpp" FORMNAME="" UNITNAME="MThread.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="..\src\MUtils.cpp" FORMNAME="" UNITNAME="MUtils.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="..\src\NetMsgUtils.cpp" FORMNAME="" UNITNAME="NetMsgUtils.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="..\include\MStats.cpp" FORMNAME="" UNITNAME="MStats" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="boost_thread.lib" FORMNAME="" UNITNAME="boost_thread.lib" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+  </FILELIST>
+  <BUILDTOOLS>
+  </BUILDTOOLS>
+
+  <IDEOPTIONS>
+[Version Info]
+IncludeVerInfo=0
+AutoIncBuild=0
+MajorVer=1
+MinorVer=0
+Release=0
+Build=0
+Debug=0
+PreRelease=0
+Special=0
+Private=0
+DLL=0
+Locale=1028
+CodePage=950
+
+[Version Info Keys]
+CompanyName=
+FileDescription=
+FileVersion=1.0.0.0
+InternalName=
+LegalCopyright=
+LegalTrademarks=
+OriginalFilename=
+ProductName=
+ProductVersion=1.0.0.0
+Comments=
+
+[HistoryLists\hlIncludePath]
+Count=4
+Item0=src;$(BCB)\include;$(BCB)\include\vcl;../include;D:\MATech\Prog\3rd\boost-1.30.2
+Item1=src;$(BCB)\include;$(BCB)\include\vcl;../include
+Item2=D:\tmp\antbattleserver\src;$(BCB)\include;$(BCB)\include\vcl
+Item3=D:\tmp\antbattleserver\src;$(BCB)\include;$(BCB)\include\vcl;../include
+
+[HistoryLists\hlLibraryPath]
+Count=2
+Item0=$(BCB)\source\indy9\9.13\c6;$(BCB)\Projects\Lib;D:\tmp\antbattleserver\src;$(BCB)\lib\obj;$(BCB)\lib
+Item1=D:\tmp\antbattleserver\src;$(BCB)\lib\obj;$(BCB)\lib
+
+[HistoryLists\hlDebugSourcePath]
+Count=1
+Item0=$(BCB)\source\vcl
+
+[HistoryLists\hlConditionals]
+Count=2
+Item0=WIN32
+Item1=_DEBUG
+
+[Debugging]
+DebugSourceDirs=$(BCB)\source\vcl
+
+[Parameters]
+RunParams=
+Launcher=
+UseLauncher=0
+DebugCWD=
+HostApplication=
+RemoteHost=
+RemotePath=
+RemoteLauncher=
+RemoteCWD=
+RemoteDebug=0
+
+[Compiler]
+ShowInfoMsgs=0
+LinkDebugVcl=0
+LinkCGLIB=0
+
+[CORBA]
+AddServerUnit=1
+AddClientUnit=1
+PrecompiledHeaders=1
+  </IDEOPTIONS>
+</PROJECT>

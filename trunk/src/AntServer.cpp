@@ -48,7 +48,11 @@ MAntServer::MAntServer() : MPNL::MTCPServer(), CurrentClientID(0), GameInProgres
 
    HTTP = new MHTTPServer();
    HTTP->Port = 8080;
+#ifdef WIN32
+   HTTP->SetCallback(HTTPInfo);
+#else
    HTTP->SetCallback(&MAntServer::HTTPInfo);
+#endif
    GETTIME(UpTime);
 
    }
@@ -771,3 +775,5 @@ void MAntServer::SetHTTPPort(int p) {
    // Listen is not called so if you want to set a port set ip before calling Run()
 
    }
+
+
