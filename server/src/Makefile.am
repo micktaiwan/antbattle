@@ -19,7 +19,7 @@ antbattleserver_SOURCES = \
 	HTTPServer.cpp\
 	MMap.cpp\
 	MMapObject.cpp\
-	Stats.cpp\
+	MStats.cpp\
 	main.cpp\
 	MPNLBase.cpp\
 	NetMsgUtils.cpp\
