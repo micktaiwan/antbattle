@@ -75,11 +75,11 @@ module.include.files=\
 	MMap.h\
 	MMapObject.h\
 	Msg.h\
-	Stats.h\
 	MPNLBase.h\
 	NetMsgUtils.h\
 	MThread.h\
-	MUtils.h
+	MUtils.h\
+	MStats.h
 
 module.source.name=src
 module.source.type=
@@ -89,12 +89,12 @@ module.source.files=\
 	HTTPServer.cpp\
 	MMap.cpp\
 	MMapObject.cpp\
-	Stats.cpp\
 	main.cpp\
 	MPNLBase.cpp\
 	NetMsgUtils.cpp\
 	MThread.cpp\
-	MUtils.cpp
+	MUtils.cpp\
+	MStats.cpp
 
 module.pixmap.name=pixmaps
 module.pixmap.type=

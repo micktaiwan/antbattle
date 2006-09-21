@@ -13,10 +13,10 @@ antbattleserver_include_DATA = \
 	MMap.h\
 	MMapObject.h\
 	Msg.h\
-	Stats.h\
 	MPNLBase.h\
 	NetMsgUtils.h\
 	MThread.h\
-	MUtils.h
+	MUtils.h\
+	MStats.h
 
 EXTRA_DIST = $(antbattleserver_include_DATA)

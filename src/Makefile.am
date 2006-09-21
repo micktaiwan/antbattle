@@ -19,12 +19,12 @@ antbattleserver_SOURCES = \
 	HTTPServer.cpp\
 	MMap.cpp\
 	MMapObject.cpp\
-	Stats.cpp\
 	main.cpp\
 	MPNLBase.cpp\
 	NetMsgUtils.cpp\
 	MThread.cpp\
-	MUtils.cpp
+	MUtils.cpp\
+	MStats.cpp
 
 antbattleserver_LDFLAGS = 
 

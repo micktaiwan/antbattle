@@ -124,7 +124,7 @@ VERSION = @VERSION@
 
 antbattleserver_includedir = $(pkgincludedir)
 
-antbattleserver_include_DATA =  	AntClient.h 	AntServer.h 	HTTPServer.h 	MMap.h 	MMapObject.h 	Msg.h 	Stats.h 	MPNLBase.h 	NetMsgUtils.h 	MThread.h 	MUtils.h
+antbattleserver_include_DATA =  	AntClient.h 	AntServer.h 	HTTPServer.h 	MMap.h 	MMapObject.h 	Msg.h 	MPNLBase.h 	NetMsgUtils.h 	MThread.h 	MUtils.h 	MStats.h
 
 
 EXTRA_DIST = $(antbattleserver_include_DATA)
