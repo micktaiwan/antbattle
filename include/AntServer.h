@@ -5,7 +5,7 @@
 #include <vector>
 #include "MPNLBase.h"
 #include "Msg.h"
-#include "Stats.h"
+#include "MStats.h"
 
 class MAntClient;
 class MMap;

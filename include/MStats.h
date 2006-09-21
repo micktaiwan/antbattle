@@ -1,7 +1,7 @@
 //---------------------------------------------------------------------------
 
-#ifndef StatsH
-#define StatsH
+#ifndef MStatsH
+#define MStatsH
 #include <string>
 #include <vector>
 
