@@ -13,7 +13,7 @@ antbattleserver_include_DATA = \
 	MMap.h\
 	MMapObject.h\
 	Msg.h\
-	Stats.h\
+	MStats.h\
 	MPNLBase.h\
 	NetMsgUtils.h\
 	MThread.h\
