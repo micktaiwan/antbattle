@@ -130,7 +130,7 @@ AM_CXXFLAGS =  	 -Wall 	 -O2
 
 bin_PROGRAMS = antbattleserver
 
-antbattleserver_SOURCES =  	AntClient.cpp 	AntServer.cpp 	HTTPServer.cpp 	MMap.cpp 	MMapObject.cpp 	Stats.cpp 	main.cpp 	MPNLBase.cpp 	NetMsgUtils.cpp 	MThread.cpp 	MUtils.cpp
+antbattleserver_SOURCES =  	AntClient.cpp 	AntServer.cpp 	HTTPServer.cpp 	MMap.cpp 	MMapObject.cpp 	MStats.cpp 	main.cpp 	MPNLBase.cpp 	NetMsgUtils.cpp 	MThread.cpp 	MUtils.cpp
 
 
 antbattleserver_LDFLAGS = 
@@ -150,8 +150,8 @@ LDFLAGS = @LDFLAGS@
 LIBS = @LIBS@
 antbattleserver_OBJECTS =  AntClient.$(OBJEXT) AntServer.$(OBJEXT) \
 HTTPServer.$(OBJEXT) MMap.$(OBJEXT) MMapObject.$(OBJEXT) \
-Stats.$(OBJEXT) main.$(OBJEXT) MPNLBase.$(OBJEXT) NetMsgUtils.$(OBJEXT) \
-MThread.$(OBJEXT) MUtils.$(OBJEXT)
+MStats.$(OBJEXT) main.$(OBJEXT) MPNLBase.$(OBJEXT) \
+NetMsgUtils.$(OBJEXT) MThread.$(OBJEXT) MUtils.$(OBJEXT)
 antbattleserver_DEPENDENCIES = 
 CXXFLAGS = @CXXFLAGS@
 CXXCOMPILE = $(CXX) $(DEFS) $(INCLUDES) $(AM_CPPFLAGS) $(CPPFLAGS) $(AM_CXXFLAGS) $(CXXFLAGS)
@@ -166,8 +166,8 @@ DISTFILES = $(DIST_COMMON) $(SOURCES) $(HEADERS) $(TEXINFOS) $(EXTRA_DIST)
 TAR = tar
 GZIP_ENV = --best
 DEP_FILES =  .deps/AntClient.P .deps/AntServer.P .deps/HTTPServer.P \
-.deps/MMap.P .deps/MMapObject.P .deps/MPNLBase.P .deps/MThread.P \
-.deps/MUtils.P .deps/NetMsgUtils.P .deps/Stats.P .deps/main.P
+.deps/MMap.P .deps/MMapObject.P .deps/MPNLBase.P .deps/MStats.P \
+.deps/MThread.P .deps/MUtils.P .deps/NetMsgUtils.P .deps/main.P
 SOURCES = $(antbattleserver_SOURCES)
 OBJECTS = $(antbattleserver_OBJECTS)
 
