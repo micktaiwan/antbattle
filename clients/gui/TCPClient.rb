@@ -43,6 +43,7 @@ class TCPClient
 		msg = ""
 		len = @t.recv(2)
 		len = len.unpack("n")[0]
+    raise RuntimeError,"Error during reading socket" if len==nil
 		if(len > 0)
 			msg = @t.recv(len)
 		end

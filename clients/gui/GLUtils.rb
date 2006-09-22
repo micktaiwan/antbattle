@@ -230,24 +230,24 @@ end
 end
 
 def teapot
-@last_seen=GLUT.Get(GLUT::ELAPSED_TIME) if !defined? @last_seen
+@tp_last_seen=GLUT.Get(GLUT::ELAPSED_TIME) if !defined? @tp_last_seen
 t=GLUT.Get(GLUT::ELAPSED_TIME)
 
-GL::ShadeModel(GL::SMOOTH);
-GL.Enable(GL::LIGHTING);
-GL.Enable(GL::LIGHT0);
-GL.Enable(GL::DEPTH_TEST);
-init_draw;
-myinit;
+GL::ShadeModel(GL::SMOOTH)
+GL.Enable(GL::LIGHTING)
+GL.Enable(GL::LIGHT0)
+GL.Enable(GL::DEPTH_TEST)
+init_draw_view
+init_materials
       
-GL.PushMatrix();  
-position = [0,0, 2, 0.0];
-GL.Material(GL::FRONT, GL::DIFFUSE,  [1,1,1,1 ]);
-GL::Light(GL::LIGHT0, GL::POSITION, position);    
-GL.Translate(0, 0,0);
-GL.Rotate((t-@last_seen)/2,0, 1,0);
-GL.Rotate((t-@last_seen)/20,1, 0,0);
-GLUT.SolidTeapot(5);   # draw unit
+GL.PushMatrix()
+position = [0,0, 2, 0.0]
+GL.Material(GL::FRONT, GL::DIFFUSE,  [1,1,1,1 ])
+GL::Light(GL::LIGHT0, GL::POSITION, position)
+GL.Translate(0, 0,0)
+GL.Rotate((t-@tp_last_seen)/2,0, 1,0)
+GL.Rotate((t-@tp_last_seen)/20,1, 0,0)
+GLUT.SolidTeapot(5)   # draw unit
 GL.PopMatrix();  
 end
 #~ puts "xxx released" if @gl_txts.released==true

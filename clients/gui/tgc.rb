@@ -17,7 +17,7 @@ if @debug==nil
   end
 end  
       
-def myinit
+def init_materials
     mat_ambient = [ 0.0, 0.0, 0.0, 1.0 ];
     mat_diffuse = [ 0.4, 0.4, 0.4, 1.0 ];
     mat_specular = [ 1.0, 1.0, 1.0, 1.0 ];
@@ -85,14 +85,6 @@ def txts(m1,x=20,y=20,color= [ 1.0, 0.5, 0.5])
 
 end
 
-def init_draw()
-GL.Viewport(0, 0, @w, @h);
-GL.MatrixMode(GL::PROJECTION);
-GL.LoadIdentity();
-GLU.Perspective(10,  @w.to_f/@h.to_f, 1.0, 800.0);
-GLU.LookAt(@cx,@cy,@xcz,@tx,@ty,@tz, 0.0, 1.0, 0.0);
-end
-
 
 def puts_unit(x,y,idf,life)
     a=x-@nx/2
@@ -133,19 +125,39 @@ end
 
 def draw_world
 @gl_world.draw() {
-      @nx.times do |y|
-      @ny.times do |x|
-          GL.PushMatrix();
-          GL.Translate(x-@nx/2, y-@ny/2, 0.0);
-          GL.Scale(0.5,0.5,1);
-          drawplane();
-          GL.PopMatrix();
-        end
-      end}      
+  @nx.times do |y|
+    @ny.times do |x|
+    GL.PushMatrix();
+    GL.Translate(x-@nx/2, y-@ny/2, 0.0);
+    GL.Scale(0.5,0.5,1);
+    drawplane();
+    GL.PopMatrix();
+    end
+  end
+  }     
 end
 
+
+def process_msg(t)
+     msg= $c.get_msg
+     if (msg!="")
+       @game_info_svg += msg
+       @game_info +=msg
+         b=@game_info.split("\n");
+         if b.length >30;
+           @game_info=b[-30,30].join("\n") + "\n"; 
+         end              
+       @gl_txts.release
+       end
+     if (t-@last_seen)/20>20
+       @game_info +=" \n"
+       @last_seen+=400
+     end
+end
+   
 def puts_txts
 if @game_info==nil then @game_info=" \n" end
+if @game_info_svg==nil then @game_info_svg ="Message logs:\n" end
 
 @last_seen=GLUT.Get(GLUT::ELAPSED_TIME) if !defined? @last_seen
 t=GLUT.Get(GLUT::ELAPSED_TIME)
@@ -163,20 +175,7 @@ if $c!=nil && $c.map!=nil
         }
       end
      #main text
-     msg= $c.get_msg
-     if (msg!="")
-       @game_info +=msg
-         b=@game_info.split("\n");
-         if b.length >30;
-           @game_info=b[-30,30].join("\n") + "\n"; 
-         end              
-       @gl_txts.release
-       end
-     if (t-@last_seen)/20>20
-       @game_info +=" \n"
-       @last_seen+=400
-
-       end
+     process_msg(t)
        
     end
 @gl_txt.draw_if_undef{txts("")}
@@ -194,21 +193,40 @@ txts("123aazert");
 GL.PopMatrix();
 end
 
+def init_draw_view
+GL.Viewport(0, 0, @w, @h);
+GL.MatrixMode(GL::PROJECTION);
+GL.LoadIdentity();
+GLU.Perspective(10,  @w.to_f/@h.to_f, 1.0, 800.0);
+GLU.LookAt(@cx,@cy,@xcz,@tx,@ty,@tz, 0.0, 1.0, 0.0);
+end
+
 def init_display_f
 @display = Proc.new {
 pputs "display",0
 @display_fct.call #suivant ce que l'on veut afficher !
 }
+@display_message_logs= Proc.new {
+GL.Clear(GL::COLOR_BUFFER_BIT | GL::DEPTH_BUFFER_BIT);
+@last_seen=GLUT.Get(GLUT::ELAPSED_TIME) if !defined? @last_seen
+t=GLUT.Get(GLUT::ELAPSED_TIME)
+process_msg(t)
+
+teapot
+txts(@game_info_svg);
+GLUT.SwapBuffers()
+}
 
 @display_help = Proc.new {
 GL.Clear(GL::COLOR_BUFFER_BIT | GL::DEPTH_BUFFER_BIT);
 teapot
-txts("H HELP\n\nX Y Z AND SHIFT X Y Z TRANSLATIONS\nJ K L AND SHIFT J K L ROTATIONS\n" +
-       "F AND SHIFT F INCREMENT FACTOR\n"+
-       "WHEEL BUTTON ROTATIONS\n\n"+
-       "C CHAT\n" +
-       "I INFORMATION ABOUT CONNECTED CLIENTS\n" +
-       "A ABOUT\n"+
+txts("H HELP\n\nx/X y/Y z/Z TRANSLATIONS\nj/J k/K l/L ROTATIONS\n" +
+       "f/F ADJUST TRANS/ROT FACTOR\n"+
+       "wheel button ROTATIONS\n\n"+
+       "c CHAT\n" +
+       "m MESSAGE LOGS\n" +
+       "i INFORMATION ABOUT CONNECTED CLIENTS\n" +
+       "a ABOUT\n\n"+
        "ESC EXIT\n");
 GLUT.SwapBuffers()
 }
@@ -228,11 +246,8 @@ GLUT.SwapBuffers()
 @gl_inits.draw() {
       GL.Clear(GL::COLOR_BUFFER_BIT | GL::DEPTH_BUFFER_BIT);
       GL::ShadeModel(GL::SMOOTH);
-      GL.Enable(GL::LIGHTING);
-      GL.Enable(GL::LIGHT0);
-      GL.Enable(GL::DEPTH_TEST);
-      init_draw;
-      myinit;
+      init_materials;
+      init_draw_view;
       }
 
     infinite_light = [ 1.0, 1.0, 1.0, 0.0 ];
@@ -274,10 +289,12 @@ pputs "reshape",0
 @gl_players.release
 @gl_units.release
 
-@w=w;
-@h=h;
-init_draw;
+h=0.01 if h==0
+@w=w
+@h=h
+init_draw_view
 }
+
 @keyboard = proc {|key, x, y|
 pputs "keyboard",0
 
@@ -301,14 +318,16 @@ if !@chat_enable
       when 'Y'[0];@y = @y - @f ;
       when 'z'[0];@z = @z + @f ;
       when 'Z'[0];@z = @z - @f ;
-      when 'f'[0];@f = @f * 2;
-      when 'F'[0];@f = @f / 2;
+      when 'f'[0];if @f<100; @f = @f  * 2;end
+      when 'F'[0];if @f>0.01; @f = @f / 2;end
       when 'j'[0];@j = @j + @f ;
       when 'J'[0];@j = @j - @f ;
       when 'k'[0];@k = @k + @f ;
       when 'K'[0];@k = @k - @f ;
       when 'l'[0];@l = @l + @f ;
       when 'L'[0];@l = @l- @f ;
+      when 'M'[0];@display_fct=@display_message_logs
+      when 'm'[0];@game_info=@game_info_svg
       when 'h'[0];@display_fct=@display_help
       when 'i'[0];@display_fct=@display_information 
       when 'a'[0];@display_fct=@display_about   
@@ -460,7 +479,6 @@ init_cam
     GLUT.InitDisplayMode(GLUT::DOUBLE | GLUT::RGB | GLUT::DEPTH);
     GLUT.InitWindowSize(@w, @h);
     GLUT.InitWindowPosition(100, 100);
-    #~ GLUT.InitWindowPosition(800, 600);
     GLUT.CreateWindow('Tiny Graphical Client');
     
     init_display_f();
@@ -482,7 +500,7 @@ init_cam
     GLUT.AttachMenu(GLUT::RIGHT_BUTTON);
 
     @t=Txt.new;
-    myinit();
+    
     pputs "Open GL initialized"
 end
 
