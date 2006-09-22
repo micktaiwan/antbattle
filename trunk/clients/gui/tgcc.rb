@@ -10,7 +10,7 @@ class GuiClient
 attr_accessor :map
 
 def initialize(ip,port)
-		@version = "0.4"
+		@version = "0.5"
     @progname = "GUI"
 		puts "GUI - Ant Battle GUI"+@version
 		puts "   Esc to close"
@@ -28,6 +28,7 @@ def run
     begin
 			  @tcp.connect
          # send my infos
+         send_msg "Connection to server"
          puts "send my infos"
 			  @tcp.formatsend("Aa1~"+@progname+"~"+@version+"~http://faivrem.googlepages.com/antbattle")
          # subscribe to connections
@@ -43,10 +44,11 @@ def run
          while(1)
           begin
                  @msg = ""
-                 timeout(5) {
+                 timeout(20) {
                     @msg = @tcp.read
                     }
           rescue Timeout::Error
+          send_msg "No game in progress / no move for 20 seconds"
           end
           if(@msg != "")
              begin
@@ -107,13 +109,12 @@ action=apacket.shift
                   puts "Server error "+get_param(msg,1)+": "+get_param(msg,2)
                   # TODO process error types
                when "b" # New game
-                  send_msg "==== New Game"
                   id1, id2 = translate_a_msg("SS",apacket)
                   c1 = @client_list.get_id(id1)
                   c2 = @client_list.get_id(id2)
                   raise "c1 is nil" if c1 == nil
                   raise "c2 is nil" if c2 == nil
-                  send_msg "   #{c1.id} (#{c1.name}) vs #{c2.id} (#{c2.name})"
+                  send_msg "New Game : #{c1.name} (#{c1.id}) vs #{c2.name} (#{c2.id})"
                   # are we one of the players ?
                   if(@id==id1 or @id==id2)
                      raise "   Error GUI can't play"
@@ -129,9 +130,7 @@ action=apacket.shift
                   id1, id2, code, freetext = translate_a_msg("SSSs",apacket)
                   c1 = @client_list.get_id(id1)
                   c2 = @client_list.get_id(id2)
-                  send_msg "   Winner: #{c1.id} (#{c1.name})"
-                  send_msg "   Loser : #{c2.id} (#{c2.name})"
-                  send_msg "   Code  : #{code} - #{freetext}"
+                  send_msg "#{c1.name} (#{c1.id}) beats #{c2.name} (#{c2.id}) - #{freetext} (#{code})"
                else
       				puts "Unknown msg type for #{action}"
             end

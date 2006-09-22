@@ -25,6 +25,8 @@ $ant_client=Thread.new {
   rescue RuntimeError => s
   puts s.message
   puts "retrying to connect server in 5 seconds"
+  $c.send_msg "Connection problem ;-("
+  $c.send_msg "retrying to connect server in 5 seconds"
   $stdout.flush
   sleep 5
   retry

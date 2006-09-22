@@ -6,6 +6,13 @@ See http://www.ruby-lang.org/en/
 
 when started H key displays help
 
+09/16/2006 Version 0.5
+Changes
+-zoom is now limited
+-message logs during game can be re-displayed with 'm' key
+-message added if server is not telling something for 20 seconds
+-GUI does not exit anymore if server is stopped and try to reconnect
+
 09/05/2006 Version 0.4
 Performances improved GUI is as fast as other clients (thanks Mickael) !!
 

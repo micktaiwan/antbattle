@@ -30,7 +30,6 @@ class Warrior < Ant
    end
    
    def describe
-      return
       puts "   Coord: #{x} #{y}"
       puts "      TypeObject: #{object_type}"
       puts "      ClientID: #{client_id}"
@@ -66,7 +65,7 @@ class Map
    end
 
    def set_size(w,h)
-      puts "   Map size: #{w}x#{h}"
+      #~ puts "   Map size: #{w}x#{h}"
       @hash.clear
       @joueurs=[]
       @w = w.to_i
@@ -85,7 +84,7 @@ class Map
       o.x=x
       o.y=y
       @hash[o.object_id] = o
-      o.describe
+      #~ o.describe
    end
 
    def remove_object(id)
@@ -121,7 +120,7 @@ class Map
  def joueur(a)
  #~ @units=@hash.values.delete_if {|x| (x.object_type!=0 || x.client_id!=a)}         x.object_type!=0}.delete_if
  id=@joueurs[a]
- @units=@hash.values.delete_if {|x| x.client_id!=id}
+ @units=@hash.values.delete_if {|x| x.client_id!=id || x.object_type!=0 }
  #~ puts "taille " + @units.size.to_s
  @units
  end
