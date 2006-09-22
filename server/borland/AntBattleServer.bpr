@@ -7,7 +7,7 @@
     <OBJFILES value="..\src\main.obj ..\src\AntClient.obj ..\src\AntServer.obj 
       ..\src\HTTPServer.obj ..\src\MMap.obj ..\src\MMapObject.obj 
       ..\src\MPNLBase.obj ..\src\MThread.obj ..\src\MUtils.obj 
-      ..\src\NetMsgUtils.obj ..\include\MStats.obj"/>
+      ..\src\NetMsgUtils.obj ..\src\MStats.obj"/>
     <RESFILES value="AntBattleServer.res"/>
     <IDLFILES value=""/>
     <IDLGENFILES value=""/>
@@ -24,7 +24,7 @@
       dbexpress.bpi webdsnap.bpi websnap.bpi soaprtl.bpi vcldbx.bpi bdecds.bpi 
       cds.bpi qrpt.bpi teeui.bpi teedb.bpi tee.bpi dss.bpi teeqr.bpi nmfast.bpi 
       dbxcds.bpi inetdb.bpi"/>
-    <PATHCPP value=".;..\src;..\include"/>
+    <PATHCPP value=".;..\src"/>
     <PATHPAS value=".;"/>
     <PATHRC value=".;"/>
     <PATHASM value=".;"/>
@@ -35,7 +35,7 @@
     <SYSDEFINES value="NO_STRICT;_NO_VCL;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="AntBattleServer.bpf"/>
     <INCLUDEPATH value="..\src;src;$(BCB)\include;$(BCB)\include\vcl;../include;D:\MATech\Prog\3rd\boost-1.30.2"/>
-    <LIBPATH value="..\include;$(BCB)\source\indy9\9.13\c6;$(BCB)\Projects\Lib;D:\tmp\antbattleserver\src;$(BCB)\lib\obj;$(BCB)\lib"/>
+    <LIBPATH value="..\src;..\include;$(BCB)\source\indy9\9.13\c6;$(BCB)\Projects\Lib;D:\tmp\antbattleserver\src;$(BCB)\lib\obj;$(BCB)\lib"/>
     <WARNINGS value="-w-par"/>
     <OTHERFILES value=""/>
   </MACROS>
@@ -68,8 +68,8 @@
       <FILE FILENAME="..\src\MThread.cpp" FORMNAME="" UNITNAME="MThread.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="..\src\MUtils.cpp" FORMNAME="" UNITNAME="MUtils.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="..\src\NetMsgUtils.cpp" FORMNAME="" UNITNAME="NetMsgUtils.cpp" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
-      <FILE FILENAME="..\include\MStats.cpp" FORMNAME="" UNITNAME="MStats" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
       <FILE FILENAME="boost_thread.lib" FORMNAME="" UNITNAME="boost_thread.lib" CONTAINERID="LibTool" DESIGNCLASS="" LOCALCOMMAND=""/>
+      <FILE FILENAME="..\src\MStats.cpp" FORMNAME="" UNITNAME="MStats" CONTAINERID="CCompiler" DESIGNCLASS="" LOCALCOMMAND=""/>
   </FILELIST>
   <BUILDTOOLS>
   </BUILDTOOLS>
