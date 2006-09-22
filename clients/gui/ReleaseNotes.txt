@@ -1,0 +1,72 @@
+Tiny Graphical Client
+=====================
+
+"ruby maingui.rb IP PORT"  to launch it
+See http://www.ruby-lang.org/en/
+
+when started H key displays help
+
+09/05/2006 Version 0.4
+Performances improved GUI is as fast as other clients (thanks Mickael) !!
+
+Remaining TODO
+Improve texts rendering (they are quite basic/ugly)
+Display remaining life on units
+Manage ability to replay games
+
+09/04/2006 Version 0.3
+Changes
+-manage chat 
+-text are scrolling
+-small anim is done on help page
+-change right menu to have 2D/3D view entries
+-added some call_list object
+-corrected bug of non starting game (due to race condition between threads)
+
+Known bug to correct
+-performance should be ameliorated (GUI is slower than clients)
+
+
+09/02/2006 Version 0.2
+Changes
+-Fight result between units are taken into account
+-state automate
+-update call_list in case of reshape
+-update way of calling display function
+-Basic display of chats / New game info / End of a game
+-change rotation axis of map
+-take size of map into account dynamically
+-name of players in color
+-starting point of view changed
+
+Remaining TODO
+-manage chat 
+
+Known bug to correct
+-performance should be ameliorated (GUI is slower than clients)
+
+
+08/31/2006 Version 0.1
+Changes
+-maingui.rb to start GUI with host port parameters 
+-robust reconnection mechanism for server connection
+-clean socket shutdown
+-GL_Helper class to speed up display with call_list
+-view rotation is centered on middle of board
+-fps are computed
+-display of clients list
+-help is updated
+
+Remaining TODO
+-update call_list in case of reshape, new game
+-take size of map into account dynamically
+-display chats / New game info / End of a game
+
+Known bug to correct
+-Fight result between units are not taken into account
+-management does not always work
+-performance should be ameliorated (GUI is slower than cleints)
+
+
+08/29/2006 Version 0.0.1
+- First version
