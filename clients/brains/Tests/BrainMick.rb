@@ -6,8 +6,8 @@ class Colony
    
    def init
       @progversion = "0.1"
-      @progname = "MickTest"
-      @freetext = "Pour l'instant, juste un test :)"
+      @progname = "Submarine Prick"
+      @freetext = "Find the anagram :)"
       @goals = []
    end      
 
