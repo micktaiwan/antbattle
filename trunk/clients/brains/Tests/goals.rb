@@ -2,10 +2,12 @@
 # modify this configuration file to modify the client behaviour
 
 require 'Map'
-require 'pathfinding'
+require 'Pathfinding'
+#require 'enum'
 
-KILL = 0
-PROTECT = 1
+KILL = 1    # top level goal
+PROTECT = 2 # top level goal
+MOVE = 3
 
 class Goal
 
@@ -18,6 +20,10 @@ class Goal
 
 end
 
+def distance(a,b)
+   (a.x-b.x).abs + (a.y-b.y).abs
+end
+
 class Ant
 
    attr_accessor :goal
@@ -28,11 +34,28 @@ class Ant
       return nil if goal == nil
       case goal[0]
          when KILL
-            e = goal[1] # we get the ennemy
+            e = goal[1] # mget the ennemy
             puts "our ennemy to kill: #{e}"
-            #dist = 
+            dist = distance(self,e)
+            if dist > 6
+               # we have to move next to it
+               # TODO: add_sub_goal
+               a,b = find_best_way(e.x,e.y)
+               return "Cb#{object_id}~"+[a,b].pack('cc')
+            else
+               return nil # TODO
+            end
             return nil #"Cb#{object_id}~"+[x+3,y].pack('cc')
          end
+   end
+
+   # given x,y the case where we plan to go,
+   # return a,b the case we have to go in this turn
+   def find_best_way(x,y)
+      # if x,y is an obstacle (could be an ennemy ant)
+      # then find the nearest case
+      # TODO
+      [x,y] # temporary
    end
 
 end
