@@ -1,9 +1,11 @@
 //---------------------------------------------------------------------------
+#ifdef WIN32
 #pragma hdrstop
+#pragma package(smart_init)
+#endif
 
 #include "MStats.h"
 #include "MUtils.h"
-#pragma package(smart_init)
 
 //---------------------------------------------------------------------------
 MStat* MClientStats::Add(const std::string& name) {
@@ -49,4 +51,3 @@ void MClientStats::Clear() {
    List.clear();
 
    }
-

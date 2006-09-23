@@ -32,16 +32,19 @@ end
 # load brains
 
 $LOAD_PATH << '../lib'
+$LOAD_PATH << '../brains/Tests'
 
 case @@brain
    when  'minmax'
-      require 'Tests/BrainMinimax'
+      require 'BrainMinimax'
    when 'random'
       require 'BrainRandom'
    when 's2'
       require 'BrainStraight'
    when 's1'
       require 'BrainStraight_0.1'
+   when 'mick'
+      require 'BrainMick'
    else
       raise "Unknown brain: #{@@brain}"
 end

@@ -1,7 +1,9 @@
+#ifdef WIN32
 #pragma hdrstop
+#pragma package(smart_init)
+#endif
 
 #include "HTTPServer.h"
-#pragma package(smart_init)
 
 using namespace std;
 

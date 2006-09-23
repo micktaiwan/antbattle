@@ -10,7 +10,9 @@
 
 
 //---------------------------------------------------------------------------
+#ifdef WIN32
 #pragma package(smart_init)
+#endif
 using namespace std;
 using namespace mnetmsg;
 
@@ -70,14 +72,16 @@ MAntServer::~MAntServer() {
 void MAntServer::Run(int port) {
 
    WriteToLog(2,string("Running on port ") + MUtils::int2string(port));
-   if(!HTTP->Listen())
-      WriteToLog(1,string("HTTP: Bind error for port ") + MUtils::int2string(HTTP->Port));
    SetPrefixLen(2);
    Port = port;
    if(!Listen()) {
       WriteToLog(1,GetLastError());
       return;
       }
+
+   if(!HTTP->Listen())
+      WriteToLog(1,string("HTTP: Bind error for port ") + MUtils::int2string(HTTP->Port));
+
    MPNL::MSocket* s;
    while(!SigInt) {
 
@@ -130,7 +134,7 @@ bool MAntServer::OnConnection(MPNL::MSocket* s) {
    WriteToLog(2,string("New connection from ")+s->PeerIP);
    MAntClient* c = new MAntClient(); // TODO 1: jamais delete si Ctrl-C
    c->IP = s->PeerIP;
-   c->ClientID = -1;
+   c->ClientID = 0;
 /*
    c->Type = -1;
    c->Program = "NL";
@@ -512,7 +516,7 @@ void MAntServer::Move(MPNL::MSocket* s, MAntClient* c, unsigned long id, int x, 
 
    int fromx = ant->Pos.X;
    int fromy = ant->Pos.Y;
-   int nbcases = abs(fromx-x) + abs(fromy-y);
+   unsigned int nbcases = abs(fromx-x) + abs(fromy-y);
    // not going too far ?
    if(nbcases > ant->Speed) {
       base mm;
@@ -661,8 +665,8 @@ void MAntServer::AddError(MAntClient* c) {
    WriteToLog(3,string("Error count: ")+MUtils::toStr(c->ErrorCount));
    if(c->ErrorCount < 3) return;
 
-   int i1 = Player1->ClientID;
-   int i2 = Player2->ClientID;
+   unsigned int i1 = Player1->ClientID;
+   unsigned int i2 = Player2->ClientID;
    int loser, winner;
    if(c->ClientID == i1) {
       loser  = i1;
@@ -775,5 +779,3 @@ void MAntServer::SetHTTPPort(int p) {
    // Listen is not called so if you want to set a port set ip before calling Run()
 
    }
-
-

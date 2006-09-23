@@ -1,4 +1,6 @@
+#ifdef WIN32
 #pragma package(smart_init)
+#endif
 
 #include <algorithm>
 #include <sstream>
@@ -432,6 +434,11 @@ string toStr(int i) {
    o << i;
    return o.str();
    }
+string toStr(unsigned int i) {
+   ostringstream o;
+   o << i;
+   return o.str();
+   }
 
 //---------------------------------------------------------------------------
 static char S2B(char c) {
@@ -567,9 +574,9 @@ ptime FileDate(const string& fn) {
    o << (1980+((s.ff_fdate & 0xFE00)>>9)) << "/" << m << "/" << d << " " << h << ":" << mn << ":"  << se << ":"  << ms;
    return ptime ( time_from_string(o.str()));
 #else
-   struct stat s;
-   stat(fn.c_str(),&s);
-   s.st_mtime;
+   //struct stat s;
+   //stat(fn.c_str(),&s);
+   //s.st_mtime;
    // TODO
    return ptime(boost::date_time::not_a_date_time);//throw std::runtime_error("todo");
 #endif
@@ -642,4 +649,3 @@ void GetDuration(const TIME& from, unsigned int& d, unsigned int& h, unsigned in
    }
 
 } // namespace
-

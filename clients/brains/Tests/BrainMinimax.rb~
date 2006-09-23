@@ -14,8 +14,7 @@ class Map
       # the minimax will do the work for us: select the best state
       
       # Question:
-      # the pbm with random moves is that the ennemy does move at random,
-      # so the intelligence is null...
+      # the pbm with random moves is that the ennemy does move at random, so the intelligence is null
       # of n must be high
       # if n is high why not do all the moves ?
       
@@ -95,7 +94,7 @@ end
 class Colony
    
    def init
-      @progversion = "0.1"
+      @progversion = "0.0.1"
       @progname = "Minimax"
       @freetext = ""
    end      

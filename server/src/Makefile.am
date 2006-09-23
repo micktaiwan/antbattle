@@ -9,7 +9,7 @@ INCLUDES =\
 
 AM_CXXFLAGS =\
 	 -Wall\
-	 -O2
+	 -g
 
 bin_PROGRAMS = antbattleserver
 
@@ -19,12 +19,12 @@ antbattleserver_SOURCES = \
 	HTTPServer.cpp\
 	MMap.cpp\
 	MMapObject.cpp\
-	MStats.cpp\
 	main.cpp\
 	MPNLBase.cpp\
 	NetMsgUtils.cpp\
 	MThread.cpp\
-	MUtils.cpp
+	MUtils.cpp\
+	MStats.cpp
 
 antbattleserver_LDFLAGS = 
 
