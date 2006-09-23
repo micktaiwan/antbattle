@@ -219,6 +219,7 @@ t can be:
 std::string    MyNow(int t);
 template <class T> std::string toStr(T i);
 std::string    toStr(int i);
+std::string    toStr(unsigned int i);
 std::string    GetAppFileName();
 void           Back2Slash(std::string& str);
 void           Slash2Back(std::string& str);
@@ -240,4 +241,3 @@ bool           CheckAnotherInstance(const char* name);
 std::string    FixedDigit(int i, int nb=2);
 } // namespace
 #endif
-

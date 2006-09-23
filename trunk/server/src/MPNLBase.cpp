@@ -15,7 +15,10 @@
  *                                                                         *
  ***************************************************************************/
 
+#ifdef WIN32
 #pragma hdrstop
+#endif
+
 #include "MPNLBase.h"
 
 #ifdef WIN32
@@ -231,7 +234,7 @@ void MSocket::operator()() {
 
    // For stream mode :
    bool first_msg = true;
-   unsigned long total_stream_len, total_stream_len_received;
+   unsigned long total_stream_len=0, total_stream_len_received=0;
 
    while(IsActive()) {
       //DEBUG("MSocket::() read loop");
@@ -256,12 +259,12 @@ void MSocket::operator()() {
          break;
          }
       if(rv == MYSOCKET_ERROR) {
-         int err = 0;
-
 #ifdef WIN32
-         err = WSAGetLastError();
-#endif
+         int err = WSAGetLastError();
          DEBUG(string("recv error: ")+MUtils::int2string(err));
+#else
+         DEBUG(string("recv error: ")+MUtils::int2string(errno));
+#endif
          break;
          }
       //DEBUG(string("MPNL::MSocket:Read something"));
@@ -993,11 +996,12 @@ bool MTCPClient::Connect() {
 
    rc = connect(Socket->GetS(), reinterpret_cast<struct sockaddr*>(&ServAddr), sizeof(ServAddr));
    if(rc<0) {
-      int err = 0;
 #ifdef WIN32
-      err = WSAGetLastError();
-#endif
+      int err = WSAGetLastError();
       DEBUG(string("connection failed: ")+MUtils::int2string(err));
+#else
+      DEBUG(string("connection failed: ")+MUtils::int2string(errno));
+#endif
       return false;
       }
 
@@ -1655,4 +1659,3 @@ void MTransferManager::operator()() {
    SetActive(false);
 
    }
-

@@ -30,7 +30,7 @@ class MAnt : public MMapObject {
 public:
    MAnt() : Life(10),Type(0), ActionPoints(8), Speed(6) {}
    virtual ~MAnt() {}
-   int Life, Type, ClientID, ActionPoints,Speed;
+   unsigned int Life, Type, ClientID, ActionPoints,Speed;
    virtual void DataString(mnetmsg::base&);
    };
 
@@ -63,7 +63,7 @@ class MAntClient {
 public:
 
    std::string    Program, Version, IP, FreeText;
-   int            ClientID, Type, ErrorCount;
+   unsigned int   ClientID, Type, ErrorCount;
    bool           Logged, Playing;
    MColony        Colony;
    std::map<int,int> Services;

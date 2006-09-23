@@ -4,7 +4,9 @@
 #include <signal.h>
 #include "AntServer.h"
 #include <boost/thread/thread.hpp>
+#ifdef WIN32
 #pragma argsused
+#endif
 using namespace std;
 
 bool SigInt = false;
@@ -55,6 +57,7 @@ void usage() {
 int main(int argc, char* argv[]) {
 
    signal(SIGINT, catch_int);
+   signal(SIGPIPE,SIG_IGN);
 
    try {
       cout << ProgramName << endl;
