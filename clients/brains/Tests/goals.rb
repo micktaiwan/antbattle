@@ -25,6 +25,18 @@ def distance(a,b)
    (a.x-b.x).abs + (a.y-b.y).abs
 end
 
+class Map
+
+   def has_obstacle(n)
+      #puts pnode(n)
+      #@hash.each{|a| puts a}
+      arr = @hash.find_all {|a| a[1].x == n[0] and a[1].y == n[1]}
+      return true if(arr.size > 0)
+      return nil
+   end
+
+end
+
 class Ant
 
    attr_accessor :goal
@@ -32,48 +44,72 @@ class Ant
    # this function transform a goal into a move
    # it's the main "intelligent" function for an ant
    def get_move
-      return nil if goal == nil
+      #puts "get_move for #{self}"
+      return [] if goal == nil
+      rv = []
       case goal[0]
          when KILL
-            e = goal[1] # mget the ennemy
-            puts "our ennemy to kill: #{e}"
+            e = goal[1] # get the ennemy
+            puts "I am #{self}"
+            puts "goal = kill this enneny: #{e}"
             dist = distance(self,e)
-            if dist > 6
-               # we have to move next to it
-               # TODO: add_sub_goal
-               a,b = find_best_way(e.x,e.y)
-               return "Cb#{object_id}~"+[a,b].pack('cc')
+            if dist > 3
+               # by doing this we are finding subgoals
+               # TODO: add_sub_goal ?
+               a,b = find_best_way(e.x,e.y)# we have to move next to it
+               return rv if a == nil
+               puts "Our move is (#{[a,b].join(',')})"
+               self.x,self.y = a,b
+               rv << "Cb#{object_id}~"+[a,b].pack('cc')
+               return rv # do not return if we can attack at the same round
             else
-               return nil # TODO
+               puts "Attack"
+               rv << "Cc#{e.object_id}"
             end
-            return nil #"Cb#{object_id}~"+[x+3,y].pack('cc')
-         end
+      end # case
+      rv
    end
 
    # given x,y the case where we plan to go,
    # return a,b the case we have to go in this turn
-   def find_best_way(x,y)
-      # if x,y is an obstacle (could be an ennemy ant)
-      # then find the nearest case
-      # TODO
-      [x,y] # temporary
+   def find_best_way(xx,yy)
+      pf = Pathfinder.new($map)
+      pf.ignore_obs_target = true
+      path = pf.find([x,y],[xx,yy])
+      #puts ppath(path)
+      if path == nil # no path
+         return [nil,nil]
+      else
+         if(path.size > 6)
+            x = 6 
+         else
+            x = path.size-2 # 0 based, minus one, so -2
+            puts ppath(path)
+         end
+         return path[x][0]
+      end
    end
-
+   
 end
 
 
 class Colony
 
-   # return a set of [ant,goal]
+   # set the top goal for each ant
    def set_goals
-      #doing simple: give the goal "kill this ant" for each ant
+      # doing simple: give the goal "kill this ant" for each ant
+      $map = @map # FIXME
       x = nil
       @map.ennemies_each { |e|
          x = e
+         break
          }
       raise "oops" if x == nil
+      i = 0
       @map.allies_each{ |a|
          a.goal = [KILL, x]
+         i += 1
+         break if i == 4
          }
       return
 
