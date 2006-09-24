@@ -38,7 +38,7 @@ case brain
    when 'straight'
       require 'BrainStraight' # very simple, to be continued :)
    when  'minimax'
-      require 'BrainMinimax'  # a minimax test
+      require 'BrainMinimax'  # a minimax test that kills minimax, since we use random moves :)
    when 'mick'
       require 'BrainMick'     # Mick's public brain, in construction (^_^)
    else

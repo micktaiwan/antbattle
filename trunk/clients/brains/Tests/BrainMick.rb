@@ -1,6 +1,5 @@
 require 'Utils'
 require 'goals'
-
    
 class Colony
    
