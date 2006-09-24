@@ -15,26 +15,30 @@ if __FILE__ == $0 # defined only if this file is used in standalone mode for tes
 class Map
 
    attr_accessor :w, :h # width and height
-   attr_accessor :obs   # obstacles
+   attr_accessor :hash  # obstacles
 
    def initialize
       @w = 20
       @h = 20
-      @obs = [[2,0],[2,1],[1,1]]
+      @hash = [[2,0],[2,1],[1,1]]
    end
 
    def has_obstacle(n)
       #puts pnode(n)
-      return true if(@obs.include?(n))
+      return true if(@hash.include?(n))
       return nil
    end
 
-end
+end # class Map
 
-end
+end # if __FILE__
+
+
+##########################################################################
+
 
 def out s
-   puts s # comment out to get rid of the print out
+   #puts s # comment out to get rid of the print out
 end
 
 def pnode(n)
@@ -74,20 +78,18 @@ class Queue
       @q << p
    end
 
-   def size
-      @q.size
-   end
-
-   def shift
-      @q.shift
-   end
+   def size; @q.size; end
+   def shift; @q.shift; end
 end
 
 class Pathfinder
 
+   attr_accessor :ignore_obs_target
+   
    def initialize(map)
       @map = map
       @q = Queue.new
+      @ignore_obs_target == false # if true, then the target is never an obstacle
    end
 
    def manhattan(c,t) # Current, Target
@@ -101,6 +103,7 @@ class Pathfinder
 
    # test if the node is valid (contains no obstacles, and is in the map)
    def is_valid(n)
+      return true if n==@target and @ignore_obs_target == true
       return nil if(n[0]<0 or n[1]<0 or n[0]>=@map.w or n[1]>=@map.h)
       return nil if @map.has_obstacle(n)
       return true
@@ -133,7 +136,7 @@ class Pathfinder
    # return the best path from start to target
    # A* based
    def find(start,target,max=0)
-      out "Finding a path from #{pnode(start)} to #{pnode(target)} with max #{max} nodes. The map contains #{@map.obs.size} obstacle(s)"
+      out "Finding a path from #{pnode(start)} to #{pnode(target)} with max #{max} nodes. The map contains #{@map.hash.size} obstacle(s)"
       @max = max
       @target = target
       closed = [] # cases we already analysed

@@ -13,9 +13,9 @@ class Colony
    def play
       set_goals
       @map.allies_each { |a|
-         m = a.get_move
-         next if m == nil
-         @tcp.formatsend(a.get_move)
+         #puts "each: #{a}"
+         arr = a.get_move
+         arr.each { |m| @tcp.formatsend(m) }
          }
       @tcp.send("Ca")
    end
