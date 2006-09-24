@@ -1,13 +1,14 @@
 # this file defines brain and ants goals
 # modify this configuration file to modify the client behaviour
+# TODO: use State Design Pattern (The State Design Pattern is a fully encapsulated, self-modifying Strategy Design Pattern)
 
 require 'Map'
 require 'Pathfinding'
 #require 'enum'
 
-KILL = 1    # top level goal
-PROTECT = 2 # top level goal
-MOVE = 3
+KILL     = 1 # top level goal
+PROTECT  = 2 # top level goal
+MOVE     = 3
 
 class Goal
 
