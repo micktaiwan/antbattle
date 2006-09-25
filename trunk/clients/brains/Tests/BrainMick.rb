@@ -12,10 +12,13 @@ class Colony
 
    def play
       set_goals
+      x = 1
       @map.allies_each { |a|
          #puts "each: #{a}"
          arr = a.get_move
          arr.each { |m| @tcp.formatsend(m) }
+         break if x == 3
+         x += 1
          }
       @tcp.send("Ca")
    end

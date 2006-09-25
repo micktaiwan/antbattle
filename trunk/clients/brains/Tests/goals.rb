@@ -50,21 +50,39 @@ class Ant
       case goal[0]
          when KILL
             e = goal[1] # get the ennemy
-            puts "I am #{self}"
-            puts "goal = kill this enneny: #{e}"
             dist = distance(self,e)
-            if dist > 3
+            puts "I am #{self}"
+            puts "goal: kill this enneny: #{e}"
+            if dist > 1 # move
                # by doing this we are finding subgoals
                # TODO: add_sub_goal ?
-               a,b = find_best_way(e.x,e.y)# we have to move next to it
-               return rv if a == nil
-               puts "Our move is (#{[a,b].join(',')})"
-               self.x,self.y = a,b
-               rv << "Cb#{object_id}~"+[a,b].pack('cc')
-               return rv # do not return if we can attack at the same round
-            else
-               puts "Attack"
-               rv << "Cc#{e.object_id}"
+               path = find_best_way(e.x,e.y)# we have to move next to it
+               #puts ppath(path)
+               return rv if path == nil # no path TODO: find something else to do
+               
+               # we have a path to it
+               # so now we have to move smartly
+               # if we are at 3 cases, we can move and attack
+               # more than that we have to move at 4 cases and wait the next turn
+               # TODO: do not wait at a position where we can be attacked
+               if(path.size-1 <= 3) # minus two because the path include our case
+                  x = path.size-2  # 0 based minus one, so -2 
+               elsif(path.size-1 > 6+4) # we are far away
+                  x = 6
+               else
+                  x = path.size - (1+4)
+               end
+               if x > 0
+                  a,b = path[x][0]
+                  puts "I am moving to (#{[a,b].join(',')})"
+                  self.x,self.y = a,b
+                  rv << "Cb#{object_id}~"+[a,b].pack('cc')
+               end
+            end
+            return rv if dist > 4 # return if we can not attack at the same round
+            if distance(self,e) == 1
+               puts 'Attack'
+               rv << "Cc#{object_id}~#{e.object_id}"
             end
       end # case
       rv
@@ -76,18 +94,6 @@ class Ant
       pf = Pathfinder.new($map)
       pf.ignore_obs_target = true
       path = pf.find([x,y],[xx,yy])
-      #puts ppath(path)
-      if path == nil # no path
-         return [nil,nil]
-      else
-         if(path.size > 6)
-            x = 6 
-         else
-            x = path.size-2 # 0 based, minus one, so -2
-            puts ppath(path)
-         end
-         return path[x][0]
-      end
    end
    
 end
