@@ -5,6 +5,8 @@ class MapObject
    attr_accessor :x, :y, :object_type, :object_id
 
    def initialize
+      @x = @y = 0
+      
    end
 
    def to_s
@@ -41,7 +43,7 @@ class Map
    attr_reader   :w, :h, :hash
    attr_accessor :side,:xside
 
-   def initialize(map)
+   def initialize(map=nil)
       if(map==nil)
          @side  = -1
          @xside = -1
@@ -122,7 +124,7 @@ class Map
             ant.life = life
             ant.client_id = client_id.to_i
             ant.object_id = object_id.to_i
-            add_object(x,y,ant)
+            add_object(ant)
          else
             puts "Object type not implemented: #{type}"
             return
@@ -131,13 +133,11 @@ class Map
    end
 
    def get_object(id)
-      if @hash[id] == nil
-         puts "nil for #{id}"
-      end
+      puts "nil for #{id}" if @hash[id] == nil
       @hash[id]
    end
 
-   def add_object(x,y,o)
+   def add_object(o)
       raise "Map#add_object: adding nil ???"  if o == nil
       @hash[o.object_id] = o
       return
