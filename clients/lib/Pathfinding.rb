@@ -60,10 +60,12 @@ end
 class Queue
 
    def initialize
-      clear
+      puts 'Queue'
+      clear()
    end
 
    def clear
+      puts 'ok'
       @q = []  # array of path arrays [path] themselves arrays of [node,heuritic]
    end
 
@@ -87,9 +89,10 @@ class Pathfinder
    attr_accessor :ignore_obs_target
    
    def initialize(map)
+      puts 'PathFinder'
       @map = map
       @q = Queue.new
-      @ignore_obs_target == false # if true, then the target is never an obstacle
+      @ignore_obs_target = false # if true, then the target is never an obstacle
    end
 
    def manhattan(c,t) # Current, Target
