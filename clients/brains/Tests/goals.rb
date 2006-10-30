@@ -50,6 +50,12 @@ class Ant
       case goal[0]
          when KILL
             e = goal[1] # get the ennemy
+            if(not $map.exists?(e))
+               puts 'this ant does not exists anymore: not good !!!'
+               return rv 
+            end
+            #TODO: do something else
+            
             dist = distance(self,e)
             puts "I am #{self}"
             puts "goal: kill this enneny: #{e}"
@@ -58,7 +64,10 @@ class Ant
                # TODO: add_sub_goal ?
                path = find_best_way(e.x,e.y)# we have to move next to it
                #puts ppath(path)
-               return rv if path == nil # no path
+               if path == nil # no path
+                  puts 'no path ! doing nothing: not good !!!'
+                  return rv
+               end
                # TODO: find something else to do
                
                # we have a path to it
@@ -68,28 +77,28 @@ class Ant
                # TODO: do not wait at a position where we can be attacked
                if(path.size-2 <= 3) # minus two because the path include our case
                   x = path.size-2  # 0 based minus one, so -2 
-                  puts 's1'
+                  #puts 's1'
                elsif(path.size-1 > 6+4) # we are far away
                   x = 6
-                  puts 's2'
+                  #puts 's2'
                else
                   x = path.size - (1+4)
-                  puts 's3'
+                  #puts 's3'
                end
-               puts x
+               #puts x
                #sleep(1)
                if x > 0
                   a,b = path[x][0]
                   puts "I am moving to (#{[a,b].join(',')})"
                   self.x,self.y = a,b
                   rv << "Cb#{object_id}~"+[a,b].pack('cc')
+                  dist = distance(self,e)
                end
             end
             #return rv if dist > 4 # return if we can not attack at the same round
-            dist = distance(self,e)
-            puts "dist=#{dist}"
+            #puts "dist=#{dist}"
             if dist == 1
-               puts 'Attack'
+               #puts 'Attack'
                rv << "Cc#{object_id}~#{e.object_id}"
                e.life -= 5
             end
@@ -112,16 +121,30 @@ class Colony
 
    # set the top goal for each ant
    def set_goals
-      # doing simple: give the goal "kill this ant" for each ant
       $map = @map # FIXME
+      # doing simple: give the goal "kill this ant" for each ant
       x = nil
-      @map.ennemies_each { |e|
-         x = e
+      dist = []
+      ant = nil
+      @map.allies_each{ |a|
+         ant = a
          break
          }
-      raise "oops" if x == nil
+      @map.ennemies_each { |e|
+         x = e
+         dist << [e,distance(ant,e)]
+         }
+      dist = dist.sort_by {|couple| couple[1]}
+      raise "oops x==nil" if x == nil
+      i = 1
+      enn = 0
       @map.allies_each{ |a|
-         a.goal = [KILL, x]
+         a.goal = [KILL, dist[enn][0]]
+         i += 1 
+         if(i==5 and enn < dist.size-1)
+            enn += 1
+            i = 1
+         end
          }
       return
 
