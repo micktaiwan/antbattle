@@ -17,7 +17,7 @@ class Colony
          #puts "each: #{a}"
          arr = a.get_move
          arr.each { |m| @tcp.formatsend(m) }
-         break if x == 3
+         #break if x == 3
          x += 1
          }
       @tcp.send("Ca")
