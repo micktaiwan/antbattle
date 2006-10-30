@@ -58,20 +58,26 @@ class Ant
                # TODO: add_sub_goal ?
                path = find_best_way(e.x,e.y)# we have to move next to it
                #puts ppath(path)
-               return rv if path == nil # no path TODO: find something else to do
+               return rv if path == nil # no path
+               # TODO: find something else to do
                
                # we have a path to it
                # so now we have to move smartly
                # if we are at 3 cases, we can move and attack
                # more than that we have to move at 4 cases and wait the next turn
                # TODO: do not wait at a position where we can be attacked
-               if(path.size-1 <= 3) # minus two because the path include our case
+               if(path.size-2 <= 3) # minus two because the path include our case
                   x = path.size-2  # 0 based minus one, so -2 
+                  puts 's1'
                elsif(path.size-1 > 6+4) # we are far away
                   x = 6
+                  puts 's2'
                else
                   x = path.size - (1+4)
+                  puts 's3'
                end
+               puts x
+               #sleep(1)
                if x > 0
                   a,b = path[x][0]
                   puts "I am moving to (#{[a,b].join(',')})"
@@ -79,10 +85,13 @@ class Ant
                   rv << "Cb#{object_id}~"+[a,b].pack('cc')
                end
             end
-            return rv if dist > 4 # return if we can not attack at the same round
-            if distance(self,e) == 1
+            #return rv if dist > 4 # return if we can not attack at the same round
+            dist = distance(self,e)
+            puts "dist=#{dist}"
+            if dist == 1
                puts 'Attack'
                rv << "Cc#{object_id}~#{e.object_id}"
+               e.life -= 5
             end
       end # case
       rv
@@ -92,7 +101,7 @@ class Ant
    # return a,b the case we have to go in this turn
    def find_best_way(xx,yy)
       pf = Pathfinder.new($map)
-      pf.ignore_obs_target = true
+      pf.ignore_obs_target = true # permit to calculate a path to case with an ennemy on it
       path = pf.find([x,y],[xx,yy])
    end
    
@@ -111,11 +120,8 @@ class Colony
          break
          }
       raise "oops" if x == nil
-      i = 0
       @map.allies_each{ |a|
          a.goal = [KILL, x]
-         i += 1
-         break if i == 4
          }
       return
 

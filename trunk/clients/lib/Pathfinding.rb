@@ -55,17 +55,17 @@ def ppath(p)
    str
 end
 
-
+##########################################################################
 # caution: not optimized
 class Queue
 
    def initialize
-      puts 'Queue'
+      #puts 'Queue'
       clear()
    end
 
    def clear
-      puts 'ok'
+      #puts 'ok'
       @q = []  # array of path arrays [path] themselves arrays of [node,heuritic]
    end
 
@@ -84,12 +84,13 @@ class Queue
    def shift; @q.shift; end
 end
 
+##########################################################################
 class Pathfinder
 
    attr_accessor :ignore_obs_target
    
    def initialize(map)
-      puts 'PathFinder'
+      #puts 'PathFinder'
       @map = map
       @q = Queue.new
       @ignore_obs_target = false # if true, then the target is never an obstacle

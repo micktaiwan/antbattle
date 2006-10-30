@@ -3,7 +3,7 @@ require 'Utils'
 require 'AntClient'
 require 'Map'
 require 'timeout'
-require 'guitk'
+#require 'guitk'
 
 class Colony
 
