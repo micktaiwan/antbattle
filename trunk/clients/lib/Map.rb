@@ -198,4 +198,10 @@ class Map
          }
       rv
    end
+   
+   def exists?(ant)
+      puts ant
+      @hash.has_key?(ant.object_id)
+   end
+   
 end
