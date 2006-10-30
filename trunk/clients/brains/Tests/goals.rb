@@ -52,7 +52,12 @@ class Ant
             e = goal[1] # get the ennemy
             if(not $map.exists?(e))
                puts 'this ant does not exists anymore: not good !!!'
+               sleep(2)
                return rv 
+            end
+            if(e.life<=0)
+               puts "#{e} is dead: not good !!!"
+               return rv
             end
             #TODO: do something else
             
@@ -65,10 +70,11 @@ class Ant
                path = find_best_way(e.x,e.y)# we have to move next to it
                #puts ppath(path)
                if path == nil # no path
+                  # TODO: find something else to do
                   puts 'no path ! doing nothing: not good !!!'
                   return rv
                end
-               # TODO: find something else to do
+               
                
                # we have a path to it
                # so now we have to move smartly
