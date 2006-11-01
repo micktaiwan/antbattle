@@ -41,7 +41,9 @@ public:
    ~MMap();
 
    void        Clear() {Objects.clear();}
+   void        ClearAnt();
    void        SetSize(int w, int h) {W=w;H=h;}
+   void        SetObs(int x, int y);
    void        GetSize(int& w, int& h) {w=W;h=H;}
    void        AddObject(MMapObject* obj);
    void        RemoveObject(MMapObject* obj);

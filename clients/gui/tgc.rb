@@ -105,7 +105,7 @@ if @units!=nil
     end
  end
   else
-    txts("Pas d'unités")
+    txts("no unit")
 end
 end
 
@@ -121,6 +121,9 @@ end
 
 def puts_resources
 #~ puts_resource(10,10)
+   for u in @units[i]
+      puts_unit(u.x,u.y,u.object_id,u.life)
+   end
 end
 
 def draw_world
@@ -254,7 +257,7 @@ GLUT.SwapBuffers()
     local_light = [ 1.0, 1.0, 1.0, 1.0 ];
     
 GL.PushMatrix();
-#~ Déplacement dans le monde en 3d    
+#~ Deplacement dans le monde en 3d    
     GL.Translate(@x,@y,@z);
     GL.Rotate(@j.to_f,1,0,0)
     GL.Rotate(@k.to_f,0,1,0)

@@ -37,6 +37,8 @@ class MAntServer : public MPNL::MTCPServer {
       int NbAnt;
       MAntServer();
       virtual ~MAntServer();
+      void SetMapSize(int w, int h);
+      void SetMapObs(int x, int y);
 
       void Run(int port);
       void HTTPInfo(std::string& str); // return info on the server

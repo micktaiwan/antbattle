@@ -23,18 +23,6 @@ using namespace mnetmsg;
 
 extern void WriteToLog(int, const std::string&);
 
-//---------------------------------------------------------------------------
-void MAnt::DataString(base& m) {
-
-   m.addByte(Pos.X);
-   m.addByte(Pos.Y);
-   m.addByte(0); // Type object
-   m.add(ClientID);
-   m.add(ID);
-   m.addByte(Type); // Type fourmi
-   m.addByte(Life); // TODO 2: Attention: en fonction
-
-   }
 
 //---------------------------------------------------------------------------
 MColony::MColony() {
@@ -66,7 +54,7 @@ void MColony::ResetActionPoints() {
 
    MAntList::iterator ite = Ants.begin();
    while(ite!=Ants.end()) {
-      ite->second->ActionPoints = 8; // TODO 3: rendre ca configurable
+      ite->second->ActionPoints = 8; // TODO 2: configurable
       ++ite;
       }
 

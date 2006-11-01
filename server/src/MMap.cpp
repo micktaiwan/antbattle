@@ -33,8 +33,31 @@ MMap::~MMap(){
    }
 
 //---------------------------------------------------------------------------
+void MMap::ClearAnt() {
+
+   MMapIte ite = Objects.begin();
+   while(ite!=Objects.end()) {
+      if(ite->second->Type==0) Objects.erase(ite++);
+      else ++ite;
+      }
+
+   }
+
+//---------------------------------------------------------------------------
+void MMap::SetObs(int x, int y) {
+
+   MResource* o = new MResource();
+   o->RType = 255; // obstacle
+   o->Pos.X = x;
+   o->Pos.Y = y;
+   AddObject(o);
+
+   }
+
+//---------------------------------------------------------------------------
 void MMap::AddObject(MMapObject* obj) {
 
+   obj->ID = Objects.size();
    Objects[obj->ID] = obj;
 
    }

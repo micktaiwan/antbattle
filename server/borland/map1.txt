@@ -1,0 +1,18 @@
+#==============
+# AntBattle map
+#==============
+
+# size
+width=20
+height=20
+
+# obstacles
+
+#it works, but the GUI does not handle it
+#so I prefer not to change that for now
+
+#obs=8,4
+#obs=7,5
+#obs=6,6
+#obs=5,7
+#obs=4,8

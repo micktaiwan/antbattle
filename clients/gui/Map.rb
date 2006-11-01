@@ -24,9 +24,9 @@ class Warrior < Ant
       @ant_type = 0
    end
 
-   def initialize(client_id, ant_id, ant_type, life)
+   def initialize(client_id, ant_type, life)
      super()
-     @client_id, @object_id, @ant_type, @life=client_id, ant_id, ant_type, life
+     @client_id, @ant_type, @life=client_id, ant_type, life
    end
    
    def describe
@@ -40,16 +40,16 @@ class Warrior < Ant
     end
 end
 
-class Ressource < MapObject
+class Resource < MapObject
    attr_accessor :resource_type
    
    def initialize(resource_type)
-     @object_type = 255
+     @object_type = 1
      @resource_type=resource_type
    end
 
   def describe
-    "Ressource #{resource_type}"
+    "Resource #{resource_type}"
   end
 end
 
@@ -79,10 +79,12 @@ class Map
       @hash[id]
    end
 
-   def add_object(x,y,o)
+   def add_object(id,x,y,o)
       raise "Map#add_object: adding nil ???"  if o == nil
+      o.object_id=id
       o.x=x
       o.y=y
+      puts "Adding #{o.object_id} at (#{x},#{x})"
       @hash[o.object_id] = o
       #~ o.describe
    end
@@ -108,30 +110,30 @@ class Map
   def setup(grid)
       set_size(*translate_a_msg("BB",grid))
       while grid[0]!=nil
-      x, y, typeobject=translate_a_msg("BBB",grid)
-      if typeobject==0 #unité
-      add_object(x,y,Warrior.new(*translate_a_msg("SSBB",grid))) 
-        else #resource
-        add_object(x,y,Resource.new(translate_a_msg("b",grid)[0])) 
-        end
+         id, x, y, typeobject=translate_a_msg("SBBB",grid)
+         if typeobject==0 #unité
+            add_object(id,x,y,Warrior.new(*translate_a_msg("SBB",grid))) 
+         else #resource
+            add_object(id,x,y,Resource.new(translate_a_msg("b",grid)[0])) 
+         end
       end    
     end
 
- def joueur(a)
- #~ @units=@hash.values.delete_if {|x| (x.object_type!=0 || x.client_id!=a)}         x.object_type!=0}.delete_if
- id=@joueurs[a]
- @units=@hash.values.delete_if {|x| x.client_id!=id || x.object_type!=0 }
- #~ puts "taille " + @units.size.to_s
- @units
- end
+   def joueur(a)
+      #~ @units=@hash.values.delete_if {|x| (x.object_type!=0 || x.client_id!=a)}         x.object_type!=0}.delete_if
+      id=@joueurs[a]
+      @units=@hash.values.delete_if {|x| x.object_type!=0 || x.client_id!=id}
+      #~ puts "taille " + @units.size.to_s
+      @units
+   end
 
-  def joueurs() 
-    if @joueurs==nil || @joueurs.size<2
-    @joueurs=(@hash.values.delete_if {|x| x.object_type!=0}).map!{|x| x.client_id}.uniq.sort
-  end  
-  #~ puts "joueurs : " + @joueurs.join("-")
-  @joueurs
-  end
+   def joueurs() 
+      if @joueurs==nil || @joueurs.size<2
+         @joueurs=(@hash.values.delete_if {|x| x.object_type!=0}).map!{|x| x.client_id}.uniq.sort
+      end  
+      #~ puts "joueurs : " + @joueurs.join("-")
+      @joueurs
+   end
 
 
  #~ def [](a,b)

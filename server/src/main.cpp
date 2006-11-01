@@ -11,8 +11,9 @@
 using namespace std;
 
 bool SigInt = false;
-string ProgramName = "AntBattle Server 0.5.5 (2006/11/01)";
+string ProgramName = "AntBattle Server 0.5.6 (2006/11/01)";
 int gLoglevel = 3;
+string gLogFile = "./log.txt";
 boost::mutex LogMutex;
 
 //---------------------------------------------------------------------------
@@ -32,7 +33,13 @@ string sanitize(const string& str) {
 void WriteToLog(int level, const string& str) {
 
    boost::mutex::scoped_lock lock(LogMutex);
-   if(level <= gLoglevel) cout << sanitize(str) << endl;
+   if(level <= gLoglevel) {
+      if(gLogFile=="") cout << sanitize(str) << endl;
+      else {
+         ofstream file(gLogFile.c_str(),ios_base::app);
+         file <<  sanitize(str) << endl;
+         }
+      }
 
    }
 
@@ -53,6 +60,46 @@ void usage() {
    cout << "set log level to 1 to have only errors, to 2 to skip debug messages\n\n";
    exit(1);
    }
+   
+//---------------------------------------------------------------------------
+void ParseMap(const string& path, MAntServer& s) {
+
+   ifstream file(path.c_str());
+   string line, param, value;
+   int pos;
+   if(!file) {
+      WriteToLog(1,string("Can not find map file ")+path);
+      return;
+      }
+   WriteToLog(2,"Reading map file...");
+   int width  = 20;
+   int height = 20;
+   while(!file.eof()) {
+      getline(file,line);
+      if(line[0]=='#' || line == "") continue;
+      pos = line.find ("=", 0);
+      if(pos==-1) continue;
+      param = line.substr(0,pos);
+      value = line.substr(pos+1);
+      if(param=="width") {width=atoi(value.c_str());s.SetMapSize(width,height);}
+      else if(param=="height") {height=atoi(value.c_str());s.SetMapSize(width,height);}
+      else if(param=="obs") {
+         pos = value.find (",", 0);
+         int x = atoi(value.substr(0,pos).c_str());
+         int y = atoi(value.substr(pos+1).c_str());
+         s.SetMapObs(x,y);
+         //ostringstream o;
+         //o << "obs: " << x << "," << y;
+         //WriteToLog(3,o.str());
+         }
+      else cout << "Unknown param " << param << endl;
+      }
+   ostringstream o;
+   o << "Map size: " << width << "x" << height;
+   WriteToLog(2,o.str());
+
+   }
+
 
 //---------------------------------------------------------------------------
 int main(int argc, char* argv[]) {
@@ -76,7 +123,7 @@ int main(int argc, char* argv[]) {
       string line, param, value;
       int pos;
       if(file) {
-         cout << "Reading config file...\n";
+         WriteToLog(2,"Reading config file...");
          while(!file.eof()) {
             getline(file,line);
             if(line[0]=='#' || line == "") continue;
@@ -90,6 +137,11 @@ int main(int argc, char* argv[]) {
             else if(param=="http_port") s.SetHTTPPort(atoi(value.c_str()));
             else if(param=="log_level") gLoglevel = atoi(value.c_str());
             else if(param=="nb_ant") s.NbAnt = atoi(value.c_str());
+            else if(param=="log_file") gLogFile = value;
+            else if(param=="erase_log_on_start") {
+               if(value=="yes") ofstream(gLogFile.c_str(),ios_base::out);
+               }
+            else if(param=="map") ParseMap(value,s);
             else cout << "Unknown param " << param << endl;
             //cout << param << "=" << value << endl;
             }
