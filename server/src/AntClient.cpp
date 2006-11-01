@@ -25,16 +25,11 @@ extern void WriteToLog(int, const std::string&);
 
 
 //---------------------------------------------------------------------------
-MColony::MColony() {
-
-
-   }
+MColony::MColony() {}
 
 //---------------------------------------------------------------------------
 MColony::~MColony() {
-
    Clear();
-
    }
 
 //---------------------------------------------------------------------------
@@ -64,7 +59,7 @@ void MColony::ResetActionPoints() {
 void MColony::DeleteAnt(unsigned long id) {
 
    ostringstream s;
-   s << "deleting ant " << id;
+   s << "deleting ant " << id << ". Colony size: " << Ants.size();
    WriteToLog(3,s.str());
 
    MAntList::iterator ite = Ants.begin();
@@ -77,14 +72,7 @@ void MColony::DeleteAnt(unsigned long id) {
       ++ite;
       }
 
-   WriteToLog(1,"MColony::DeleteAnt: can not find object");
-   return;
-
-   //MAntList::iterator ite = Ants.find(id);
-   //if(ite==Ants.end()) {
-   //   WriteToLog(1,"MColony::DeleteAnt: can not find object");
-   //   return;
-   //   }
+   throw(runtime_error("MColony::DeleteAnt: can not find object"));
 
    }
 

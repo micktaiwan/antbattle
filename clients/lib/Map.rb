@@ -186,7 +186,7 @@ class Map
    def add_object(o)
       raise "Map#add_object: adding nil ???"  if o == nil
       @hash[o.object_id] = o
-      #return
+      return
       puts "   ObjectID: #{o.object_id}"
       puts "      Coord: #{o.x} #{o.y}"
       puts "      TypeObject: #{o.object_type}"

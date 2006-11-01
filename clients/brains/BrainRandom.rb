@@ -23,6 +23,7 @@ class Colony
             if(y >= @map.h); y = @map.h-1; end
             obj = @map.get_objects(x,y)
             next if(obj.size > 0) # if the case has an obstacle, just skip this move
+            #TODO: something else than just skipping this move
             @tcp.formatsend("Cb#{ant.object_id}~"+[x,y].pack("cc")); # move it
             ant.x = x
             ant.y = y

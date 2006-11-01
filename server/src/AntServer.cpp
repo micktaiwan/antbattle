@@ -436,8 +436,8 @@ void MAntServer::SetMap() {
          a->ClientID = c->ClientID;
          a->Pos.X = xs[i];
          a->Pos.Y = ys[i];
-         c->Colony.AddAnt(a);
-         Map->AddObject(a);
+         Map->AddObject(a,true);
+         c->Colony.AddAnt(a); // !!!! must come after AddObject as this function add the ID
          }
       }
    }
@@ -600,13 +600,8 @@ void MAntServer::Attack(MPNL::MSocket* s, MAntClient* c, unsigned long id1, unsi
       return;
       }
 
-   int fromx = ant1->Pos.X;
-   int fromy = ant1->Pos.Y;
-   int tox = ant2->Pos.X;
-   int toy = ant2->Pos.Y;
-   int nbcases = abs(fromx-tox) + abs(fromy-toy);
-   // not going too far ?
-   if(nbcases > 1) {
+   // not attacking too far ?
+   if(abs(ant1->Pos.X-ant2->Pos.X) + abs(ant1->Pos.Y-ant2->Pos.Y) > 1) {
       base mm;
       mm.setHeader("Ba");
       mm.add("1");
@@ -617,8 +612,7 @@ void MAntServer::Attack(MPNL::MSocket* s, MAntClient* c, unsigned long id1, unsi
       }
 
    // substract action points
-   int actionpoints =  ant1->ActionPoints;
-   if(actionpoints - 5 < 0) { // TODO 2: configurable
+   if(ant1->ActionPoints - 5 < 0) { // TODO 2: configurable
       base mm;
       mm.setHeader("Ba");
       mm.add("1");
@@ -628,7 +622,7 @@ void MAntServer::Attack(MPNL::MSocket* s, MAntClient* c, unsigned long id1, unsi
       return;
       }
 
-   // verify that the ant is ours !!!
+   // verify that the ant is ours
    if(ant1->ClientID != c->ClientID) {
       base mm;
       mm.setHeader("Ba");
@@ -639,7 +633,7 @@ void MAntServer::Attack(MPNL::MSocket* s, MAntClient* c, unsigned long id1, unsi
       return;
       }
 
-   ant1->ActionPoints -= nbcases;
+   ant1->ActionPoints -= 5;
    ant2->Life -= 5;
    if(ant2->Life < 0) ant2->Life = 0;
 

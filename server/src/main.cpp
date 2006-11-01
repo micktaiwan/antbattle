@@ -149,10 +149,10 @@ int main(int argc, char* argv[]) {
       s.Run(port);
       }
    catch(exception& e) {
-      cout << e.what() << endl;
+      WriteToLog(1, string("Exception: ")+e.what());
       }
    catch(...) {
-      cout << "Exception catched" << endl;
+      WriteToLog(1, "Exception catched");
       }
    return 0;
 
