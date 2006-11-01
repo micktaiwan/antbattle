@@ -19,6 +19,7 @@
 #include "MMapObject.h"
 
 #include <sstream>
+//#include <algorithm>
 
 extern void WriteToLog(int t, const std::string& msg);
 
@@ -37,7 +38,11 @@ void MMap::ClearAnt() {
 
    MMapIte ite = Objects.begin();
    while(ite!=Objects.end()) {
-      if(ite->second->Type==0) Objects.erase(ite++);
+      //if(ite->second->Type==0) Objects.erase(ite++);
+      if(ite->second->Type==0) {
+         Objects.erase(ite);
+         ite = Objects.begin();
+         }
       else ++ite;
       }
 
@@ -50,15 +55,18 @@ void MMap::SetObs(int x, int y) {
    o->RType = 255; // obstacle
    o->Pos.X = x;
    o->Pos.Y = y;
-   AddObject(o);
+   AddObject(o, true);
 
    }
 
 //---------------------------------------------------------------------------
-void MMap::AddObject(MMapObject* obj) {
+void MMap::AddObject(MMapObject* obj, bool with_new_id) {
 
-   obj->ID = Objects.size();
+   if(with_new_id) obj->ID = (unsigned long)Objects.size();
    Objects[obj->ID] = obj;
+   std::ostringstream o;
+   o << "Adding type " << (char)(obj->Type+'0');
+   WriteToLog(3,o.str());
 
    }
 
@@ -70,10 +78,8 @@ void MMap::RemoveObject(MMapObject* obj) {
    s << "removing object " << obj->ID << " from map";
    WriteToLog(3,s.str());
    MMapIte ite = Objects.find(obj->ID);
-   if(ite==Objects.end()) {
-      WriteToLog(1,"MMap::RemoveObject: can not find object");
-      return;
-      }
+   if(ite==Objects.end())
+      throw(std::runtime_error("MMap::RemoveObject: can not find object"));
    Objects.erase(ite);
 
    }

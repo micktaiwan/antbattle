@@ -31,7 +31,7 @@
     <DEBUGLIBPATH value="$(BCB)\lib\debug"/>
     <RELEASELIBPATH value="$(BCB)\lib\release"/>
     <LINKER value="ilink32"/>
-    <USERDEFINES value="WIN32"/>
+    <USERDEFINES value="WIN32;_DEBUG"/>
     <SYSDEFINES value="NO_STRICT;_NO_VCL;_RTLDLL;USEPACKAGES"/>
     <MAINSOURCE value="AntBattleServer.bpf"/>
     <INCLUDEPATH value="..\src;src;$(BCB)\include;$(BCB)\include\vcl;../include;D:\MATech\Prog\3rd\boost-1.30.2"/>
@@ -41,18 +41,19 @@
   </MACROS>
   <OPTIONS>
     <IDLCFLAGS value="-I..\src -Isrc -I$(BCB)\include -I$(BCB)\include\vcl -I../include 
-      -ID:\MATech\Prog\3rd\boost-1.30.2 -src_suffix cpp -DWIN32 -boa"/>
-    <CFLAG1 value="-O2 -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -X- -a8 -b- -k- -vi -tWC -tWM -c"/>
-    <PFLAGS value="-$Y- -$L- -$D- -$A8 -v -JPHNE -M"/>
+      -ID:\MATech\Prog\3rd\boost-1.30.2 -src_suffix cpp -DWIN32 -D_DEBUG -boa"/>
+    <CFLAG1 value="-vGc -vGt -vGd -Od -H=$(BCB)\lib\vcl60.csm -Hc -Vx -Ve -X- -r- -a8 -b- -k 
+      -y -v -vi- -tWC -tWM -c"/>
+    <PFLAGS value="-$Y+ -$W -$O- -$A8 -v -JPHNE -M"/>
     <RFLAGS value=""/>
-    <AFLAGS value="/mx /w2 /zn"/>
-    <LFLAGS value="-D&quot;&quot; -ap -Tpe -x -Gn"/>
+    <AFLAGS value="/mx /w2 /zi"/>
+    <LFLAGS value="-D&quot;&quot; -ap -Tpe -x -Gn -v"/>
     <OTHERFILES value=""/>
   </OPTIONS>
   <LINKER>
     <ALLOBJ value="c0x32.obj $(PACKAGES) $(OBJFILES)"/>
     <ALLRES value="$(RESFILES)"/>
-    <ALLLIB value="$(LIBFILES) $(LIBRARIES) import32.lib cw32mti.lib"/>
+    <ALLLIB value="cg32.lib $(LIBFILES) $(LIBRARIES) import32.lib cw32mti.lib"/>
     <OTHERFILES value=""/>
   </LINKER>
   <FILELIST>
@@ -103,25 +104,28 @@ ProductVersion=1.0.0.0
 Comments=
 
 [HistoryLists\hlIncludePath]
-Count=4
-Item0=src;$(BCB)\include;$(BCB)\include\vcl;../include;D:\MATech\Prog\3rd\boost-1.30.2
-Item1=src;$(BCB)\include;$(BCB)\include\vcl;../include
-Item2=D:\tmp\antbattleserver\src;$(BCB)\include;$(BCB)\include\vcl
-Item3=D:\tmp\antbattleserver\src;$(BCB)\include;$(BCB)\include\vcl;../include
+Count=5
+Item0=..\src;src;$(BCB)\include;$(BCB)\include\vcl;../include;D:\MATech\Prog\3rd\boost-1.30.2
+Item1=src;$(BCB)\include;$(BCB)\include\vcl;../include;D:\MATech\Prog\3rd\boost-1.30.2
+Item2=src;$(BCB)\include;$(BCB)\include\vcl;../include
+Item3=D:\tmp\antbattleserver\src;$(BCB)\include;$(BCB)\include\vcl
+Item4=D:\tmp\antbattleserver\src;$(BCB)\include;$(BCB)\include\vcl;../include
 
 [HistoryLists\hlLibraryPath]
-Count=2
-Item0=$(BCB)\source\indy9\9.13\c6;$(BCB)\Projects\Lib;D:\tmp\antbattleserver\src;$(BCB)\lib\obj;$(BCB)\lib
-Item1=D:\tmp\antbattleserver\src;$(BCB)\lib\obj;$(BCB)\lib
+Count=3
+Item0=..\src;..\include;$(BCB)\source\indy9\9.13\c6;$(BCB)\Projects\Lib;D:\tmp\antbattleserver\src;$(BCB)\lib\obj;$(BCB)\lib
+Item1=$(BCB)\source\indy9\9.13\c6;$(BCB)\Projects\Lib;D:\tmp\antbattleserver\src;$(BCB)\lib\obj;$(BCB)\lib
+Item2=D:\tmp\antbattleserver\src;$(BCB)\lib\obj;$(BCB)\lib
 
 [HistoryLists\hlDebugSourcePath]
 Count=1
 Item0=$(BCB)\source\vcl
 
 [HistoryLists\hlConditionals]
-Count=2
-Item0=WIN32
-Item1=_DEBUG
+Count=3
+Item0=WIN32;_DEBUG
+Item1=WIN32
+Item2=_DEBUG
 
 [Debugging]
 DebugSourceDirs=$(BCB)\source\vcl
@@ -140,8 +144,8 @@ RemoteDebug=0
 
 [Compiler]
 ShowInfoMsgs=0
-LinkDebugVcl=0
-LinkCGLIB=0
+LinkDebugVcl=1
+LinkCGLIB=1
 
 [CORBA]
 AddServerUnit=1

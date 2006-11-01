@@ -11,8 +11,14 @@ height=20
 #it works, but the GUI does not handle it
 #so I prefer not to change that for now
 
-#obs=8,4
-#obs=7,5
-#obs=6,6
-#obs=5,7
-#obs=4,8
+obs=11,1
+obs=10,2
+obs=9,3
+obs=8,4
+obs=7,5
+obs=6,6
+obs=5,7
+obs=4,8
+obs=3,9
+obs=2,10
+obs=1,11

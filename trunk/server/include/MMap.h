@@ -45,12 +45,11 @@ public:
    void        SetSize(int w, int h) {W=w;H=h;}
    void        SetObs(int x, int y);
    void        GetSize(int& w, int& h) {w=W;h=H;}
-   void        AddObject(MMapObject* obj);
+   void        AddObject(MMapObject* obj, bool with_new_id=false);
    void        RemoveObject(MMapObject* obj);
    MMapObject* GetObjectByID(unsigned long ID);
    void        DataString(mnetmsg::base&);
    MObjList    GetObjects(int x, int y);
-
 
 private:
    int W, H;
