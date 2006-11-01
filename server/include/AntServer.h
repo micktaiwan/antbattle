@@ -34,6 +34,7 @@ private:
 class MAntServer : public MPNL::MTCPServer {
 
    public:
+      int NbAnt;
       MAntServer();
       virtual ~MAntServer();
 

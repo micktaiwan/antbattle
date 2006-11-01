@@ -24,3 +24,5 @@ class Colony
    end
    
 end
+# La bonne strategie contre D4Killer c'est d'attaquer les coins
+# donc la meilleure strategie c'est de choisir une cible qui offre le plus de points d'attaque

@@ -46,7 +46,7 @@ void MWList::Remove(unsigned long id) {
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
-MAntServer::MAntServer() : MPNL::MTCPServer(), CurrentClientID(0), GameInProgress(0), Map(new MMap()) {
+MAntServer::MAntServer() : MPNL::MTCPServer(), NbAnt(10), CurrentClientID(0), GameInProgress(0), Map(new MMap()) {
 
    HTTP = new MHTTPServer();
    HTTP->Port = 8080;
@@ -121,6 +121,9 @@ void MAntServer::Run(int port) {
          Parse(s);
          }
       SLEEP(20);
+
+      // TODO: check the timeout
+
       } // while
    WriteToLog(2,string("Shutting down..."));
 
@@ -425,7 +428,7 @@ void MAntServer::SetMap() {
    for(int i=0; i < 2; ++i) {
       c = WL.GetClient(i);
       c->Colony.Clear();
-      for(int j=0; j < 10; ++j) {
+      for(int j=0; j < NbAnt; ++j) {
          a = new MAnt();
          a->ID = i*10+j;
          a->Type = 0;
