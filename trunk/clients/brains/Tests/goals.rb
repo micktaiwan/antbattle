@@ -52,7 +52,6 @@ class Ant
             e = goal[1] # get the ennemy
             if(not $map.exists?(e))
                puts 'this ant does not exists anymore: not good !!!'
-               sleep(2)
                return rv 
             end
             if(e.life<=0)
@@ -108,6 +107,7 @@ class Ant
                rv << "Cc#{object_id}~#{e.object_id}"
                e.life -= 5
             end
+            sleep(1)
       end # case
       rv
    end
