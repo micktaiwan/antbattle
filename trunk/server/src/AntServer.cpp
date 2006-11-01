@@ -19,7 +19,7 @@ using namespace mnetmsg;
 extern void WriteToLog(int, const std::string&);
 extern bool SigInt;
 extern string ProgramName;
-const string ProtocolVersion = "0.5";
+const string ProtocolVersion = "0.6";
 
 //---------------------------------------------------------------------------
 //---------------------------------------------------------------------------
@@ -122,7 +122,7 @@ void MAntServer::Run(int port) {
          }
       SLEEP(20);
 
-      // TODO: check the timeout
+      // TODO 1: check the timeout
 
       } // while
    WriteToLog(2,string("Shutting down..."));
@@ -419,21 +419,20 @@ void MAntServer::StopGame(unsigned long winner, unsigned long loser, int reason,
 //---------------------------------------------------------------------------
 void MAntServer::SetMap() {
 
-   Map->Clear();
-   Map->SetSize(20,20); // TODO 2: configurable
+   Map->ClearAnt();
+   int w,h;
+   Map->GetSize(w,h);
    MAntClient* c;
-   int xs[2] = {0,19}; // TODO 2: configurable
-   int ys[2] = {0,19}; // TODO 2: configurable
+   int xs[2] = {0,w-1};
+   int ys[2] = {0,h-1};
    MAnt* a;
    for(int i=0; i < 2; ++i) {
       c = WL.GetClient(i);
       c->Colony.Clear();
       for(int j=0; j < NbAnt; ++j) {
          a = new MAnt();
-         a->ID = i*10+j;
-         a->Type = 0;
-         a->Life = 25;
-         a->ActionPoints = 8;
+         a->Life = 25; // TODO 2: configurable
+         a->ActionPoints = 8; // TODO 2: configurable
          a->ClientID = c->ClientID;
          a->Pos.X = xs[i];
          a->Pos.Y = ys[i];
@@ -441,6 +440,15 @@ void MAntServer::SetMap() {
          Map->AddObject(a);
          }
       }
+   }
+
+//---------------------------------------------------------------------------
+void MAntServer::SetMapSize(int w, int h) {
+   Map->SetSize(w,h);
+   }
+//---------------------------------------------------------------------------
+void MAntServer::SetMapObs(int x, int y) {
+   Map->SetObs(x,y);
    }
 
 //---------------------------------------------------------------------------

@@ -6,11 +6,37 @@ class MapObject
 
    def initialize
       @x = @y = 0
-      
    end
 
    def to_s
-      "#{object_id}(#{x},#{y})"
+      "type#{object_type},id#{object_id}(#{x},#{y})"
+   end
+   
+end
+#=========================================
+class Resource < MapObject
+   attr_accessor :rtype
+
+   def initialize
+      super()
+      @object_type = 1
+   end
+
+   def to_s
+      "ResType:#{rtype},id#{object_id}(#{x},#{y})"
+   end
+   
+end
+#=========================================
+class Obstacle < Resource
+
+   def initialize
+      super()
+      @rtype = 255
+   end
+
+   def to_s
+      "Obs#{object_id}(#{x},#{y})"
    end
    
 end
@@ -23,7 +49,11 @@ class Ant < MapObject
       super()
       @object_type = 0
    end
-
+   
+   def to_s
+      "Ant#{object_id}(#{x},#{y})"
+   end
+  
 end
 
 #=========================================
@@ -35,6 +65,9 @@ class Warrior < Ant
       @ant_type = 0
    end
 
+   def to_s
+      "Warrior#{object_id}(#{x},#{y})"
+   end
 end
 
 #=========================================
@@ -90,12 +123,12 @@ class Map
    
    def allies_each
       #puts "a side=#{@side}"
-      @hash.each_value { |v| yield v if (v.client_id==side) }
+      @hash.each_value { |v| yield v if (v.object_type==0 and v.client_id==side) }
    end
    
    def ennemies_each
       #puts "e side=#{@side}"
-      @hash.each_value { |v| yield v if (v.client_id!=side) }
+      @hash.each_value { |v| yield v if (v.object_type==0 and v.client_id!=side) }
    end
    
    def setup(msg)
@@ -103,32 +136,45 @@ class Map
       set_size(msg[2],msg[3])
       i = 4
       while(i < msg.size)
+         object_id = get_param_from(msg,i);            i += object_id.size+1
          x = msg[i];         i += 1
          y = msg[i];         i += 1
          type = msg[i]; i += 1
-         if(type==0) # ant
+         object = nil
+         case type
+         when 0 # ant
             client_id = get_param_from(msg,i);            i += client_id.size+1
-            object_id = get_param_from(msg,i);            i += object_id.size+1
             type_fourmi = msg[i]; i += 1
             life = msg[i];        i += 1
-            ant = nil
             case type_fourmi
                when 0
-                  ant = Warrior.new
+                  object = Warrior.new
                else
                   puts "Ant type not implemented: #{type_fourmi}"
                   return
             end
-            ant.x = x
-            ant.y = y
-            ant.life = life
-            ant.client_id = client_id.to_i
-            ant.object_id = object_id.to_i
-            add_object(ant)
+            object.object_id = object_id.to_i
+            object.x = x
+            object.y = y
+            object.life = life
+            object.client_id = client_id.to_i
+         when 1 # resource
+            type_resource = msg[i]; i += 1
+            case type_resource
+            when 255
+               object = Obstacle.new
+               object.object_id = object_id.to_i
+               object.x = x
+               object.y = y
+            else
+               puts "Resource type not implemented: #{type_resource}"
+               return
+            end
          else
             puts "Object type not implemented: #{type}"
             return
-         end # type == 0
+         end # case type
+         add_object(object)
       end # while object
    end
 
@@ -140,14 +186,18 @@ class Map
    def add_object(o)
       raise "Map#add_object: adding nil ???"  if o == nil
       @hash[o.object_id] = o
-      return
-      puts "   Coord: #{o.x} #{o.y}"
+      #return
+      puts "   ObjectID: #{o.object_id}"
+      puts "      Coord: #{o.x} #{o.y}"
       puts "      TypeObject: #{o.object_type}"
-      puts "      ClientID: #{o.client_id}"
-      puts "      ObjectID: #{o.object_id}"
-      puts "      ObjectType: #{o.object_type}"
-      puts "      AntType: #{o.ant_type}"
-      puts "      Life: #{o.life}"
+      case o.object_type
+      when 0 # ant
+      puts "         AntType: #{o.ant_type}"
+      puts "         ClientID: #{o.client_id}"
+      puts "         Life: #{o.life}"
+      when 1 # resource
+      puts "         ResourceType: #{o.rtype}"
+      end
    end
 
    def remove_object(id)

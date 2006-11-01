@@ -66,14 +66,14 @@ class Ant
             if dist > 1 # move
                # by doing this we are finding subgoals
                # TODO: add_sub_goal ?
+
                path = find_best_way(e.x,e.y)# we have to move next to it
                #puts ppath(path)
-               if path == nil # no path
-                  # TODO: find something else to do
+               if path==nil
+                  # TODO: no path, find something else to do
                   puts 'no path ! doing nothing: not good !!!'
                   return rv
                end
-               
                
                # we have a path to it
                # so now we have to move smartly
@@ -107,7 +107,7 @@ class Ant
                rv << "Cc#{object_id}~#{e.object_id}"
                e.life -= 5
             end
-            sleep(1)
+            #sleep(1)
       end # case
       rv
    end
@@ -116,7 +116,7 @@ class Ant
    # return a,b the case we have to go in this turn
    def find_best_way(xx,yy)
       pf = Pathfinder.new($map)
-      pf.ignore_obs_target = true # permit to calculate a path to case with an ennemy on it
+      pf.ignore_obs_target = true # permit to calculate a path to a case with an ennemy on it
       path = pf.find([x,y],[xx,yy])
    end
    
@@ -125,11 +125,10 @@ end
 
 class Colony
 
-   # set the top goal for each ant
+   # set the goals for each ant
    def set_goals
       $map = @map # FIXME
       # doing simple: give the goal "kill this ant" for each ant
-      x = nil
       dist = []
       ant = nil
       @map.allies_each{ |a|
@@ -137,14 +136,15 @@ class Colony
          break
          }
       @map.ennemies_each { |e|
-         x = e
          dist << [e,distance(ant,e)]
          }
       dist = dist.sort_by {|couple| couple[1]}
-      raise "oops x==nil" if x == nil
+      #puts dist
+      #sleep(5)
       i = 1
       enn = 0
       @map.allies_each{ |a|
+         break if enn >= dist.size
          a.goal = [KILL, dist[enn][0]]
          i += 1 
          if(i==5 and enn < dist.size-1)

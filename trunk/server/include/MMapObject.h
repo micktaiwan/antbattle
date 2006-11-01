@@ -30,20 +30,37 @@ public:
    int X,Y;
    Vector(int x, int y) : X(x), Y(y) {}
    };
-
+   
 //---------------------------------------------------------------------------
 class MMapObject {
+
 public:
-
-
    unsigned long  ID;
    Vector         Pos;
+   unsigned char  Type;
 
    MMapObject();
    virtual ~MMapObject();
 
-   virtual void DataString(mnetmsg::base&)=0;
-   
+   virtual void DataString(mnetmsg::base&);
+
 };
+
+//---------------------------------------------------------------------------
+class MResource : public MMapObject {
+public:
+   MResource() {Type=1;}
+   virtual ~MResource() {}
+   unsigned char RType;
+   virtual void DataString(mnetmsg::base&);
+   };
+//---------------------------------------------------------------------------
+class MAnt : public MMapObject {
+public:
+   MAnt() : Life(10),ActionPoints(8), Speed(6), AntType(0) {Type=0;}
+   virtual ~MAnt() {}
+   unsigned int Life, ClientID, ActionPoints, Speed, AntType;
+   virtual void DataString(mnetmsg::base&);
+   };
 
 #endif
