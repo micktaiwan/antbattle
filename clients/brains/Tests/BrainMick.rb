@@ -21,6 +21,7 @@ class Colony
          x += 1
          }
       @tcp.send("Ca")
+      sleep(2)
    end
    
 end

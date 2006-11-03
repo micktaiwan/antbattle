@@ -956,6 +956,12 @@ void MTCPClient::SetStream(iostream* s) {
 bool MTCPClient::Connect() {
 
    //Disconnect();
+   // client decide whether or not disconnect
+   // nov 2nd 2006
+   // this was commented out
+   // I don't remember why
+   // I need to be able to connect again
+   
    //static bool init = false;
    int rc;
 

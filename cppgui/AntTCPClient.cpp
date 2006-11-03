@@ -6,6 +6,17 @@
 using namespace MPNL;
 using namespace std;
 
+extern void WriteToLog(int, const std::string&);
+
+//---------------------------------------------------------------------------
+void MAntTCPClient::OnDisconnection(MSocket* s) {
+
+   // WriteToLog(2,"Disconnection");
+   // when stoping socket thread, we can not write in the main thread
+   
+
+   }
+
 //---------------------------------------------------------------------------
 void MAntTCPClient::FormatSend(const string& msg) {
 
@@ -14,3 +25,5 @@ void MAntTCPClient::FormatSend(const string& msg) {
    Send(m);
 
    }
+//---------------------------------------------------------------------------
+

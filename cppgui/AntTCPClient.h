@@ -12,6 +12,7 @@ public:
   virtual ~MAntTCPClient() {}
 
   void FormatSend(const std::string& msg);
+  virtual void   OnDisconnection(MPNL::MSocket* s);
   //void SetClients(MAntClientList* c) {Clients = c;}
   
 private:
