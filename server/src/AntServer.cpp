@@ -520,9 +520,7 @@ void MAntServer::Move(MPNL::MSocket* s, MAntClient* c, long id, int x, int y) {
       return;
       }
 
-   int fromx = ant->Pos.X;
-   int fromy = ant->Pos.Y;
-   int nbcases = abs(fromx-x) + abs(fromy-y);
+   int nbcases = abs(ant->Pos.X-x) + abs(ant->Pos.Y-y);
    // not going too far ?
    if(nbcases > ant->Speed) {
       AddError(s,c,"Move: going too far for this ant's speed");
@@ -530,8 +528,7 @@ void MAntServer::Move(MPNL::MSocket* s, MAntClient* c, long id, int x, int y) {
       }
 
    // substract action points
-   int actionpoints =  ant->ActionPoints;
-   if((actionpoints - nbcases) <= 0) {
+   if((ant->ActionPoints - nbcases) < 0) {
       AddError(s,c,"Move: not enough action points");
       return;
       }
@@ -542,8 +539,7 @@ void MAntServer::Move(MPNL::MSocket* s, MAntClient* c, long id, int x, int y) {
       return;
       }
 
-   // verify that the ant is not over another
-
+   // remove one point by case
    ant->ActionPoints -= nbcases;
    ant->Pos.X = x;
    ant->Pos.Y = y;
@@ -582,7 +578,7 @@ void MAntServer::Attack(MPNL::MSocket* s, MAntClient* c, long id1, long id2) {
       }
 
    // substract action points
-   if((ant1->ActionPoints - 5) <= 0) { // TODO 2: configurable
+   if((ant1->ActionPoints - 5) < 0) { // TODO 2: configurable
       AddError(s,c,"Attack: not enough action points");
       return;
       }
@@ -627,7 +623,7 @@ void MAntServer::Attack(MPNL::MSocket* s, MAntClient* c, long id1, long id2) {
 void MAntServer::AddError(MPNL::MSocket* s, MAntClient* c, const string& msg) {
 
    c->ErrorCount = c->ErrorCount + 1;
-   WriteToLog(3,string("Client error: ")+msg+", total: "+MUtils::toStr(c->ErrorCount));
+   WriteToLog(2,string("Client error: ")+msg+", total: "+MUtils::toStr(c->ErrorCount));
    base mm;
    mm.setHeader("Ba");
    mm.add("1");
@@ -688,7 +684,7 @@ void MAntServer::HTTPInfo(std::string& str) {
    s << "<b>" << ProgramName << "</b><br/>";
    s << "Please visit <a href=\"http://faivrem.googlepages.com/antbattle\">http://faivrem.googlepages.com/antbattle</a> for more information<br/><br/>";
    s << "Time: " << MUtils::MyNow(1) << "<br/>";
-   int d,h,m;
+   unsigned int d,h,m;
    MUtils::GetDuration(UpTime,d,h,m);
    s << "Uptime: ";
    if(d) s << d << " days ";
