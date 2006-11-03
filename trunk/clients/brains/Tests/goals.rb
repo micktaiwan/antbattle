@@ -51,18 +51,19 @@ class Ant
          when KILL
             e = goal[1] # get the ennemy
             if(not $map.exists?(e))
-               puts 'this ant does not exists anymore: not good !!!'
+               puts 'this ant does not exists anymore, doing nothing: not good !!!'
                return rv 
             end
             if(e.life<=0)
-               puts "#{e} is dead: not good !!!"
+               puts "#{e} is dead, doing nothing: not good !!!"
                return rv
             end
             #TODO: do something else
             
             dist = distance(self,e)
-            puts "I am #{self}"
-            puts "goal: kill this enneny: #{e}"
+            #puts "I am #{self}"
+            #puts "goal: kill this enneny: #{e}"
+            i = 0
             if dist > 1 # move
                # by doing this we are finding subgoals
                # TODO: add_sub_goal ?
@@ -81,27 +82,31 @@ class Ant
                # more than that we have to move at 4 cases and wait the next turn
                # TODO: do not wait at a position where we can be attacked
                if(path.size-2 <= 3) # minus two because the path include our case
-                  x = path.size-2  # 0 based minus one, so -2 
+                  i = path.size-2  # 0 based minus one, so -2 
                   #puts 's1'
-               elsif(path.size-1 > 6+4) # we are far away
-                  x = 6
+               elsif(path.size-2 >= 6) # we are far away
+                  i = 6
                   #puts 's2'
                else
-                  x = path.size - (1+4)
+                  i = (path.size-2)
                   #puts 's3'
                end
-               #puts x
+               #puts i
                #sleep(1)
-               if x > 0
-                  a,b = path[x][0]
-                  puts "I am moving to (#{[a,b].join(',')})"
+               if i <= 0
+                  puts "i <= 0 (#{i}), #{ppath(path)}"
+                  sleep(5)
+               else
+                  a,b = path[i][0]
+                  #puts "I am moving to (#{[a,b].join(',')})"
                   self.x,self.y = a,b
                   rv << "Cb#{object_id}~"+[a,b].pack('cc')
-                  dist = distance(self,e)
+                  #puts x
                end
             end
-            return rv if dist > 4 # return if we can not attack at the same round
-            #puts "dist=#{dist}"
+            return rv if i > 3 # return if we can not attack at the same round
+            #puts i
+            dist = distance(self,e)
             if dist == 1
                #puts 'Attack'
                rv << "Cc#{object_id}~#{e.object_id}"
