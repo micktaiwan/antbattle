@@ -6,7 +6,7 @@
 #include "MMap.h"
 #include "HTTPServer.h"
 
-// TODO 3: passer les ClientID en unsigned long
+// TODO 3: passer les ClientID en long
 
 
 //---------------------------------------------------------------------------
@@ -32,7 +32,7 @@ void MWList::Add(MAntClient* c) {
    }
 
 //---------------------------------------------------------------------------
-void MWList::Remove(unsigned long id) {
+void MWList::Remove(long id) {
 // does not delete the client
 
    MWL::iterator ite = WL.begin();
@@ -161,7 +161,7 @@ void MAntServer::OnDisconnection(MPNL::MSocket* s) {
    WriteToLog(2,msg.str());
 
    if(c->Logged) { // broadcast a message only if client is logged
-      unsigned long id = c->ClientID;
+      long id = c->ClientID;
       WL.Remove(id);
       if(c->Type==0) {
          // if the client was playing, he loses
@@ -389,9 +389,13 @@ void MAntServer::StartGame() {
    }
 
 //---------------------------------------------------------------------------
-void MAntServer::StopGame(unsigned long winner, unsigned long loser, int reason, const string& freetext) {
+void MAntServer::StopGame(long winner, long loser, int reason, const string& freetext) {
 
    WriteToLog(2,string("=== Stopping game: ")+freetext);
+   Map->ClearAnt();// we must clear the map now,
+   // because if the playing client disconnects
+   // the next time a client plays the map will try
+   // to reset a map accessing deleted ant
    GameInProgress = false;
    WL.Remove(loser);
    Player1->Playing = false;
@@ -419,7 +423,9 @@ void MAntServer::StopGame(unsigned long winner, unsigned long loser, int reason,
 //---------------------------------------------------------------------------
 void MAntServer::SetMap() {
 
-   Map->ClearAnt();
+   Map->ClearAnt(); // the resources are set once for all
+   //reading the server config file, so we keep them
+   // (but we could read them here too)
    int w,h;
    Map->GetSize(w,h);
    MAntClient* c;
@@ -494,7 +500,7 @@ void MAntServer::SwitchPlayer() {
    }
 
 //---------------------------------------------------------------------------
-void MAntServer::Move(MPNL::MSocket* s, MAntClient* c, unsigned long id, int x, int y) {
+void MAntServer::Move(MPNL::MSocket* s, MAntClient* c, long id, int x, int y) {
 
    ostringstream o;
    o <<  "Move: " << id << " x=" << x << " y=" << y;
@@ -503,62 +509,36 @@ void MAntServer::Move(MPNL::MSocket* s, MAntClient* c, unsigned long id, int x, 
    // Verify that the object is real
    MAnt* ant = static_cast<MAnt*>(Map->GetObjectByID(id));
    if(ant == NULL) {
-      base mm;
-      mm.setHeader("Ba");
-      mm.add("1");
-      mm.add("Move: the object does not exist");
-      s->Send(mm.list());
-      AddError(c);
+      AddError(s,c,"Move: the object does not exist");
       return;
       }
 
    // Is there an obstacle at the target case (TODO: pathfinding)
    MMap::MObjList l = Map->GetObjects(x,y);
    if(l.size()) {
-      base mm;
-      mm.setHeader("Ba");
-      mm.add("1");
-      mm.add("Move: an obstacle is on the target case");
-      s->Send(mm.list());
-      AddError(c);
+      AddError(s,c,"Move: an obstacle is on the target case");
       return;
       }
 
-
    int fromx = ant->Pos.X;
    int fromy = ant->Pos.Y;
-   unsigned int nbcases = abs(fromx-x) + abs(fromy-y);
+   int nbcases = abs(fromx-x) + abs(fromy-y);
    // not going too far ?
    if(nbcases > ant->Speed) {
-      base mm;
-      mm.setHeader("Ba");
-      mm.add("1");
-      mm.add("Move: going too far for this ant's speed");
-      s->Send(mm.list());
-      AddError(c);
+      AddError(s,c,"Move: going too far for this ant's speed");
       return;
       }
 
    // substract action points
    int actionpoints =  ant->ActionPoints;
-   if(actionpoints - nbcases < 0) {
-      base mm;
-      mm.setHeader("Ba");
-      mm.add("1");
-      mm.add("Move: not enough action points");
-      s->Send(mm.list());
-      AddError(c);
+   if((actionpoints - nbcases) <= 0) {
+      AddError(s,c,"Move: not enough action points");
       return;
       }
 
    // verify that the ant is ours !!!
    if(ant->ClientID != c->ClientID) {
-      base mm;
-      mm.setHeader("Ba");
-      mm.add("1");
-      mm.add("Move: trying to move some opponent ant");
-      s->Send(mm.list());
-      AddError(c);
+      AddError(s,c,"Move: trying to move some opponent ant");
       return;
       }
 
@@ -579,7 +559,7 @@ void MAntServer::Move(MPNL::MSocket* s, MAntClient* c, unsigned long id, int x, 
    }
 
 //---------------------------------------------------------------------------
-void MAntServer::Attack(MPNL::MSocket* s, MAntClient* c, unsigned long id1, unsigned long id2) {
+void MAntServer::Attack(MPNL::MSocket* s, MAntClient* c, long id1, long id2) {
 
    ostringstream o;
    o <<  "Attack: " << id1 << " vs " << id2;
@@ -589,53 +569,33 @@ void MAntServer::Attack(MPNL::MSocket* s, MAntClient* c, unsigned long id1, unsi
    MAnt* ant1 = static_cast<MAnt*>(Map->GetObjectByID(id1));
    MAnt* ant2 = static_cast<MAnt*>(Map->GetObjectByID(id2));
    if(ant1 == NULL || ant2 == NULL) {
-      base mm;
-      mm.setHeader("Ba");
-      mm.add("1");
       o.str("");
       o << "Attack " << id1 << " vs " << id2 << " : the ant does not exist";
-      mm.add(o.str());
-      s->Send(mm.list());
-      AddError(c);
+      AddError(s,c,o.str());
       return;
       }
 
    // not attacking too far ?
    if(abs(ant1->Pos.X-ant2->Pos.X) + abs(ant1->Pos.Y-ant2->Pos.Y) > 1) {
-      base mm;
-      mm.setHeader("Ba");
-      mm.add("1");
-      mm.add("Attack: you are too far away");
-      s->Send(mm.list());
-      AddError(c);
+      AddError(s,c,"Attack: you are too far away");
       return;
       }
 
    // substract action points
-   if(ant1->ActionPoints - 5 < 0) { // TODO 2: configurable
-      base mm;
-      mm.setHeader("Ba");
-      mm.add("1");
-      mm.add("Attack: not enough action points");
-      s->Send(mm.list());
-      AddError(c);
+   if((ant1->ActionPoints - 5) <= 0) { // TODO 2: configurable
+      AddError(s,c,"Attack: not enough action points");
       return;
       }
 
    // verify that the ant is ours
    if(ant1->ClientID != c->ClientID) {
-      base mm;
-      mm.setHeader("Ba");
-      mm.add("1");
-      mm.add("Attack: trying to use some opponent ant");
-      s->Send(mm.list());
-      AddError(c);
+      AddError(s,c,"Attack: trying to use some opponent ant");
       return;
       }
 
    ant1->ActionPoints -= 5;
    ant2->Life -= 5;
-   if(ant2->Life < 0) ant2->Life = 0;
+   if(ant2->Life <= 0) ant2->Life = 0;
 
    // Broadcast the move
    base mm;
@@ -664,14 +624,19 @@ void MAntServer::Attack(MPNL::MSocket* s, MAntClient* c, unsigned long id1, unsi
 
 
 //---------------------------------------------------------------------------
-void MAntServer::AddError(MAntClient* c) {
+void MAntServer::AddError(MPNL::MSocket* s, MAntClient* c, const string& msg) {
 
    c->ErrorCount = c->ErrorCount + 1;
-   WriteToLog(3,string("Error count: ")+MUtils::toStr(c->ErrorCount));
+   WriteToLog(3,string("Client error: ")+msg+", total: "+MUtils::toStr(c->ErrorCount));
+   base mm;
+   mm.setHeader("Ba");
+   mm.add("1");
+   mm.add(msg);
+   s->Send(mm.list());
    if(c->ErrorCount < 3) return;
 
-   unsigned int i1 = Player1->ClientID;
-   unsigned int i2 = Player2->ClientID;
+   long i1 = Player1->ClientID;
+   long i2 = Player2->ClientID;
    int loser, winner;
    if(c->ClientID == i1) {
       loser  = i1;
@@ -723,7 +688,7 @@ void MAntServer::HTTPInfo(std::string& str) {
    s << "<b>" << ProgramName << "</b><br/>";
    s << "Please visit <a href=\"http://faivrem.googlepages.com/antbattle\">http://faivrem.googlepages.com/antbattle</a> for more information<br/><br/>";
    s << "Time: " << MUtils::MyNow(1) << "<br/>";
-   unsigned int d,h,m;
+   int d,h,m;
    MUtils::GetDuration(UpTime,d,h,m);
    s << "Uptime: ";
    if(d) s << d << " days ";
