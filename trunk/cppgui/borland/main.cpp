@@ -54,6 +54,7 @@ void __fastcall TForm1::FormDestroy(TObject *Sender) {
 //---------------------------------------------------------------------------
 void __fastcall TForm1::Timer1Timer(TObject *) {
 
+   // TODO 1: check connection and reconnect if needed
    string msg;
    while(TCP->Read(msg)) {
       WriteToLog(3,msg);
@@ -206,8 +207,9 @@ void __fastcall TForm1::BtnConnectClick(TObject *Sender) {
    //TCP->Host = "82.238.147.130";
    //TCP->Port = 80;
    //TCP->SetClients(Clients);
+   TCP->Disconnect();
    if(!TCP->Connect())
-      WriteToLog(1,"Error: not connected");
+      WriteToLog(1,"Error: could not connect");
    else {
       WriteToLog(1,"Connected");
       TCP->FormatSend("Aa1~Ant Battle Viewer~0.1~http://faivrem.googlepages.com/antbattle"); // login

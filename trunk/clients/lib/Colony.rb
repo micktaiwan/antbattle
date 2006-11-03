@@ -3,7 +3,12 @@ require 'Utils'
 require 'AntClient'
 require 'Map'
 require 'timeout'
+#begin
 #require 'guitk'
+#$hasgtk = true
+#rescue
+$hasgtk = false
+#end
 
 class Colony
 
@@ -20,7 +25,7 @@ class Colony
 		puts "   Ctrl-C to close"
       puts "   Connecting to #{ip}:#{port}..."
 		@tcp = TCPClient.new(ip,port)
-      #@gui = GuiTk.new(@map)
+      @gui = GuiTk.new(@map) if $hasgtk
    end
 
 	def run
@@ -175,7 +180,7 @@ class Colony
                else
                   puts "Unknown msg type for #{msg[1].chr}"
             end
-            #@gui.paint
+            @gui.paint if $hasgtk
 			when 'D' # Chat
             case msg[1].chr
                when 'a' # chat msg
@@ -190,7 +195,7 @@ class Colony
             case msg[1].chr
       			when 'c' # Map
                   @map.setup(msg)
-                  #@gui.paint
+                  @gui.paint if $hasgtk
       			else
       				puts "4Unknown msg type for #{msg[1].chr}"
             end

@@ -234,23 +234,23 @@ public:
    MTCPClient();
    virtual ~MTCPClient();
 
-   bool   Connect();
-   void   Disconnect();
+   virtual bool   Connect();
+   virtual void   Disconnect();
 
 
    /** Send a msg, see SetMode
      * return system's 'send' return value
      */
-   int    Send(const std::string& msg);
-   unsigned long  SendStream();
+   virtual int    Send(const std::string& msg);
+   virtual unsigned long  SendStream();
 
-   bool   Read(std::string& msg);
-   bool   OnConnection(MSocket* s);
-   void   OnDisconnection(MSocket* s);
-   bool   IsConnected() {return Socket->IsActive();}
-   void   SetMode(MMode m) {Mode = m;Socket->Mode = m;}
-   void   SetPrefixLen(int len);
-   virtual void SetStream(std::iostream* s);
+   virtual bool   Read(std::string& msg);
+   virtual bool   OnConnection(MSocket* s);
+   virtual void   OnDisconnection(MSocket* s);
+   virtual bool   IsConnected() {return Socket->IsActive();}
+   virtual void   SetMode(MMode m) {Mode = m;Socket->Mode = m;}
+   virtual void   SetPrefixLen(int len);
+   virtual void   SetStream(std::iostream* s);
    std::string GetLocalIP() {return Socket->GetLocalIP();}
 
 private:
