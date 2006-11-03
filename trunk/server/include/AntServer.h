@@ -23,7 +23,7 @@ public:
    void Add(MAntClient* c);
    const MWL& GetWL() {return WL;}
    MAntClient* GetClient(int index) {return WL[index];}
-   void Remove(unsigned long id);
+   void Remove(long id);
    void Clear() {WL.clear();}
 
 private:
@@ -64,17 +64,17 @@ class MAntServer : public MPNL::MTCPServer {
       inline MAntClient* GetData(MPNL::MSocket* s) {return static_cast<MAntClient*>(s->Data);}
       void AllDataString(mnetmsg::base& m);
       void StartGame();
-      void StopGame(unsigned long winner, unsigned long loser, int reason, const std::string& freetext);
+      void StopGame(long winner, long loser, int reason, const std::string& freetext);
       void SetMap();
       void BroadcastService(const MService& s, MPNL::MSocket* excluded, const std::string& str);
       void BroadcastToGUI(MPNL::MSocket* excluded, const std::string& msg);
       void SubscribeClient(const MService& s, MAntClient* c, int on);
       void SwitchPlayer();
-      void AddError(MAntClient* c);
+      void AddError(MPNL::MSocket* s, MAntClient* c, const std::string& msg);
       void SendMap(MPNL::MSocket* excluded);
       // Actions
-      void Move(MPNL::MSocket* s, MAntClient* c, unsigned long id, int x, int y);
-      void Attack(MPNL::MSocket* s, MAntClient* c, unsigned long id1, unsigned long id2);
+      void Move(MPNL::MSocket* s, MAntClient* c, long id, int x, int y);
+      void Attack(MPNL::MSocket* s, MAntClient* c, long id1, long id2);
    };
 
 #endif

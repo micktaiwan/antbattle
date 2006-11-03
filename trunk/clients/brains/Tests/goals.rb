@@ -100,7 +100,7 @@ class Ant
                   dist = distance(self,e)
                end
             end
-            #return rv if dist > 4 # return if we can not attack at the same round
+            return rv if dist > 4 # return if we can not attack at the same round
             #puts "dist=#{dist}"
             if dist == 1
                #puts 'Attack'

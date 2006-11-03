@@ -56,7 +56,7 @@ void MColony::ResetActionPoints() {
    }
    
 //---------------------------------------------------------------------------
-void MColony::DeleteAnt(unsigned long id) {
+void MColony::DeleteAnt(long id) {
 
    ostringstream s;
    s << "deleting ant " << id << ". Colony size: " << Ants.size();

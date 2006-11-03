@@ -27,15 +27,15 @@
 //---------------------------------------------------------------------------
 class MColony {
 public:
-   typedef std::map<unsigned long, MAnt*> MAntList;
+   typedef std::map<long, MAnt*> MAntList;
 
    MColony();
    ~MColony();
 
    void ResetActionPoints();
-   void DeleteAnt(unsigned long id);
+   void DeleteAnt(long id);
    void AddAnt(MAnt* a) {Ants[a->ID] = a;}
-   MAnt* GetAnt(unsigned long i) {return Ants[i];}
+   MAnt* GetAnt(long i) {return Ants[i];}
    int Size() {return Ants.size();}
    void Clear();
 
@@ -53,7 +53,7 @@ class MAntClient {
 public:
 
    std::string    Program, Version, IP, FreeText;
-   unsigned int   ClientID, Type, ErrorCount;
+   int   ClientID, Type, ErrorCount;
    bool           Logged, Playing;
    MColony        Colony;
    std::map<int,int> Services;

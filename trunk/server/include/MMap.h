@@ -31,7 +31,7 @@ class MMapObject;
 class MMap {
 public: 
 
-   typedef std::map<unsigned long,MMapObject*> MM;
+   typedef std::map<long,MMapObject*> MM;
    typedef MM::iterator MMapIte;
    typedef std::vector<MMapObject*> MObjList;
 
@@ -47,7 +47,7 @@ public:
    void        GetSize(int& w, int& h) {w=W;h=H;}
    void        AddObject(MMapObject* obj, bool with_new_id=false);
    void        RemoveObject(MMapObject* obj);
-   MMapObject* GetObjectByID(unsigned long ID);
+   MMapObject* GetObjectByID(long ID);
    void        DataString(mnetmsg::base&);
    MObjList    GetObjects(int x, int y);
 

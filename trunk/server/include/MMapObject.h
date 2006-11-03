@@ -35,9 +35,9 @@ public:
 class MMapObject {
 
 public:
-   unsigned long  ID;
-   Vector         Pos;
-   unsigned char  Type;
+   long   ID;
+   Vector Pos;
+   char   Type;
 
    MMapObject();
    virtual ~MMapObject();
@@ -59,7 +59,7 @@ class MAnt : public MMapObject {
 public:
    MAnt() : Life(10),ActionPoints(8), Speed(6), AntType(0) {Type=0;}
    virtual ~MAnt() {}
-   unsigned int Life, ClientID, ActionPoints, Speed, AntType;
+   int Life, ClientID, ActionPoints, Speed, AntType;
    virtual void DataString(mnetmsg::base&);
    };
 

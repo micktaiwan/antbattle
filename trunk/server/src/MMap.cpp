@@ -62,7 +62,7 @@ void MMap::SetObs(int x, int y) {
 //---------------------------------------------------------------------------
 void MMap::AddObject(MMapObject* obj, bool with_new_id) {
 
-   if(with_new_id) obj->ID = (unsigned long)Objects.size();
+   if(with_new_id) obj->ID = (long)Objects.size();
    Objects[obj->ID] = obj;
    std::ostringstream o;
    o << "Adding type " << (char)(obj->Type+'0');
@@ -85,7 +85,7 @@ void MMap::RemoveObject(MMapObject* obj) {
    }
 
 //---------------------------------------------------------------------------
-MMapObject* MMap::GetObjectByID(unsigned long id) {
+MMapObject* MMap::GetObjectByID(long id) {
 
    MMapIte ite = Objects.find(id);
    if(ite==Objects.end()) return NULL;
@@ -99,6 +99,9 @@ void MMap::DataString(mnetmsg::base& m) {
    m.addByte(W);
    m.addByte(H);
    MMapIte ite = Objects.begin();
+   std::ostringstream o;
+   o << "Sending " << Objects.size() << " objects";
+   WriteToLog(3,o.str());
    while(ite!=Objects.end()) {
       ite->second->DataString(m);
       ++ite;
