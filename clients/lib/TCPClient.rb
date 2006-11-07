@@ -11,7 +11,7 @@ class TCPClient
 
 	def connect
 		begin
-         timeout(5) do
+         timeout(10) do
             @t = TCPSocket.new(@ip, @port)
          end
 		rescue
@@ -43,10 +43,19 @@ class TCPClient
 		msg = ""
 		len = @t.recv(2)
 		len = len.unpack("n")[0]
+    raise RuntimeError,"Error during reading socket" if len==nil
 		if(len > 0)
 			msg = @t.recv(len)
 		end
 		msg
 	end
-	
+
+  def status
+    return nil if @t==nil
+    1
+  end
+  
+  def shutdown
+    @t.shutdown
+  end
 end

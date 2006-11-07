@@ -13,7 +13,8 @@ $hasgtk = false
 class Colony
 
 	def initialize(ip,port)
-		@id = -1
+      @id = -1
+      @opp = -1
       @client_list = AntClientList.new
       @gameinProgress = false
       @map = Map.new(nil)
@@ -28,11 +29,11 @@ class Colony
       @gui = GuiTk.new(@map) if $hasgtk
    end
 
-	def run
-		begin
-			@tcp.connect
-         # send my infos
-			@tcp.formatsend("Aa0~"+@progname+"~"+@progversion+"~"+@freetext)
+  def run
+    begin
+      @tcp.connect
+      # send my infos
+      @tcp.formatsend("Aa0~"+@progname+"~"+@progversion+"~"+@freetext)
          # subscribe to connections
          @tcp.send("Ac1");
          # request client list
@@ -43,154 +44,143 @@ class Colony
          @tcp.send("Bb1");
          # subscribe to games msg (to see others games)
          @tcp.send("Af1");
+         secs = 3
          while(1)
-				begin
-               @msg = ""
-               timeout(3) {@msg = @tcp.read}
-				rescue Timeout::Error
-            end
-            if(@msg != "")
-               begin
-                  parse(@msg)
-               rescue
-                  puts "****** Parse msg error: #{$!}"
-                  raise
-               end
-            end
-			end
-		rescue
-			puts "Error: #{$!}"
-         raise
-      end
+          begin
+          @msg = ""
+          timeout(secs) {
+            @msg = @tcp.read
+            }
+          rescue Timeout::Error
+          #puts "No game in progress / no move for #{secs} seconds"
+          end
+          if(@msg != "")
+             begin
+                parse(@msg) 
+             rescue Exception => e
+              puts "****** Parse msg error: #{ e.message } - (#{ e.class })" << "\n" <<  (e.backtrace or []).join("\n")
+              raise
+             end
+          end
+        end
+    rescue Errno::EBADF => e
+      raise "connection problem... #{ e.message }" 
+    end
+   
 	end
 
    def parse(msg)
-		#puts "   recv: #{sanitize(msg)}"
-		#s = msg.size
-		#raise "msg len < 2" if s < 2
-		case msg[0].chr
-			when 'A' #Client management message
-				case msg[1].chr
-					when 'a' # ID/Server Version
+      s = msg.size
+      
+      raise "msg len < 2" if s < 2
+      apacket=msg.split("")
+      
+      typeaction=apacket.shift
+      action=apacket.shift
+      #~ print typeaction + action + ""
+      case typeaction
+         when "A" #Client management message
+            case action
+               when 'a' # ID/Server Version
                   puts "ID"
-						@id = get_param(msg,1).to_i
-                  server_version = get_param(msg,2)
-						puts "   ID: #{@id}, Server: #{server_version}"
-					when 'b' # Client list
+                  id, server_version  = translate_a_msg("ss",apacket)
+                        @id = id.to_i
+                  puts "   === CAUTION: PROTOCOL VERSIONS ARE DIFFERENT ! ===" if server_version != @version
+                        puts "   ID: #{@id}, Server: #{server_version}"
+               when 'b' # Client list
                   puts "Client list:"
-                  i = 1
-                  id = get_param(msg,i)
-						while(id!="")
-                     c = AntClient.new
-                     c.id = id.to_i
-                     i += 1
-                     c.type = get_param(msg,i)
-                     i += 1
-                     c.name = get_param(msg,i)
-                     i += 1
-                     c.version = get_param(msg,i)
-                     i += 1
-                     c.free_text = get_param(msg,i)
-                     #i += 1
-                     #c.ip = get_param(msg,i)
-                     i += 1
-                     id = get_param(msg,i)
-                     @client_list.add(c)
-                     puts "   Client #{c.id} (Type:#{c.type}): #{c.name} #{c.version} #{c.free_text} "
-                  end
+                  tbl_cl=translate_msg("sssss",apacket)
+                  tbl_cl.each { |c| @client_list.add(AntClient.new(*c)) }
                   puts "   We have received #{@client_list.list.size} clients"
-                  # send a chat msg :)
-                  #@tcp.formatsend("DaYop, je suis le prog d'exemple")
-					when 'c' # Client connection
-                  c = AntClient.new
-                  c.id = get_param(msg,1).to_i
-                  c.type = get_param(msg,2)
-                  c.name = get_param(msg,3)
-                  c.version = get_param(msg,4)
-                  c.free_text = get_param(msg,5)
-                  c.ip = get_param(msg,6)
-                  @client_list.add(c)
+                  puts get_client_info
+               when 'c' # Client connection
+                  c=AntClient.new(*translate_a_msg("sssss",apacket))
+                  @client_list.add(c) 
                   puts "Connection of #{c.id} (Type:#{c.type}): #{c.name} #{c.version} #{c.free_text}"
-					when 'd' # Client disconnection
-                  id = get_param(msg,1).to_i
+               when 'd' # Client disconnection
+                  puts apacket.join("-") + msg
+                  id = translate_a_msg("S",apacket)[0]
                   c = @client_list.get_id(id)
                   @client_list.remove_id(id)
                   puts "Disconnection of #{c.id} (Type:#{c.type}): #{c.name} #{c.version} #{c.free_text}"
-   			else
-   				puts "1Unknown msg type for #{msg[1].chr}"
-				end
-			when 'B' # Game
-            case msg[1].chr
-               when 'a' # Error msg
-                  puts "Server error "+get_param(msg,1)+": "+get_param(msg,2)
-                  # TODO process error types
-               when 'b' # New game
-                  puts "==== New Game"
-                  id1 = get_param(msg,1).to_i
-                  id2 = get_param(msg,2).to_i
-                  @map.new_game(@id,id1,id2)
+              else
+                       puts "Unknown msg type for #{action}"
+            end
+         when "B" # Game
+            case action
+               when "a" # Error msg
+                  er,msg=translate_a_msg("ss",apacket)
+                  puts "Server error " + er + "-" + msg
+                  puts "Server error " + er + "-" + msg
+               when "b" # New game
+                  id1, id2 = translate_a_msg("SS",apacket)
                   c1 = @client_list.get_id(id1)
                   c2 = @client_list.get_id(id2)
-                  if (c1 != nil and c2 != nil)
-                     puts "   #{c1.id} (#{c1.name}) vs #{c2.id} (#{c2.name})"
-                  end
+                  @map.new_game(@id,id1,id2)
+                  raise "c1 is nil" if c1 == nil
+                  raise "c2 is nil" if c2 == nil
+                  puts "New Game : #{c1.name} (#{c1.id}) vs #{c2.name} (#{c2.id})"
                   # are we one of the players ?
                   if(@id==id1 or @id==id2)
-                     @gameinProgress = true
+                    @gameinProgress = true
                      puts "   I am playing !!!"
-                  end
-               when 'd' # who must play ?
-                  id = get_param(msg,1).to_i
-                  if(@id == id)
-                     #puts "   My turn"
-                     play
-                  else
-                     #puts "   Not my turn"
-                  end
-                  # TODO process error types
+                   end
+                  when 'c' # Map
+                  #~ puts "Setup de la map"
+                  @map.setup(apacket)           
+                  raise "   Error GUI can't have partial view"      
+               when "d" # who must play ?
+                  id = translate_a_msg("S",apacket)[0]
+                  @map.change_side
+                  play if(@id == id)
                when 'e' # end of game
-                  id1 = get_param(msg,1).to_i
-                  id2 = get_param(msg,2).to_i
-                  code = get_param(msg,3).to_i
-                  freetext = get_param(msg,4)
+                  id1, id2, code, freetext = translate_a_msg("SSSs",apacket)
                   c1 = @client_list.get_id(id1)
                   c2 = @client_list.get_id(id2)
-                  print "==== End of Game"
-                  if(@id==id1); puts ": I win !"
-                  elsif(@id==id2) # because we could be watching a game
-                     puts ": I lose"
-                     # subscribe to games (to play again)
-                     @tcp.send("Bb1");
+                  puts "#{c1.name} (#{c1.id}) beats #{c2.name} (#{c2.id}) - #{freetext} (#{code})"
+                  if(@id==id1)
+                    puts " I win !" 
                   else
-                     puts
-                  end
-                  puts "   Winner: #{c1.id} (#{c1.name})"
-                  puts "   Loser : #{c2.id} (#{c2.name})"
-                  puts "   Code  : #{code}"
-                  puts "   FreeText: #{freetext}"
+                    puts " I lose"
+                  end  
+                  @tcp.send("Bb1") if(@id==id2) # suscribe to a new game
                else
-      				puts "2Unknown msg type for #{msg[1].chr}"
+                  puts "Unknown msg type for #{action}"
             end
-			when 'C' # Actions
-            case msg[1].chr
+         when 'C' # Actions
+            case action
                when 'b' # move
-                  @map.move_from_msg(msg)
+                  ant_id,x,y=translate_a_msg("SBB",apacket)
+                  @map.move(ant_id,x,y)
                when 'c' # attack
-                  @map.attack_from_msg(msg)
+                        id1,id,life = translate_a_msg("SSS",apacket)
+                  #~ puts "#{id1} attacks #{id},  #{id} life is #{life}"
+                  if(life==0)
+                     @map.remove_object(id)
+                  else
+                     @map.get_object(id).life = life
+                  end                  
                else
-                  puts "Unknown msg type for #{msg[1].chr}"
+                  puts "Unknown msg type for #{action}"
             end
             @gui.paint if $hasgtk
-			when 'D' # Chat
-            case msg[1].chr
+         when 'D' # Chat
+            case action
                when 'a' # chat msg
-                  id = get_param(msg,1).to_i
+                  id,msg = translate_a_msg("Ss",apacket)
                   c = @client_list.get_id(id)
-                  #raise "c is nil" if c == nil
-                  puts c.name+": "+get_param(msg,2)
-      			else
-      				puts "3Unknown msg type for #{msg[1].chr}"
+                  puts c.name+": "+msg
+               else
+                  puts "Unknown msg type for #{action}"
             end
+<<<<<<< .mine
+         when 'E' # Map
+            case action
+               when 'c' # Map
+                  @map.setup(apacket)
+               else
+                  puts "Unknown msg type for #{action}"
+=======
 			when 'E' # Map
             case msg[1].chr
       			when 'c' # Map
@@ -198,12 +188,20 @@ class Colony
                   @gui.paint if $hasgtk
       			else
       				puts "4Unknown msg type for #{msg[1].chr}"
+>>>>>>> .r42
             end
          else
-				puts "0Unknown msg type for #{msg[0].chr}"
-            puts sanitize(msg)
-            raise "error"
-		end
+            puts "Unknown msg type for #{typeaction}"
+      end
+      $stdout.flush      
 	end
-  
+
+   def get_client_info
+      cl="Client list :\n"
+      @client_list.list.values.each { |c|
+         cl+=c.describe + "\n"
+         }
+      cl
+   end
+
 end

@@ -20,15 +20,13 @@ class AntClientList
 end
 
 class AntClient
-   attr_accessor :id, :type, :name, :version, :free_text, :ip
+   attr_accessor :id, :type, :name, :version, :free_text
 
-   def initialize
-      @id = -1
-      @type = -1
-      @ip = ''
-      @name = ''
-      @version = ''
-      @free_text = ''
-   end
-
+   def initialize(id,type,name,version,free_text)
+      @id, @type, @name, @version, @free_text = id.to_i,type,name,version,free_text
+    end
+    
+  def describe
+    "id #{id} type #{type} name #{name} version #{version} free_text #{free_text}"
+    end
 end
