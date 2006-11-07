@@ -11,7 +11,7 @@
 using namespace std;
 
 bool SigInt = false;
-string ProgramName = "AntBattle Server 0.5.6 (2006/11/01)";
+string ProgramName = "AntBattle Server 0.5.6c (2006/11/07)";
 int gLoglevel = 3;
 string gLogFile = "./log.txt";
 boost::mutex LogMutex;
