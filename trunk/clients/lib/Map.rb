@@ -9,7 +9,11 @@ class MapObject
    end
 
    def to_s
+<<<<<<< .mine
+      "#{object_id}(#{x},#{y})[#{client_id}]"
+=======
       "type#{object_type},id#{object_id}(#{x},#{y})"
+>>>>>>> .r42
    end
    
 end
@@ -65,12 +69,41 @@ class Warrior < Ant
       @ant_type = 0
    end
 
+<<<<<<< .mine
+   def initialize(client_id, ant_id, ant_type, life)
+     super()
+     @client_id, @object_id, @ant_type, @life=client_id, ant_id, ant_type, life
+   end
+   
+   def describe
+      puts "   Coord: #{x} #{y}"
+      puts "      TypeObject: #{object_type}"
+      puts "      ClientID: #{client_id}"
+      puts "      ObjectID: #{object_id}"
+      puts "      ObjectType: #{object_type}"
+      puts "      AntType: #{ant_type}"
+      puts "      Life: #{life}"
+    end
+=======
    def to_s
       "Warrior#{object_id}(#{x},#{y})"
    end
+>>>>>>> .r42
 end
 
-#=========================================
+class Ressource < MapObject
+   attr_accessor :resource_type
+   
+   def initialize(resource_type)
+     @object_type = 255
+     @resource_type=resource_type
+   end
+
+  def describe
+    "Ressource #{resource_type}"
+  end
+end
+
 class Map
 
    attr_reader   :w, :h, :hash
@@ -83,8 +116,8 @@ class Map
          @w = 0
          @h = 0
          @hash = Hash.new(nil)
+         @joueurs=[]
       else
-         #puts "copying map"
          @side  = map.side
          @xside = map.xside
          @w = map.w
@@ -92,45 +125,80 @@ class Map
          @hash = Hash.new(nil)
          map.hash.each { |k,v|
             a = deep_copy(v)
-            #print "#{k}: #{a}"
             @hash[k] = a
             }
-         #puts
       end
    end
-   
-   def new_game(myid,id1,id2)
-      if(myid==id1)
-         @side    = id1.to_i
-         @xside   = id2.to_i
-      else
-         @side    = id2.to_i
-         @xside   = id1.to_i
-      end
-   end
-   
-   def change_side
-      @side, @xside = @xside, @side
-      log 3, 3, "Changing side: #{@side} to play"
-   end
-   
+
    def set_size(w,h)
-      puts "   Map size: #{w}x#{h}"
       @hash.clear
+      @joueurs=[]
       @w = w.to_i
       @h = h.to_i
    end
+
+   def get_object(id)
+      if @hash[id] == nil
+         puts "nil for #{id}"
+      end
+      @hash[id]
+   end
+
+   def remove_object(id)
+      #puts "#{id} is dead"
+      @hash.delete(id)
+		ant
+   end
    
+   def move(id,x,y)
+      o = @hash[id]
+      #raise "Map#move: object #{id} not found in map !" if o == nil
+      if o == nil
+         puts "This object is not in the map, maybe we not have receive the map yet?"
+         return
+      end
+      o.x = x
+      o.y = y
+   end
+
+  def setup(grid)
+      set_size(*translate_a_msg("BB",grid))
+      while grid[0]!=nil
+         x, y, typeobject=translate_a_msg("BBB",grid)
+         if typeobject==0 # unit
+            add_object(x,y,Warrior.new(*translate_a_msg("SSBB",grid))) 
+         else # resource
+            add_object(x,y,Resource.new(translate_a_msg("b",grid)[0])) 
+         end
+      end    
+    end
+   
+   def new_game(myid,id1,id2)
+      @side    = id1.to_i
+      @xside   = id2.to_i
+   end
+    
    def allies_each
       #puts "a side=#{@side}"
+<<<<<<< .mine
+      @hash.each_value { |v| yield v if (v.client_id==@side) }
+=======
       @hash.each_value { |v| yield v if (v.object_type==0 and v.client_id==side) }
+>>>>>>> .r42
    end
    
    def ennemies_each
+<<<<<<< .mine
+      #puts "e side=#{@xside}"
+      @hash.each_value { |v| yield v if (v.client_id==@xside) }
+=======
       #puts "e side=#{@side}"
       @hash.each_value { |v| yield v if (v.object_type==0 and v.client_id!=side) }
+>>>>>>> .r42
    end
    
+<<<<<<< .mine
+=======
    def setup(msg)
       puts "Map Setup"
       set_size(msg[2],msg[3])
@@ -178,14 +246,19 @@ class Map
       end # while object
    end
 
+>>>>>>> .r42
    def get_object(id)
       puts "nil for #{id}" if @hash[id] == nil
       @hash[id]
    end
 
-   def add_object(o)
+   def add_object(x,y,o)
       raise "Map#add_object: adding nil ???"  if o == nil
+      ox, o.y = x, y
       @hash[o.object_id] = o
+<<<<<<< .mine
+      #o.describe
+=======
       return
       puts "   ObjectID: #{o.object_id}"
       puts "      Coord: #{o.x} #{o.y}"
@@ -198,6 +271,7 @@ class Map
       when 1 # resource
       puts "         ResourceType: #{o.rtype}"
       end
+>>>>>>> .r42
    end
 
    def remove_object(id)
@@ -247,8 +321,31 @@ class Map
          rv << obj if(obj.x==x and obj.y==y)
          }
       rv
+    end
+
+   def joueur(a)
+      #~ @units=@hash.values.delete_if {|x| (x.object_type!=0 || x.client_id!=a)}         x.object_type!=0}.delete_if
+      id=@joueurs[a]
+      @units=@hash.values.delete_if {|x| x.client_id!=id || x.object_type!=0 }
+      #~ puts "taille " + @units.size.to_s
+      @units
+   end
+      
+   def joueurs() 
+      if @joueurs==nil || @joueurs.size<2
+         @joueurs=(@hash.values.delete_if {|x| x.object_type!=0}).map!{|x| x.client_id}.uniq.sort
+      end  
+      #~ puts "joueurs : " + @joueurs.join("-")
+      @joueurs
+   end
+
+
+   def change_side
+      @side, @xside = @xside, @side
+      #log 3, 3, "Changing side: #{@side} to play"
    end
    
+  
    def exists?(ant)
       #puts ant
       @hash.has_key?(ant.object_id)

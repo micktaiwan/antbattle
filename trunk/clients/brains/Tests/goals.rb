@@ -161,9 +161,9 @@ class Colony
 
       # get state of the game
       #calculate each top goals weight
-      @top_goals.each { |g|
-         get_weight(g)
-         }
+      #@top_goals.each { |g|
+      #   get_weight(g)
+      #   }
    end
    
 
