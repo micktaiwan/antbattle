@@ -18,6 +18,7 @@
 #include "AntClient.h"
 //#include "MUtils.h"
 #include <sstream>
+#include <stdexcept>
 using namespace std;
 using namespace mnetmsg;
 
@@ -72,7 +73,7 @@ void MColony::DeleteAnt(long id) {
       ++ite;
       }
 
-   throw(runtime_error("MColony::DeleteAnt: can not find object"));
+   throw(std::runtime_error("MColony::DeleteAnt: can not find object"));
 
    }
 

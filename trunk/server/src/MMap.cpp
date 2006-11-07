@@ -19,6 +19,7 @@
 #include "MMapObject.h"
 
 #include <sstream>
+#include <stdexcept>
 //#include <algorithm>
 
 extern void WriteToLog(int t, const std::string& msg);
@@ -124,4 +125,3 @@ MMap::MObjList MMap::GetObjects(int x, int y) {
    return rv;
 
    }
-
