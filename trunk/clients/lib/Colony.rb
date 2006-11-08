@@ -104,7 +104,7 @@ class Colony
                   @client_list.remove_id(id)
                   puts "Disconnection of #{c.id} (Type:#{c.type}): #{c.name} #{c.version} #{c.free_text}"
               else
-                       puts "Unknown msg type for #{action}"
+                  puts "Unknown msg type for #{action}"
             end
          when "B" # Game
             case action
@@ -173,14 +173,6 @@ class Colony
                else
                   puts "Unknown msg type for #{action}"
             end
-<<<<<<< .mine
-         when 'E' # Map
-            case action
-               when 'c' # Map
-                  @map.setup(apacket)
-               else
-                  puts "Unknown msg type for #{action}"
-=======
 			when 'E' # Map
             case msg[1].chr
       			when 'c' # Map
@@ -188,7 +180,7 @@ class Colony
                   @gui.paint if $hasgtk
       			else
       				puts "4Unknown msg type for #{msg[1].chr}"
->>>>>>> .r42
+
             end
          else
             puts "Unknown msg type for #{typeaction}"
