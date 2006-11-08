@@ -123,11 +123,35 @@ void MAntServer::Run(int port) {
       SLEEP(20);
 
       // TODO 1: check the timeout
+      CheckTimeout();
 
       } // while
    WriteToLog(2,string("Shutting down..."));
 
    }
+
+//---------------------------------------------------------------------------
+MAntClient* MAntServer::OtherPlayer(MAntClient* c) {
+// 2 player game only !
+
+   if(Player1==c) return Player2;
+   return Player1;
+
+   }
+
+//---------------------------------------------------------------------------
+void MAntServer::CheckTimeout() {
+
+   if(!GameInProgress) return;
+   MAntClient* c = WL.GetClient(CurrentPlayerWLPos);
+   TIME t;
+   GETTIME(t);
+   if(t-c->LastActionTime > ActionTimeout) {
+      StopGame(OtherPlayer(c)->ClientID,c->ClientID,1, "Timeout"); // will be removed from WL
+      }
+
+   }
+
 
 //---------------------------------------------------------------------------
 bool MAntServer::OnConnection(MPNL::MSocket* s) {
@@ -201,6 +225,7 @@ void MAntServer::Parse(MPNL::MSocket* s) {
 
    s->Read(msg);
    MAntClient* c = GetData(s);
+   GETTIME(c->LastActionTime); // we reset the clock for the timeout
    WriteToLog(3,string(   "[")+c->IP+"]: "+msg);
    switch(msg[0]) {
       case 'A':
@@ -490,6 +515,7 @@ void MAntServer::SwitchPlayer() {
    MAntClient* c = WL.GetClient(CurrentPlayerWLPos);
    c->ErrorCount = 0;
    c->Colony.ResetActionPoints();
+   GETTIME(c->LastActionTime);
 
    // Send the signal
    base mm;

@@ -66,7 +66,7 @@ void MMap::AddObject(MMapObject* obj, bool with_new_id) {
    if(with_new_id) obj->ID = (long)Objects.size();
    Objects[obj->ID] = obj;
    std::ostringstream o;
-   o << "Adding type " << (char)(obj->Type+'0');
+   o << "Adding object type " << (char)(obj->Type+'0') + " to map";
    WriteToLog(3,o.str());
 
    }

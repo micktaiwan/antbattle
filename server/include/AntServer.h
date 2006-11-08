@@ -43,13 +43,15 @@ class MAntServer : public MPNL::MTCPServer {
       void Run(int port);
       void HTTPInfo(std::string& str); // return info on the server
       void SetHTTPPort(int p);
+      void SetActionTimeout(int t) {ActionTimeout = t*1000;}
 
    private:
       TIME UpTime;
+      TIME ActionTimeout;
       MClientStats ClientStats;
       MHTTPServer* HTTP;
       enum MService {SERVICE_CONN, SERVICE_CHAT, SERVICE_GAMEMSG};
-      int      CurrentClientID;
+      int      CurrentClientID; //  used for generating new ID
       bool     GameInProgress;
       MWList   WL;
       MWList   DisconnectList; // to delete clients in the main thread
@@ -72,6 +74,10 @@ class MAntServer : public MPNL::MTCPServer {
       void SwitchPlayer();
       void AddError(MPNL::MSocket* s, MAntClient* c, const std::string& msg);
       void SendMap(MPNL::MSocket* excluded);
+      inline MAntClient* OtherPlayer(MAntClient* c);
+      void CheckTimeout();
+
+
       // Actions
       void Move(MPNL::MSocket* s, MAntClient* c, long id, int x, int y);
       void Attack(MPNL::MSocket* s, MAntClient* c, long id1, long id2);
