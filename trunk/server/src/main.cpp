@@ -11,7 +11,7 @@
 using namespace std;
 
 bool SigInt = false;
-string ProgramName = "AntBattle Server 0.5.6c (2006/11/07)";
+string ProgramName = "AntBattle Server 0.6 (2006/11/08)";
 int gLoglevel = 3;
 string gLogFile = "./log.txt";
 boost::mutex LogMutex;
@@ -142,6 +142,10 @@ int main(int argc, char* argv[]) {
                if(value=="yes") ofstream(gLogFile.c_str(),ios_base::out);
                }
             else if(param=="map") ParseMap(value,s);
+            else if(param=="action_timeout") { // in seconds !
+               s.SetActionTimeout(atoi(value.c_str()));
+               WriteToLog(3,string("Action timeout set to ") + value + " seconds");
+               }
             else cout << "Unknown param " << param << endl;
             //cout << param << "=" << value << endl;
             }

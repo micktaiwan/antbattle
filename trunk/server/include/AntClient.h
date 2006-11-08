@@ -53,7 +53,7 @@ class MAntClient {
 public:
 
    std::string    Program, Version, IP, FreeText;
-   int   ClientID, Type, ErrorCount;
+   int   ClientID, Type, ErrorCount, LastActionTime;
    bool           Logged, Playing;
    MColony        Colony;
    std::map<int,int> Services;
@@ -64,6 +64,7 @@ public:
    void DataString(mnetmsg::base& m);
 
 private:
+
    };
 
 //---------------------------------------------------------------------------
