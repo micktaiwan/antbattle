@@ -1,0 +1,4 @@
+# depslib dependency file v1.0
+1164564428 source:/media/hda5/mick/projects/antbattle/server/codeblocks/antbattleserver/main.cpp
+	<iostream>
+
