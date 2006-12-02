@@ -16,7 +16,7 @@ class MWList {
 
 public:
    typedef std::vector<MAntClient*> MWL;
-   
+
    MWList() {}
    ~MWList() {}
 

@@ -2,3 +2,28 @@
 1164564428 source:/media/hda5/mick/projects/antbattle/server/codeblocks/antbattleserver/main.cpp
 	<iostream>
 
+1162928364 source:/media/hda5/mick/projects/antbattle/server/src/AntClient.cpp
+	"AntClient.h"
+	<sstream>
+	<stdexcept>
+
+1163929480 /media/hda5/mick/projects/antbattle/server/include/AntClient.h
+	<string>
+	<vector>
+	<map>
+	"MMapObject.h"
+	"Msg.h"
+
+1162927263 /media/hda5/mick/projects/antbattle/server/include/MMapObject.h
+	<string>
+	"Msg.h"
+
+1158907013 /media/hda5/mick/projects/antbattle/server/include/Msg.h
+	"NetMsgUtils.h"
+
+1158907013 /media/hda5/mick/projects/antbattle/server/include/NetMsgUtils.h
+	<string>
+	<map>
+	<vector>
+	<sstream>
+
