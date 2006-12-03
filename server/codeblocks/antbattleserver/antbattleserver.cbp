@@ -9,8 +9,8 @@
 		<Option virtualFolders="" />
 		<Build>
 			<Target title="Debug">
-				<Option output="./antbattleserver" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj/Debug/" />
+				<Option output=".\antbattleserver.exe" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\Debug\" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -18,8 +18,8 @@
 				</Compiler>
 			</Target>
 			<Target title="Release">
-				<Option output="./antbattleserver" prefix_auto="1" extension_auto="1" />
-				<Option object_output="obj/Release/" />
+				<Option output=".\antbattleserver.exe" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj\Release\" />
 				<Option type="1" />
 				<Option compiler="gcc" />
 				<Compiler>
@@ -32,59 +32,60 @@
 		</Build>
 		<Compiler>
 			<Add option="-Wall" />
-			<Add directory="../../include" />
+			<Add directory="..\..\include" />
+			<Add directory="D:\MATech\Prog\3rd\boost-1.30.2" />
 		</Compiler>
-		<Unit filename="../../src/AntClient.cpp">
+		<Unit filename="..\..\src\AntClient.cpp">
 			<Option compilerVar="CPP" />
 			<Option target="Debug" />
 			<Option target="Release" />
 		</Unit>
-		<Unit filename="../../src/AntServer.cpp">
+		<Unit filename="..\..\src\AntServer.cpp">
 			<Option compilerVar="CPP" />
 			<Option target="Debug" />
 			<Option target="Release" />
 		</Unit>
-		<Unit filename="../../src/HTTPServer.cpp">
+		<Unit filename="..\..\src\HTTPServer.cpp">
 			<Option compilerVar="CPP" />
 			<Option target="Debug" />
 			<Option target="Release" />
 		</Unit>
-		<Unit filename="../../src/MMap.cpp">
+		<Unit filename="..\..\src\MMap.cpp">
 			<Option compilerVar="CPP" />
 			<Option target="Debug" />
 			<Option target="Release" />
 		</Unit>
-		<Unit filename="../../src/MMapObject.cpp">
+		<Unit filename="..\..\src\MMapObject.cpp">
 			<Option compilerVar="CPP" />
 			<Option target="Debug" />
 			<Option target="Release" />
 		</Unit>
-		<Unit filename="../../src/MPNLBase.cpp">
+		<Unit filename="..\..\src\MPNLBase.cpp">
 			<Option compilerVar="CPP" />
 			<Option target="Debug" />
 			<Option target="Release" />
 		</Unit>
-		<Unit filename="../../src/MStats.cpp">
+		<Unit filename="..\..\src\MStats.cpp">
 			<Option compilerVar="CPP" />
 			<Option target="Debug" />
 			<Option target="Release" />
 		</Unit>
-		<Unit filename="../../src/MThread.cpp">
+		<Unit filename="..\..\src\MThread.cpp">
 			<Option compilerVar="CPP" />
 			<Option target="Debug" />
 			<Option target="Release" />
 		</Unit>
-		<Unit filename="../../src/MUtils.cpp">
+		<Unit filename="..\..\src\MUtils.cpp">
 			<Option compilerVar="CPP" />
 			<Option target="Debug" />
 			<Option target="Release" />
 		</Unit>
-		<Unit filename="../../src/NetMsgUtils.cpp">
+		<Unit filename="..\..\src\NetMsgUtils.cpp">
 			<Option compilerVar="CPP" />
 			<Option target="Debug" />
 			<Option target="Release" />
 		</Unit>
-		<Unit filename="../../src/main.cpp">
+		<Unit filename="..\..\src\main.cpp">
 			<Option compilerVar="CPP" />
 			<Option target="Debug" />
 			<Option target="Release" />
