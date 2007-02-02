@@ -17,12 +17,14 @@ using namespace boost::posix_time;
    #define GETTIME(a)  a = GetTickCount()
    #define RESETTIME(a)  a = 0
    #define ISTIMEZERO(a) a == 0
+   #define SETTIME(a,x) a = x
 #else
    #include <sys/time.h>
    #define TIME struct timeval
    #define GETTIME(a)  gettimeofday(&(a),NULL)
    #define RESETTIME(a)  a.tv_sec = a.tv_usec = 0
    #define ISTIMEZERO(a) (a.tv_sec == 0 &&  a.tv_usec == 0)
+   #define SETTIME(a,x) a.tv_sec = x/1000; a.tv_usec = x-(x/1000)*1000
 #endif
 
 //---------------------------------------------------------------------------
