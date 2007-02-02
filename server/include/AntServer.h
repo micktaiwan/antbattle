@@ -43,7 +43,7 @@ class MAntServer : public MPNL::MTCPServer {
       void Run(int port);
       void HTTPInfo(std::string& str); // return info on the server
       void SetHTTPPort(int p);
-      void SetActionTimeout(int t) {ActionTimeout = t*1000;}
+      void SetActionTimeout(int t) {SETTIME(ActionTimeout,t*1000);}
 
    private:
       TIME UpTime;

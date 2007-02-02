@@ -142,6 +142,8 @@ MAntClient* MAntServer::OtherPlayer(MAntClient* c) {
 //---------------------------------------------------------------------------
 void MAntServer::CheckTimeout() {
 
+   return; // for now...
+/*
    if(!GameInProgress) return;
    MAntClient* c = WL.GetClient(CurrentPlayerWLPos);
    TIME t;
@@ -149,6 +151,7 @@ void MAntServer::CheckTimeout() {
    if(t-c->LastActionTime > ActionTimeout) {
       StopGame(OtherPlayer(c)->ClientID,c->ClientID,1, "Timeout"); // will be removed from WL
       }
+*/
 
    }
 
@@ -225,7 +228,7 @@ void MAntServer::Parse(MPNL::MSocket* s) {
 
    s->Read(msg);
    MAntClient* c = GetData(s);
-   GETTIME(c->LastActionTime); // we reset the clock for the timeout
+   //GETTIME(c->LastActionTime); // we reset the clock for the timeout
    WriteToLog(3,string(   "[")+c->IP+"]: "+msg);
    switch(msg[0]) {
       case 'A':
@@ -510,12 +513,12 @@ void MAntServer::SubscribeClient(const MService& s, MAntClient* c, int value) {
 void MAntServer::SwitchPlayer() {
 
    if(!GameInProgress) return;
-   
+
    CurrentPlayerWLPos = !CurrentPlayerWLPos;
    MAntClient* c = WL.GetClient(CurrentPlayerWLPos);
    c->ErrorCount = 0;
    c->Colony.ResetActionPoints();
-   GETTIME(c->LastActionTime);
+   //GETTIME(c->LastActionTime);
 
    // Send the signal
    base mm;
@@ -744,7 +747,7 @@ void MAntServer::HTTPInfo(std::string& str) {
       UnlockClients();
       s << "</table><br/><br/>";
       }
-      
+
    if(ClientStats.List.size()) {
       s << "<b>Stats</b><br/>";
       s << "<table><tr style=\"font-weight:bold;\"><td>Name</td><td>Win</td><td>Loss</td><td>Last connection</td></tr>";
@@ -759,7 +762,7 @@ void MAntServer::HTTPInfo(std::string& str) {
          }
       s << "</table>";
       }
-      
+
    str = s.str();
 
    }
