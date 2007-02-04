@@ -1,0 +1,5 @@
+#summary welcome page
+
+= Introduction =
+
+Well I'm testing the wiki feature
