@@ -157,12 +157,12 @@ class Map
       @xside   = id2.to_i
    end
     
-   def allies_each
-      @hash.each_value { |v| yield v if (v.object_type==0 and v.client_id==side) }
+   def allies_each(id)
+      @hash.each_value { |v| yield v if (v.object_type==0 and v.client_id==id) }
    end
    
-   def ennemies_each
-      @hash.each_value { |v| yield v if (v.object_type==0 and v.client_id!=side) }
+   def ennemies_each(id)
+      @hash.each_value { |v| yield v if (v.object_type==0 and v.client_id!=id) }
    end
    
    def setup(msg)
@@ -302,7 +302,7 @@ class Map
 
    def change_side
       @side, @xside = @xside, @side
-      #log 3, 3, "Changing side: #{@side} to play"
+      log 3, 3, "Changing side: #{@side} to play"
    end
    
   

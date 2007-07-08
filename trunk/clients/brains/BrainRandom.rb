@@ -7,7 +7,7 @@ class Colony
    end      
 
    def play
-      @map.allies_each { |ant|
+      @map.allies_each(@id) { |ant|
          #raise "play: having a dead ant" if(ant.life==0)
          rv = get_nearby_ennemies(ant)
          if(rv.size>0)
@@ -32,13 +32,13 @@ class Colony
           end
          }
       @tcp.send("Ca") # end of turn
-      sleep(3)
+      #sleep(3)
    end
 
    
    def get_nearby_ennemies(ant)
       rv = []
-      @map.ennemies_each { |e|
+      @map.ennemies_each(@id) { |e|
          #puts e
          rv << e if (((ant.x-e.x).abs + (ant.y-e.y).abs) <= 1)
          #break if rv.size>0 # if you want to speed up the move, since we do not care about the others
