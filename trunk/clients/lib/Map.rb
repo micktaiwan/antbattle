@@ -128,11 +128,6 @@ class Map
       @hash[id]
    end
 
-   def remove_object(id)
-      #puts "#{id} is dead"
-      @hash.delete(id)
-   end
-   
    def move(id,x,y)
       o = @hash[id]
       raise "This object is not in the map, maybe we not have receive the map yet?" if o == nil
