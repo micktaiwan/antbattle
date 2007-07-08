@@ -13,7 +13,7 @@ class Colony
    def play
       set_goals
       x = 1
-      @map.allies_each { |a|
+      @map.allies_each(@id) { |a|
          #puts "each: #{a}"
          arr = a.get_move
          arr.each { |m| @tcp.formatsend(m) }

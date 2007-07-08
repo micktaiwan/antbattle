@@ -136,11 +136,11 @@ class Colony
       # doing simple: give the goal "kill this ant" for each ant
       dist = []
       ant = nil
-      @map.allies_each{ |a|
+      @map.allies_each(@id) { |a|
          ant = a
          break
          }
-      @map.ennemies_each { |e|
+      @map.ennemies_each(@id) { |e|
          dist << [e,distance(ant,e)]
          }
       dist = dist.sort_by {|couple| couple[1]}
@@ -148,7 +148,7 @@ class Colony
       #sleep(5)
       i = 1
       enn = 0
-      @map.allies_each{ |a|
+      @map.allies_each(@id) { |a|
          break if enn >= dist.size
          a.goal = [KILL, dist[enn][0]]
          i += 1 
