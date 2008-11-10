@@ -1,37 +1,33 @@
-#!/usr/bin/ruby
-require 'gtk2'
+#!/usr/bin/env ruby
 
-class Launcher
+require 'gui'
 
-   def initialize
-      Gtk.init
-      window = Gtk::Window.new
-      window.resize(200,50)
-      window.title = 'Ant Battle Launcher'
-      window.signal_connect("destroy") {
-         Gtk.main_quit
-         }
-      hpane = Gtk::HButtonBox.new
-      hpane.spacing = 3
-      window.add(hpane)
-      sbtn = Gtk::Button.new('Launch Server')
-      sbtn.signal_connect("pressed") {
-         #~ system('gnome-terminal -e ls') #../server/src/antbattleserver
-         #server = IO.popen('gnome-terminal ../server/src/antbattleserver')
-         #p Process.waitpid(server.pid)
-         #p $?
-         system('ls')
-         lsproc = IO.popen('ls')
-         p Process.waitpid(lsproc.pid)
-         p $?
-         }
-      hpane.add(sbtn)
-      cbtn = Gtk::Button.new('Launch Client')
-      hpane.add(cbtn)
-      window.show_all   
-      Gtk.main
-   end
+class Gui < GuiGlade
 
+  def initialize(path_or_data, root = nil, domain = nil, localedir = nil, flag = GladeXML::FILE)
+    super(path_or_data, root , domain , localedir, flag )
+    tree = @glade['tree']
+    tree.append_column(Gtk::TreeViewColumn.new('Bot name'))
+    @list = Gtk::ListStore.new(String)
+    tree.set_model(@list)
+   
+    load_bots
+  end
+
+  def load_bots
+    n = @list.append
+    n.set_value(0,"yqsdo")
+  end
+  
+  def on_main_destroy(widget)
+    Gtk.main_quit
+  end
+  
 end
 
-Launcher.new
+
+PROG_PATH = "gui.glade"
+PROG_NAME = "AntBattle Launcher"
+Gui.new(PROG_PATH, nil, PROG_NAME)
+Gtk.main
+
