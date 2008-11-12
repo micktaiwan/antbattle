@@ -33,11 +33,9 @@ class Gui < GuiGlade
       alloc = area.allocation
       #area.window.draw_arc(area.style.fg_gc(area.state), true, 
       #                 0, 0, alloc.width, alloc.height, 0, 64 * 360)
-      for y in (0..20) 
-        area.window.draw_line(area.style.fg_gc(area.state),10,y*20+10,410,y*20+10)
-      end
-      for x in (0..20) 
-        area.window.draw_line(area.style.fg_gc(area.state),x*20+10,10,x*20+10,410)
+      for i in (0..20) 
+        area.window.draw_line(area.style.fg_gc(area.state),10,i*20+10,410,i*20+10)
+        area.window.draw_line(area.style.fg_gc(area.state),i*20+10,10,i*20+10,410)
       end
   end
   
@@ -46,6 +44,15 @@ class Gui < GuiGlade
   end
   def on_field_expose_event(widget, arg0)
     draw
+  end
+  def on_startserver_clicked(widget)
+    r = %x[ps aux]
+    if not r =~ /antbattleserver/
+      puts "Launching..."
+      system("../server/src/antbattleserver &") 
+    else
+      puts "already launched"
+    end
   end
 end
 

@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Tue Nov 11 01:43:48 2008 -->
+<!--Generated with glade3 3.4.5 on Tue Nov 11 13:33:21 2008 -->
 <glade-interface>
   <widget class="GtkWindow" id="main">
     <property name="visible">True</property>
@@ -14,10 +14,20 @@
           <widget class="GtkToolbar" id="toolbar1">
             <property name="visible">True</property>
             <child>
-              <widget class="GtkToolButton" id="start">
+              <widget class="GtkToolButton" id="startserver">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">Start</property>
-                <signal name="clicked" handler="on_start_clicked"/>
+                <property name="label" translatable="yes">Launch Server</property>
+                <signal name="clicked" handler="on_startserver_clicked"/>
+              </widget>
+              <packing>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkToolButton" id="startclients">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">Launch Clients</property>
+                <signal name="clicked" handler="on_startclients_clicked"/>
               </widget>
               <packing>
                 <property name="homogeneous">True</property>

@@ -1,4 +1,5 @@
-#!/usr/local/bin/ruby
+#!/usr/bin/env ruby
+
 # set default values
 ip = "127.0.0.1"
 port = 5000
@@ -33,18 +34,9 @@ $LOAD_PATH << '../lib'
 $LOAD_PATH << '../brains/Tests'
 
 # load brains
-case brain
-   when 'random'
-      require 'BrainRandom'   # the first brain, makes a good opponent to test your first version of your brain
-   when 'straight'
-      require 'BrainStraight' # very simple, to be continued :)
-   when  'minimax'
-      require 'BrainMinimax'  # a minimax test that kills minimax, since we use random moves :)
-   when 'mick'
-      require 'BrainMick'     # Mick's public brain, in construction (^_^)
-   else
-      raise "Unknown brain: #{brain}"
-end
+
+require "Brain#{brain.capitalize}"
+
 
 # create the colony and wake it up !
 require 'Colony'

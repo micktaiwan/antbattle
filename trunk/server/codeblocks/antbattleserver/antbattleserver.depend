@@ -27,3 +27,138 @@
 	<vector>
 	<sstream>
 
+1162928364 source:/home/mick/projects/antbattle/server/src/AntClient.cpp
+	"AntClient.h"
+	<sstream>
+	<stdexcept>
+
+1163929480 /home/mick/projects/antbattle/server/include/AntClient.h
+	<string>
+	<vector>
+	<map>
+	"MMapObject.h"
+	"Msg.h"
+
+1162927263 /home/mick/projects/antbattle/server/include/MMapObject.h
+	<string>
+	"Msg.h"
+
+1158907013 /home/mick/projects/antbattle/server/include/Msg.h
+	"NetMsgUtils.h"
+
+1158907013 /home/mick/projects/antbattle/server/include/NetMsgUtils.h
+	<string>
+	<map>
+	<vector>
+	<sstream>
+
+1163929479 source:/home/mick/projects/antbattle/server/src/MMap.cpp
+	"MMap.h"
+	"MMapObject.h"
+	<sstream>
+	<stdexcept>
+
+1162927263 /home/mick/projects/antbattle/server/include/MMap.h
+	<string>
+	<vector>
+	<map>
+	"Msg.h"
+
+1162927265 source:/home/mick/projects/antbattle/server/src/MMapObject.cpp
+	"MMapObject.h"
+
+1162927265 source:/home/mick/projects/antbattle/server/src/MPNLBase.cpp
+	"MPNLBase.h"
+	<SysUtils.hpp>
+	<sys/types.h>
+	<sys/socket.h>
+	<fcntl.h>
+	<unistd.h>
+	<signal.h>
+	<iostream>
+	<fstream>
+
+1162927263 /home/mick/projects/antbattle/server/include/MPNLBase.h
+	<exception>
+	<string>
+	<list>
+	<queue>
+	<sstream>
+	"MUtils.h"
+	"MThread.h"
+	<winsock2.h>
+	<netinet/in.h>
+	<arpa/inet.h>
+	<sys/time.h>
+	<netdb.h>
+
+1170448954 /home/mick/projects/antbattle/server/include/MUtils.h
+	<string>
+	<stdexcept>
+	<sstream>
+	<vector>
+	<stdio.h>
+	<boost/date_time/posix_time/posix_time.hpp>
+	<sys/time.h>
+
+1226519979 /home/mick/projects/antbattle/server/include/MThread.h
+	<boost/thread.hpp>
+
+1159036863 source:/home/mick/projects/antbattle/server/src/MStats.cpp
+	"MStats.h"
+	"MUtils.h"
+
+1158907013 /home/mick/projects/antbattle/server/include/MStats.h
+	<string>
+	<vector>
+
+1226518918 source:/home/mick/projects/antbattle/server/src/MThread.cpp
+	"MThread.h"
+	<string>
+
+1158907016 source:/home/mick/projects/antbattle/server/src/NetMsgUtils.cpp
+	"NetMsgUtils.h"
+	<sstream>
+	"MUtils.h"
+
+1226510993 source:/home/mick/projects/antbattle/server/src/AntServer.cpp
+	<stdlib.h>
+	<string>
+	"AntServer.h"
+	"AntClient.h"
+	"MMap.h"
+	"HTTPServer.h"
+
+1226518411 /home/mick/projects/antbattle/server/include/AntServer.h
+	<vector>
+	"MPNLBase.h"
+	"Msg.h"
+	"MStats.h"
+
+1226510993 /home/mick/projects/antbattle/server/include/HTTPServer.h
+	"MPNLBase.h"
+
+1226510993 source:/home/mick/projects/antbattle/server/src/HTTPServer.cpp
+	"HTTPServer.h"
+
+1226510993 source:/home/mick/projects/antbattle/server/src/MUtils.cpp
+	<algorithm>
+	<sstream>
+	<fstream>
+	<ctime>
+	<cctype>
+	"MUtils.h"
+	<windows.h>
+	<SysUtils.hpp>
+	<dir.h>
+	<unistd.h>
+	<sys/stat.h>
+
+1226409990 source:/home/mick/projects/antbattle/server/src/main.cpp
+	<string>
+	<iostream>
+	<signal.h>
+	"AntServer.h"
+	<boost/thread/thread.hpp>
+	<fstream>
+
