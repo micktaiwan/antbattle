@@ -12,9 +12,12 @@
 
 #ifdef WIN32
    #include <windows.h>
+   
+#ifdef __BORLAND__
    #include <SysUtils.hpp> // VCL FileExists
                            // TODO 3: change this
-   #include <dir.h>
+#endif
+      #include <dir.h>
 #else
 
    #include <unistd.h>
@@ -548,7 +551,7 @@ unsigned long FileSize(const string& fn) {
 ptime FileDate(const string& fn) {
 
    // TODO 3: does not work for directories
-#ifdef WIN32
+#ifdef __BORLAND__
    struct ffblk s;
    ostringstream o;
    int i;
@@ -586,7 +589,7 @@ ptime FileDate(const string& fn) {
 //---------------------------------------------------------------------------
 bool RenameFile(const std::string& from,const std::string& to) {
 
-#ifdef WIN32
+#ifdef __BORLAND__
    return ::RenameFile(from.c_str(),to.c_str()); // win32
 #else
    return !rename(from.c_str(),to.c_str());

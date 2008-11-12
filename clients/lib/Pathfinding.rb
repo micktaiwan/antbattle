@@ -57,7 +57,7 @@ end
 
 ##########################################################################
 # caution: not optimized
-class Queue
+class MQueue
 
    def initialize
       #puts 'Queue'
@@ -92,7 +92,7 @@ class Pathfinder
    def initialize(map)
       #puts 'PathFinder'
       @map = map
-      @q = Queue.new
+      @q = MQueue.new
       @ignore_obs_target = false # if true, then the target is never an obstacle
    end
 
