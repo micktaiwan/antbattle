@@ -45,7 +45,7 @@ void MHTTPServer::operator()() {
          // New connection, send infos
          WriteToLog(2,string("HTTP connection ")+inet_ntoa(sa.sin_addr));
          string str;
-#ifdef WIN32 // stuck under linux... arrrg
+#ifdef __BORLAND__ // stuck under linux... arrrg
          GetInfo(str);
 #endif
          ostringstream s;

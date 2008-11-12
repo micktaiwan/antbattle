@@ -9,10 +9,9 @@ class MAntServer;
 class MHTTPServer : public MPNL::MTCPServer {
 
    public:
-#ifdef WIN32
+#if defined(__BORLAND__)
       typedef void (__closure *MC)(std::string&);
 #else
-      
       typedef void (MAntServer::*MC)(std::string&);
 #endif
       MHTTPServer() {}

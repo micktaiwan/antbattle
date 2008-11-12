@@ -50,7 +50,7 @@ MAntServer::MAntServer() : MPNL::MTCPServer(), NbAnt(10), CurrentClientID(0), Ga
 
    HTTP = new MHTTPServer();
    HTTP->Port = 8080;
-#ifdef WIN32
+#ifdef __BORLAND__
    HTTP->SetCallback(HTTPInfo);
 #else
    HTTP->SetCallback(&MAntServer::HTTPInfo);
