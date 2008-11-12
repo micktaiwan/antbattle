@@ -12,6 +12,7 @@ class MMap;
 class MHTTPServer;
 
 //---------------------------------------------------------------------------
+// Client Waiting List
 class MWList {
 
 public:
@@ -53,7 +54,7 @@ class MAntServer : public MPNL::MTCPServer {
       enum MService {SERVICE_CONN, SERVICE_CHAT, SERVICE_GAMEMSG};
       int      CurrentClientID; //  used for generating new ID
       bool     GameInProgress;
-      MWList   WL;
+      MWList   WL; // Waiting List
       MWList   DisconnectList; // to delete clients in the main thread
       MMap*    Map;
       boost::mutex ParseMutex;

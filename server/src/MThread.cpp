@@ -1,7 +1,10 @@
 //---------------------------------------------------------------------------
+#ifdef WIN32
 #pragma hdrstop
-#include "MThread.h"
 #pragma package(smart_init)
+#endif
+
+#include "MThread.h"
 
 #include <string>
 extern void WriteToLog(int, const std::string&);

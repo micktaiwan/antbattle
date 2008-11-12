@@ -3,7 +3,7 @@
 #include <iostream>
 #include <signal.h>
 #include "AntServer.h"
-#include <boost/thread/thread.hpp>
+#include <boost/thread.hpp>
 #include <fstream>
 #ifdef WIN32
 #pragma argsused
@@ -60,7 +60,7 @@ void usage() {
    cout << "set log level to 1 to have only errors, to 2 to skip debug messages\n\n";
    exit(1);
    }
-   
+
 //---------------------------------------------------------------------------
 void ParseMap(const string& path, MAntServer& s) {
 
@@ -83,7 +83,7 @@ void ParseMap(const string& path, MAntServer& s) {
       value = line.substr(pos+1);
       if(param=="width") {width=atoi(value.c_str());s.SetMapSize(width,height);}
       else if(param=="height") {height=atoi(value.c_str());s.SetMapSize(width,height);}
-      else if(param=="obs") {
+      else if(param=="obs") { // obstacle
          pos = value.find (",", 0);
          int x = atoi(value.substr(0,pos).c_str());
          int y = atoi(value.substr(pos+1).c_str());
@@ -139,7 +139,7 @@ int main(int argc, char* argv[]) {
             else if(param=="nb_ant") s.NbAnt = atoi(value.c_str());
             else if(param=="log_file") gLogFile = value;
             else if(param=="erase_log_on_start") {
-               if(value=="yes") ofstream(gLogFile.c_str(),ios_base::out);
+               if(value=="yes" && gLogFile!="") ofstream(gLogFile.c_str(),ios_base::out);
                }
             else if(param=="map") ParseMap(value,s);
             else if(param=="action_timeout") { // in seconds !

@@ -15,11 +15,14 @@ class GuiGlade
     
   end
   
-  def on_start_clicked(widget)
-    puts "on_start_clicked() is not implemented yet."
-  end
   def on_main_destroy(widget)
     puts "on_main_destroy() is not implemented yet."
+  end
+  def on_startserver_clicked(widget)
+    puts "on_startserver_clicked() is not implemented yet."
+  end
+  def on_startclients_clicked(widget)
+    puts "on_startclients_clicked() is not implemented yet."
   end
   def on_field_expose_event(widget, arg0)
     puts "on_field_expose_event() is not implemented yet."
