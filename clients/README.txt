@@ -16,3 +16,8 @@ main.rb parameters are:
 brain :  the brain to load
 ip    :  the server ip
 port  :  the server port
+
+ (o-
+ //\
+ v_/_
+
