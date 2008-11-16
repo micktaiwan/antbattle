@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Tue Nov 11 13:33:21 2008 -->
+<!--Generated with glade3 3.4.5 on Sun Nov 16 17:57:09 2008 -->
 <glade-interface>
   <widget class="GtkWindow" id="main">
     <property name="visible">True</property>
@@ -24,10 +24,10 @@
               </packing>
             </child>
             <child>
-              <widget class="GtkToolButton" id="startclients">
+              <widget class="GtkToolButton" id="connect">
                 <property name="visible">True</property>
-                <property name="label" translatable="yes">Launch Clients</property>
-                <signal name="clicked" handler="on_startclients_clicked"/>
+                <property name="label" translatable="yes">Connect</property>
+                <signal name="clicked" handler="on_connect_clicked"/>
               </widget>
               <packing>
                 <property name="homogeneous">True</property>
