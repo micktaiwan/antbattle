@@ -14,7 +14,7 @@ while true
    case com[0].upcase
       when 'S'
          case com[1]
-         when 'M'
+         when 'P' # public server
             ip = "82.238.147.130"
             port = 80
          else raise "Unknown server #{com[1]}"
@@ -33,12 +33,10 @@ end
 $LOAD_PATH << '../lib'
 $LOAD_PATH << '../brains/Tests'
 
-# load brains
-
-require "Brain#{brain.capitalize}"
-
-
 # create the colony and wake it up !
 require 'Colony'
+# load the brain
+require "Brain#{brain.capitalize}"
+
 c = Colony.new(ip,port)
 c.run
