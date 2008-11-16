@@ -13,22 +13,25 @@ class Gui < GuiGlade
     renderer = Gtk::CellRendererText.new
     tree.append_column(Gtk::TreeViewColumn.new('Bot name',renderer,:text => 0))
     tree.append_column(Gtk::TreeViewColumn.new('Version',renderer,:text => 1))
-    @list = Gtk::ListStore.new(String,String)
+    tree.append_column(Gtk::TreeViewColumn.new('Free text',renderer,:text => 2))
+   @list = Gtk::ListStore.new(String,String,String)
     tree.set_model(@list)
-    load_bots
+    @c.load_brains
+    display_brains
     Gtk.timeout_add(50) { read }
   end
 
-  def add_bot(name, version)
+  def add_bot(name, version, text)
     n = @list.append
     n.set_value(0,name)
     n.set_value(1,version)
+    n.set_value(2,text)
   end
 
-  def load_bots
-    @glade['stsbar'].push(0,"Loading bots...")
-    add_bot('Random','1.0') # TODO: parse bots folder
-    @glade['stsbar'].push(0,"Bots loaded")
+  def display_brains
+    @c.brains.each { |b|
+      add_bot(b[:name],b[:version],b[:freetext])
+      }
   end
   
   def draw

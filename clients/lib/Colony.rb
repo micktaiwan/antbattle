@@ -12,14 +12,16 @@ $hasgtk = false
 
 class Colony
 
+  attr_reader :progversion, :progname, :freetext
+
 	def initialize(ip,port)
     @id = -1
     @opp = -1
     @client_list = AntClientList.new
     @gameinProgress = false
     @map = Map.new(nil)
-    @progversion = ""
-    @progname = ""
+    @progversion = "Generic"
+    @progname = "0"
     @freetext = ""
 	  init()
     puts "#{@progname} #{@progversion} - #{@freetext}"

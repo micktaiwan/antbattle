@@ -1,5 +1,7 @@
 class Colony
    
+  attr_reader :progversion, :progname, :freetext
+
    def init
       @progversion = "0.2"
       @progname = "Straight"
