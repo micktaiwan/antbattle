@@ -1,6 +1,7 @@
 "clients" contains all clients code
 
-- in gui you will find the official GUI
+- in gui you will find the OpenGL GUI
+- in launcher a ruby/GTK gui
 - in lib you will find useful code you can use to code your own client
 - in brains you will find AI clients
 
