@@ -21,8 +21,8 @@ class GuiGlade
   def on_startserver_clicked(widget)
     puts "on_startserver_clicked() is not implemented yet."
   end
-  def on_startclients_clicked(widget)
-    puts "on_startclients_clicked() is not implemented yet."
+  def on_connect_clicked(widget)
+    puts "on_connect_clicked() is not implemented yet."
   end
   def on_field_expose_event(widget, arg0)
     puts "on_field_expose_event() is not implemented yet."

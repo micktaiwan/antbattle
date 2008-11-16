@@ -2,9 +2,8 @@ Launcher
 ========
 
 A graphical bot launcher for AntBattle
-Current status: bots can not be launched yet
-
-
+Current status:
+  bots can not be launched yet
 
 
 Ruby

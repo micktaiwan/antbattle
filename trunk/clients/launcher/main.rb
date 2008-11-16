@@ -1,13 +1,13 @@
 #!/usr/bin/env ruby
 
 require 'gui'
-require 'launcher'
+require 'gui_client'
 
 class Gui < GuiGlade
 
   def initialize(path_or_data, root = nil, domain = nil, localedir = nil, flag = GladeXML::FILE)
     super(path_or_data, root , domain , localedir, flag )
-    @l = Launcher.new
+    @c = GuiClient.new('127.0.0.1',5000)
     @glade['stsbar'].push(0,"Starting...")
     tree = @glade['tree']
     renderer = Gtk::CellRendererText.new
@@ -16,6 +16,7 @@ class Gui < GuiGlade
     @list = Gtk::ListStore.new(String,String)
     tree.set_model(@list)
     load_bots
+    Gtk.timeout_add(50) { read }
   end
 
   def add_bot(name, version)
@@ -38,6 +39,15 @@ class Gui < GuiGlade
     end
   end
   
+  def read
+    return true if not @c.connected?
+    msg = @c.read
+    return if msg == ""
+    @c.parse(msg)
+    true # needed for GTK
+  end
+  
+  
   def on_main_destroy(widget)
     Gtk.main_quit
   end
@@ -45,10 +55,12 @@ class Gui < GuiGlade
     draw
   end
   def on_startserver_clicked(widget)
-    @l.start_server
+    @c.start_server
   end
-  def on_startclients_clicked
-    @l.start_clients
+  def on_connect_clicked
+    @glade['stsbar'].push(0,"Connecting...")
+    @c.connect
+    @glade['stsbar'].push(0,"Connected")
   end
   
 end
