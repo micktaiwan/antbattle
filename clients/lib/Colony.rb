@@ -13,20 +13,20 @@ $hasgtk = false
 class Colony
 
 	def initialize(ip,port)
-      @id = -1
-      @opp = -1
-      @client_list = AntClientList.new
-      @gameinProgress = false
-      @map = Map.new(nil)
-      @progversion = ""
-      @progname = ""
-      @freetext = ""
-		init()
-      puts "#{@progname} #{@progversion} - #{@freetext}"
-		puts "   Ctrl-C to close"
-      puts "   Connecting to #{ip}:#{port}..."
-		@tcp = TCPClient.new(ip,port)
-      @gui = GuiTk.new(@map) if $hasgtk
+    @id = -1
+    @opp = -1
+    @client_list = AntClientList.new
+    @gameinProgress = false
+    @map = Map.new(nil)
+    @progversion = ""
+    @progname = ""
+    @freetext = ""
+	  init()
+    puts "#{@progname} #{@progversion} - #{@freetext}"
+	  puts "   Ctrl-C to close"
+    puts "   Connecting to #{ip}:#{port}..."
+	  @tcp = TCPClient.new(ip,port)
+    @gui = GuiTk.new(@map) if $hasgtk
    end
 
   def run
@@ -34,42 +34,42 @@ class Colony
       @tcp.connect
       # send my infos
       @tcp.formatsend("Aa0~"+@progname+"~"+@progversion+"~"+@freetext)
-         # subscribe to connections
-         @tcp.send("Ac1");
-         # request client list
-         @tcp.send("Ab")
-         # subscribe to chats
-         @tcp.send("Db1");
-         # subscribe to games (to play)
-         @tcp.send("Bb1");
-         # subscribe to games msg (to see others games)
-         @tcp.send("Af1");
-         secs = 3
-         while(1)
-          begin
+      # subscribe to connections
+      @tcp.send("Ac1");
+      # request client list
+      @tcp.send("Ab")
+      # subscribe to chats
+      @tcp.send("Db1");
+      # subscribe to games (to play)
+      @tcp.send("Bb1");
+      # subscribe to games msg (to see others games)
+      @tcp.send("Af1");
+      timeout = 3
+      while(1) # the main loop
+        begin
           @msg = ""
-          timeout(secs) {
+          timeout(timeout) {
             @msg = @tcp.read
             }
-          rescue Timeout::Error
-          #puts "No game in progress / no move for #{secs} seconds"
-          end
-          if(@msg != "")
-             begin
-                parse(@msg) 
-             rescue Exception => e
-              puts "****** Parse msg error: #{ e.message } - (#{ e.class })" << "\n" <<  (e.backtrace or []).join("\n")
-              raise
-             end
+        rescue Timeout::Error
+          #puts "No game in progress / no move for #{timeout} seconds"
+        end
+        if(@msg != "")
+          begin
+            parse(@msg) 
+          rescue Exception => e
+            puts "****** Parse msg error: #{ e.message } - (#{ e.class })" << "\n" <<  (e.backtrace or []).join("\n")
+            raise
           end
         end
+      end
     rescue Errno::EBADF => e
       raise "connection problem... #{ e.message }" 
     end
-   
-	end
+  
+  end
 
-   def parse(msg)
+  def parse(msg)
       s = msg.size
       
       raise "msg len < 2" if s < 2
@@ -77,16 +77,16 @@ class Colony
       
       typeaction=apacket.shift
       action=apacket.shift
-      #~ print typeaction + action + ""
+      # print typeaction + action + ""
       case typeaction
-         when "A" #Client management message
+         when "A" # Client management message
             case action
                when 'a' # ID/Server Version
                   puts "ID"
                   id, server_version  = translate_a_msg("ss",apacket)
-                        @id = id.to_i
-                  puts "   === CAUTION: PROTOCOL VERSIONS ARE DIFFERENT ! ===" if server_version != @version
-                        puts "   ID: #{@id}, Server: #{server_version}"
+                  @id = id.to_i
+                  #puts "   === CAUTION: PROTOCOL VERSIONS ARE DIFFERENT ! ===" if server_version != @version
+                  puts "   ID: #{@id}, Server version: #{server_version}"
                when 'b' # Client list
                   puts "Client list:"
                   tbl_cl=translate_msg("sssss",apacket)
@@ -123,9 +123,9 @@ class Colony
                   # are we one of the players ?
                   if(@id==id1 or @id==id2)
                     @gameinProgress = true
-                     puts "   I am playing !!!"
-                   end
-                  when 'c' # Map
+                    puts "   I am playing !!!"
+                  end
+               when 'c' # Map
                   #~ puts "Setup de la map"
                   @map.setup(apacket)           
                   raise "   Error GUI can't have partial view"      
@@ -179,8 +179,7 @@ class Colony
                   @map.setup(msg)
                   @gui.paint if $hasgtk
       			else
-      				puts "4Unknown msg type for #{msg[1].chr}"
-
+      				puts "Unknown msg type for #{msg[1].chr}"
             end
          else
             puts "Unknown msg type for #{typeaction}"
@@ -188,12 +187,12 @@ class Colony
       $stdout.flush      
 	end
 
-   def get_client_info
-      cl="Client list :\n"
-      @client_list.list.values.each { |c|
-         cl+=c.describe + "\n"
-         }
-      cl
-   end
+  def get_client_info
+    cl="Client list :\n"
+    @client_list.list.values.each { |c|
+      cl+=c.describe + "\n"
+      }
+    cl
+  end
 
 end

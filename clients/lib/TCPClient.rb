@@ -9,16 +9,16 @@ class TCPClient
     @port = port
 	end
 
-	def connect
-		begin
-         timeout(10) do
-            @t = TCPSocket.new(@ip, @port)
-         end
-		rescue
-         @t = nil
-         raise
-		end
-	end
+  def connect
+    begin
+      timeout(2) do
+        @t = TCPSocket.new(@ip, @port)
+      end
+    rescue
+      @t = nil
+      raise
+    end
+  end
 	
 	def disconnect
 		@t.close if(@t != nil)
@@ -41,6 +41,10 @@ class TCPClient
 	def read
 		raise "not connected" if @t == nil
 		msg = ""
+		
+    readfds, writefds, exceptfds = select([@t], nil, nil, 0.1)
+    return msg if !readfds
+
 		len = @t.recv(2)
 		len = len.unpack("n")[0]
     raise RuntimeError,"Error during reading socket" if len==nil
@@ -50,9 +54,8 @@ class TCPClient
 		msg
 	end
 
-  def status
-    return nil if @t==nil
-    1
+  def connected?
+    return @t != nil
   end
   
   def shutdown
