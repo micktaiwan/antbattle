@@ -5,8 +5,8 @@ class TCPClient
 
 	def initialize(ip,port)
 		@t = nil
-      @ip = ip
-      @port = port
+    @ip = ip
+    @port = port
 	end
 
 	def connect

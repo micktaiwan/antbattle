@@ -1,5 +1,5 @@
-Tiny Graphical Client
-=====================
+OpenGL Tiny Graphical Client
+============================
 
 "ruby maingui.rb IP PORT"  to launch it
 See http://www.ruby-lang.org/en/
