@@ -1,4 +1,6 @@
 class Colony
+
+  attr_reader :progversion, :progname, :freetext
    
    def init
       @progversion = "0.5"
@@ -11,7 +13,7 @@ class Colony
          #raise "play: having a dead ant" if(ant.life==0)
          rv = get_nearby_ennemies(ant)
          if(rv.size>0)
-				puts "Attacking #{rv[0]}"
+				    puts "Attacking #{rv[0]}"
             @tcp.formatsend("Cc#{ant.object_id}~#{rv[0].object_id}"); # attack
             rv[0].life -= 5
          else

@@ -4,12 +4,14 @@ require '../lib/Utils'
 
 class GuiClient < TCPClient
 
+  attr_reader :brains
+
   def initialize(ip,port)
     super(ip,port)
     @progversion = "0.1"
     @progname = "Launcher"
     @freetext = "Ant Battle Viewer"
-    @bots = []
+    @brains = []
   end
   
   def start_server
@@ -22,7 +24,26 @@ class GuiClient < TCPClient
     end
   end
     
-  def load_bots
+  # parse brains folder to detect brains we could load
+  def load_brains
+    path = '../brains'
+    Dir.new(path).entries.each do |file|
+      if not File.directory? file
+        if file[0..4] == 'Brain'
+          add_brain file 
+        end
+      end
+    end
+  end
+  
+  
+  def add_brain file
+    #(eval IO.read('../brains/'+file)).name
+    load('../brains/'+file)
+    b = Colony.new
+    b.init
+    @brains << {:name => b.progname, :version => b.progversion, :freetext => b.freetext}
+    unload
   end
   
   def connect
@@ -147,6 +168,16 @@ class GuiClient < TCPClient
       end
       $stdout.flush      
 	end
+	
+private
+	
+  def unload
+    Object.class_eval do
+      remove_const :Colony
+      const_set :Colony, Class.new { }
+    end
+    GC.start
+  end
   
 end
 
