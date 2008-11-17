@@ -189,6 +189,8 @@ class Colony
       $stdout.flush      
 	end
 
+private
+  
   def get_client_info
     cl="Client list :\n"
     @client_list.list.values.each { |c|

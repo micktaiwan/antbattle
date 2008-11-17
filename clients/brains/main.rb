@@ -15,7 +15,7 @@ while true
       when 'S'
          case com[1]
          when 'P' # public server
-            ip = "82.238.147.130"
+            ip = "82.238.147.130" # no more valid
             port = 80
          else raise "Unknown server #{com[1]}"
          end

@@ -8,7 +8,7 @@ class Colony
    end      
 
    def play
-      @map.allies_each { |ant|
+      @map.allies_each(@id) { |ant|
          raise "play: having a dead ant" if(ant.life==0)
          # going straight to the ennemy
          x,y = ant.x, ant.y
@@ -60,7 +60,7 @@ class Colony
    
    def get_ennemies()
       e = []
-      @map.ennemies_each {|a| e << a}
+      @map.ennemies_each(@id) {|a| e << a}
       e.sort_by {|a| a.life} 
       e
    end
@@ -88,7 +88,7 @@ class Colony
             begin
                parse(@msg)
             rescue Exception => e
-               puts "****** Parse msg error: #{ e.message } - (#{ e.class })" << "\n" << (e.backtrace or []).join("\n")
+               puts "Parse msg error: #{ e.message } - (#{ e.class })" << "\n\n" << (e.backtrace or []).join("\n")
             end
          end
       end while(@msg[0,s.length]!=s && @msg[0,2]!="Ba" && @msg[0,2]!="Be")

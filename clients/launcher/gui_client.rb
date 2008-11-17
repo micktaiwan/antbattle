@@ -1,10 +1,11 @@
 require '../lib/TCPClient'
 require '../lib/Map'
 require '../lib/Utils'
+require '../lib/AntClient'
 
 class GuiClient < TCPClient
 
-  attr_reader :brains
+  attr_reader :brains, :map
 
   def initialize(ip,port)
     super(ip,port)
@@ -12,15 +13,17 @@ class GuiClient < TCPClient
     @progname = "Launcher"
     @freetext = "Ant Battle Viewer"
     @brains = []
+    @map = Map.new
+    @client_list = AntClientList.new
   end
   
   def start_server
     r = %x[ps aux]
     if not r =~ /antbattleserver/
-      puts "Launching..."
-      system("../server/src/antbattleserver &") 
+      system("../../server/src/antbattleserver &") 
+      return 0
     else
-      puts "already launched"
+      return 1
     end
   end
     
@@ -36,7 +39,6 @@ class GuiClient < TCPClient
     end
   end
   
-  
   def add_brain file
     #(eval IO.read('../brains/'+file)).name
     load('../brains/'+file)
@@ -47,8 +49,17 @@ class GuiClient < TCPClient
   end
   
   def connect
+    return if connected?
     super
     formatsend("Aa0~"+@progname+"~"+@progversion+"~"+@freetext)
+    # subscribe to connections
+    send("Ac1");
+    # request client list
+    send("Ab")
+    # subscribe to chats
+    send("Db1");
+    # subscribe to games msg (to see others games)
+    send("Af1");
   end
 
   def parse(msg)
@@ -135,7 +146,7 @@ class GuiClient < TCPClient
                   ant_id,x,y=translate_a_msg("SBB",apacket)
                   @map.move(ant_id,x,y)
                when 'c' # attack
-                        id1,id,life = translate_a_msg("SSS",apacket)
+                  id1,id,life = translate_a_msg("SSS",apacket)
                   #~ puts "#{id1} attacks #{id},  #{id} life is #{life}"
                   if(life==0)
                      @map.remove_object(id)
@@ -155,17 +166,17 @@ class GuiClient < TCPClient
                else
                   puts "Unknown msg type for #{action}"
             end
-			when 'E' # Map
-            case msg[1].chr
-      			when 'c' # Map
-                  @map.setup(msg)
-                  @gui.paint if $hasgtk
-      			else
-      				puts "Unknown msg type for #{msg[1].chr}"
-            end
-         else
-            puts "Unknown msg type for #{typeaction}"
-      end
+        when 'E' # Map
+          case msg[1].chr
+          when 'c' # Map
+            @map.setup(msg)
+            @gui.paint if $hasgtk
+          else
+            puts "Unknown msg type for #{msg[1].chr}"
+          end
+        else
+          puts "Unknown msg type for #{typeaction}"
+        end
       $stdout.flush      
 	end
 	
@@ -177,6 +188,14 @@ private
       const_set :Colony, Class.new { }
     end
     GC.start
+  end
+  
+  def get_client_info
+    cl="Client list :\n"
+    @client_list.list.values.each { |c|
+      cl += c.describe + "\n"
+      }
+    cl
   end
   
 end

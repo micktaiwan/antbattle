@@ -27,6 +27,9 @@ class GuiGlade
   def on_field_expose_event(widget, arg0)
     puts "on_field_expose_event() is not implemented yet."
   end
+  def on_about_clicked(widget)
+    puts "on_about_clicked() is not implemented yet."
+  end
 end
 
 # Main program

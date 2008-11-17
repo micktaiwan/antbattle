@@ -32,9 +32,9 @@ def translate_msg(pattern, packet)
         when 's'
            str = ""
            begin
-              str += packet.shift
-            end while (packet[0]!=PARAMSEP && packet[0]!=nil)
-            packet.shift #on vire PARAMSEP
+              str += packet.shift.to_s
+           end while (packet[0]!=PARAMSEP && packet[0]!=nil)
+           packet.shift #on vire PARAMSEP
            rv << str
         when 'S'
            str = ""
