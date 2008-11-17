@@ -75,6 +75,7 @@ class Warrior < Ant
    end
 end
 
+#=========================================
 class Ressource < MapObject
    attr_accessor :resource_type
    
@@ -88,6 +89,7 @@ class Ressource < MapObject
   end
 end
 
+#=========================================
 class Map
 
    attr_reader   :w, :h, :hash
@@ -173,14 +175,14 @@ class Map
          case type
          when 0 # ant
             client_id = get_param_from(msg,i);            i += client_id.size+1
-            type_fourmi = msg[i]; i += 1
+            ant_type = msg[i]; i += 1
             life = msg[i];        i += 1
-            case type_fourmi
-               when 0
-                  object = Warrior.new
-               else
-                  puts "Ant type not implemented: #{type_fourmi}"
-                  return
+            case ant_type
+              when 0
+                object = Warrior.new
+              else
+                puts "Ant type not implemented: #{ant_type}"
+              return
             end
             object.object_id = object_id.to_i
             object.x = x
@@ -188,15 +190,15 @@ class Map
             object.life = life
             object.client_id = client_id.to_i
          when 1 # resource
-            type_resource = msg[i]; i += 1
-            case type_resource
+            resource_type = msg[i]; i += 1
+            case resource_type
             when 255
                object = Obstacle.new
                object.object_id = object_id.to_i
                object.x = x
                object.y = y
             else
-               puts "Resource type not implemented: #{type_resource}"
+               puts "Resource type not implemented: #{resource_type}"
                return
             end
          else
@@ -294,13 +296,11 @@ class Map
       @joueurs
    end
 
-
    def change_side
       @side, @xside = @xside, @side
       log 3, 3, "Changing side: #{@side} to play"
    end
    
-  
    def exists?(ant)
       #puts ant
       @hash.has_key?(ant.object_id)

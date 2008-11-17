@@ -22,6 +22,7 @@ class TCPClient
 	
 	def disconnect
 		@t.close if(@t != nil)
+		@t = nil
 	end
 
 	def formatsend(msg)

@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
 <!DOCTYPE glade-interface SYSTEM "glade-2.0.dtd">
-<!--Generated with glade3 3.4.5 on Sun Nov 16 22:33:11 2008 -->
+<!--Generated with glade3 3.4.5 on Tue Nov 18 00:22:14 2008 -->
 <glade-interface>
   <widget class="GtkWindow" id="main">
     <property name="visible">True</property>
     <property name="title" translatable="yes">AntBattle Launcher</property>
-    <property name="window_position">GTK_WIN_POS_CENTER</property>
+    <property name="window_position">GTK_WIN_POS_CENTER_ALWAYS</property>
     <signal name="destroy" handler="on_main_destroy"/>
     <child>
       <widget class="GtkVBox" id="vbox1">
@@ -17,6 +17,7 @@
               <widget class="GtkToolButton" id="startserver">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">Launch Server</property>
+                <property name="stock_id">gtk-dialog-authentication</property>
                 <signal name="clicked" handler="on_startserver_clicked"/>
               </widget>
               <packing>
@@ -27,7 +28,19 @@
               <widget class="GtkToolButton" id="connect">
                 <property name="visible">True</property>
                 <property name="label" translatable="yes">Connect</property>
+                <property name="stock_id">gtk-media-play</property>
                 <signal name="clicked" handler="on_connect_clicked"/>
+              </widget>
+              <packing>
+                <property name="homogeneous">True</property>
+              </packing>
+            </child>
+            <child>
+              <widget class="GtkToolButton" id="about">
+                <property name="visible">True</property>
+                <property name="label" translatable="yes">About</property>
+                <property name="stock_id">gtk-about</property>
+                <signal name="clicked" handler="on_about_clicked"/>
               </widget>
               <packing>
                 <property name="homogeneous">True</property>
