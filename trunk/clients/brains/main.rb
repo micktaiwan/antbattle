@@ -30,8 +30,10 @@ while true
    i += 1
 end
 
-$LOAD_PATH << '../lib'
-$LOAD_PATH << '../brains/Tests'
+dir = File.dirname(__FILE__)
+$LOAD_PATH << dir + '/../lib'
+$LOAD_PATH << dir + '/../brains'
+$LOAD_PATH << dir + '/../brains/Tests'
 
 # create the colony and wake it up !
 require 'Colony'

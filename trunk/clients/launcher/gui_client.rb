@@ -18,6 +18,7 @@ class GuiClient < TCPClient
   end
   
   def start_server
+    # TODO: works on linux only
     r = %x[ps aux]
     if not r =~ /antbattleserver/
       system("../../server/src/antbattleserver &") 
@@ -44,10 +45,11 @@ class GuiClient < TCPClient
     load('../brains/'+file)
     b = Colony.new
     b.init
-    @brains << {:name => b.progname, :version => b.progversion, :freetext => b.freetext}
+    @brains << {:name => b.progname, :version => b.progversion, :freetext => b.freetext, :file=>file}
     unload
   end
   
+  # connect launcher to server
   def connect
     return if connected?
     super
@@ -60,6 +62,13 @@ class GuiClient < TCPClient
     send("Db1");
     # subscribe to games msg (to see others games)
     send("Af1");
+  end
+
+  # launch a new brain
+  # (adding it to the server queue)
+  def add_to_queue(index_of_brain)
+    puts "Launching #{@brains[index_of_brain][:name]}"
+    p = IO.popen("ruby ../brains/main.rb") # TODO select the valid brain
   end
 
   def parse(msg)

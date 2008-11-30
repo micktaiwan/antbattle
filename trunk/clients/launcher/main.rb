@@ -27,24 +27,54 @@ class Gui < GuiGlade
     super(path_or_data, root , domain , localedir, flag )
     sts("Starting...")
     @c = GuiClient.new('127.0.0.1',5000)
-    tree = @glade['tree']
+    @tree = @glade['tree']
     renderer = Gtk::CellRendererText.new
-    tree.append_column(Gtk::TreeViewColumn.new('Bot name',renderer,:text => 0))
-    tree.append_column(Gtk::TreeViewColumn.new('Version',renderer,:text => 1))
-    tree.append_column(Gtk::TreeViewColumn.new('Free text',renderer,:text => 2))
-   @list = Gtk::ListStore.new(String,String,String)
-    tree.set_model(@list)
+    @tree.append_column(Gtk::TreeViewColumn.new('Bot name',renderer,:text => 0))
+    @tree.append_column(Gtk::TreeViewColumn.new('Version',renderer,:text => 1))
+    #tree.append_column(Gtk::TreeViewColumn.new('Free text',renderer,:text => 2))
+    @list = Gtk::ListStore.new(String,String)
+    @tree.set_model(@list)
     @c.load_brains
+    add_context_menu
     display_brains
     Gtk.timeout_add(10) { read }
     sts("Click connect to connect to the server")
   end
 
+  def add_context_menu
+    menu = Gtk::Menu.new
+    
+    # Add to server queue
+    i = Gtk::MenuItem.new("Add to queue")
+    i.signal_connect("button_press_event") do |widget, event|
+      @c.add_to_queue(@selected.to_s.to_i)
+    end
+    menu.append(i)
+    
+    # remove from server queue
+    i = Gtk::MenuItem.new("Remove from queue")
+    i.signal_connect("button_press_event") do |widget, event|
+      puts "disconnect #{@selected}"
+    end
+    menu.append(i)
+    
+    menu.show_all
+    @tree.add_events(Gdk::Event::BUTTON_PRESS_MASK)
+    @tree.signal_connect("button_press_event") do |widget, event|
+      s = @tree.selection.selected
+      if (s != nil and event.button == 3)
+        @selected = s
+        menu.popup(nil, nil, event.button, event.time)
+      end	
+    end
+  end
+
+
   def add_bot(name, version, text)
     n = @list.append
     n.set_value(0,name)
     n.set_value(1,version)
-    n.set_value(2,text)
+    #@tree.set_tooltip(text)
   end
 
   def display_brains
