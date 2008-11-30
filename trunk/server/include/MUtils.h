@@ -139,10 +139,10 @@ class MTree;
 template <class T>
 class MTreeNode {
 public:
-   T*          Data;
-   MTreeNode<T>*     Parent;
-   MTree*         Tree;
-   int            Index;
+   T*               Data;
+   MTreeNode<T>*    Parent;
+   MTree*           Tree;
+   int              Index;
 
    MTreeNode(MTree* t, void* d) {Tree = t; Data = d;}
    ~MTreeNode();
@@ -158,7 +158,7 @@ public:
       }
 
 private:
-   //MTreeNodeList  Children;
+   //MTreeNodeList Children;
    std::vector<MTreeNode<T>*> Children;
    };
 
