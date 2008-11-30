@@ -162,3 +162,28 @@
 	<boost/thread/thread.hpp>
 	<fstream>
 
+1226490082 source:d:\mickael\perso\projects\antbattle\server\src\antclient.cpp
+	"AntClient.h"
+	<sstream>
+	<stdexcept>
+
+1226490081 d:\mickael\perso\projects\antbattle\server\include\antclient.h
+	<string>
+	<vector>
+	<map>
+	"MMapObject.h"
+	"Msg.h"
+
+1226490081 d:\mickael\perso\projects\antbattle\server\include\mmapobject.h
+	<string>
+	"Msg.h"
+
+1158903412 d:\mickael\perso\projects\antbattle\server\include\msg.h
+	"NetMsgUtils.h"
+
+1158903412 d:\mickael\perso\projects\antbattle\server\include\netmsgutils.h
+	<string>
+	<map>
+	<vector>
+	<sstream>
+
