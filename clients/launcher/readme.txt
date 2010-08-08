@@ -20,6 +20,10 @@ Ruby GNOME (even for Windows)
 The client needs ruby-gnome2:
 http://ruby-gnome2.sourceforge.jp/
 
+libglade2:
+sudo apt-get install libglade2-ruby
+
+
 Install guides:
 http://ruby-gnome2.sourceforge.jp/hiki.cgi?Install+Guide
 

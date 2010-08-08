@@ -40,6 +40,8 @@ class Gui < GuiGlade
     display_brains
     Gtk.timeout_add(10) { read }
     sts("Click connect to connect to the server")
+    @red = Gdk::Color.new(255,0,0)
+    puts @red.to_a
   end
 
   def add_context_menu
@@ -90,13 +92,15 @@ class Gui < GuiGlade
         #area.window.begin_paint(area)
         area.window.clear
         for i in (0..20)
-            area.window.draw_line(area.style.fg_gc(area.state), 10, i*20+10, 410, i*20+10)
-            area.window.draw_line(area.style.fg_gc(area.state), i*20+10, 10, i*20+10, 410)
+          area.window.draw_line(area.style.fg_gc(area.state), 10, i*20+10, 410, i*20+10)
+          area.window.draw_line(area.style.fg_gc(area.state), i*20+10, 10, i*20+10, 410)
         end
+        gc = area.style.fg_gc(area.state)
         @c.map.hash.each_value { |obj|
-            area.window.draw_rectangle(area.style.fg_gc(area.state), true, obj.x*20+12, obj.y*20+12, 17, 17)
-        #rv << obj if(obj.x==x and obj.y==y)
-        }
+          gc.set_foreground(@red)
+          area.window.draw_rectangle(gc, true, obj.x*20+12, obj.y*20+12, 17, 17)
+          #rv << obj if(obj.x==x and obj.y==y)
+          }
         #area.window.end_paint
     end
 

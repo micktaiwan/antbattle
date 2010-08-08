@@ -53,7 +53,7 @@ class GuiClient < TCPClient
   def connect
     return if connected?
     super
-    formatsend("Aa0~"+@progname+"~"+@progversion+"~"+@freetext)
+    formatsend("Aa1~"+@progname+"~"+@progversion+"~"+@freetext)
     # subscribe to connections
     send("Ac1");
     # request client list
@@ -79,7 +79,7 @@ class GuiClient < TCPClient
       
       typeaction=apacket.shift
       action=apacket.shift
-      # print typeaction + action + ""
+      puts typeaction + action
       case typeaction
          when "A" # Client management message
             case action
@@ -128,23 +128,23 @@ class GuiClient < TCPClient
                     puts "   I am playing !!!"
                   end
                when 'c' # Map
-                  #~ puts "Setup de la map"
+                  puts "Setup de la map"
                   @map.setup(apacket)           
                   raise "   Error GUI can't have partial view"      
                when "d" # who must play ?
-                  id = translate_a_msg("S",apacket)[0]
-                  @map.change_side
-                  play if(@id == id)
+                  #id = translate_a_msg("S",apacket)[0]
+                  #@map.change_side
+                  #play if(@id == id)
                when 'e' # end of game
                   id1, id2, code, freetext = translate_a_msg("SSSs",apacket)
                   c1 = @client_list.get_id(id1)
                   c2 = @client_list.get_id(id2)
                   puts "#{c1.name} (#{c1.id}) beats #{c2.name} (#{c2.id}) - #{freetext} (#{code})"
-                  if(@id==id1)
-                    puts " I win !" 
-                  else
-                    puts " I lose"
-                  end  
+                  #if(@id==id1)
+                  #  puts " I win !" 
+                  #else
+                  #  puts " I lose"
+                  #end  
                   @tcp.send("Bb1") if(@id==id2) # suscribe to a new game
                else
                   puts "Unknown msg type for #{action}"
@@ -152,7 +152,7 @@ class GuiClient < TCPClient
          when 'C' # Actions
             case action
                when 'b' # move
-                  ant_id,x,y=translate_a_msg("SBB",apacket)
+                  ant_id,x,y = translate_a_msg("SBB",apacket)
                   @map.move(ant_id,x,y)
                when 'c' # attack
                   id1,id,life = translate_a_msg("SSS",apacket)
@@ -178,6 +178,7 @@ class GuiClient < TCPClient
         when 'E' # Map
           case msg[1].chr
           when 'c' # Map
+            puts "Map setup"
             @map.setup(msg)
             @gui.paint if $hasgtk
           else
